@@ -1,7 +1,7 @@
 import { Mail, MapPin, Phone, MessageSquare } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ContactForm from "@/components/ContactForm";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
+import ContactForm from "@/components/Contact/ContactForm";
 
 const Contact = () => {
   return (

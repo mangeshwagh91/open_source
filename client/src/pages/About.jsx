@@ -1,6 +1,6 @@
 import { Target, Lightbulb, Users, Code2, Heart, Rocket } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
 
 const goals = [
   {

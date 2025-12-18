@@ -1,8 +1,8 @@
 import { Trophy, Search } from "lucide-react";
 import { useState } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import LeaderboardTable from "@/components/LeaderboardTable";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
+import LeaderboardTable from "@/components/Leaderboard/LeaderboardTable";
 import { leaderboardData } from "@/data/leaderboardData";
 import { Input } from "@/components/ui/input";
 

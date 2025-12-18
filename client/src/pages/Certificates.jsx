@@ -1,7 +1,7 @@
 import { Award, FileCheck } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import CertificateCard from "@/components/CertificateCard";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
+import CertificateCard from "@/components/Certificates/CertificateCard";
 import { certificatesData } from "@/data/certificatesData";
 
 const Certificates = () => {

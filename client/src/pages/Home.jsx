@@ -1,8 +1,8 @@
 import { Calendar, Users, Award, GitBranch, Code2, Rocket } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import HeroSection from "@/components/HeroSection";
-import HighlightCard from "@/components/HighlightCard";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
+import HeroSection from "@/components/Home/HeroSection";
+import HighlightCard from "@/components/Home/HighlightCard";
 
 const highlights = [
   {
