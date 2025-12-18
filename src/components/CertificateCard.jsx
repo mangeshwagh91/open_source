@@ -1,13 +1,7 @@
 import { Download, Award, Star, Trophy, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Certificate } from "@/data/certificatesData";
 
-interface CertificateCardProps {
-  certificate: Certificate;
-  delay?: number;
-}
-
-const getTypeIcon = (type: Certificate["type"]) => {
+const getTypeIcon = (type) => {
   switch (type) {
     case "participation":
       return <Award className="w-8 h-8" />;
@@ -22,7 +16,7 @@ const getTypeIcon = (type: Certificate["type"]) => {
   }
 };
 
-const getTypeGradient = (type: Certificate["type"]) => {
+const getTypeGradient = (type) => {
   switch (type) {
     case "participation":
       return "from-blue-500 to-cyan-500";
@@ -37,10 +31,9 @@ const getTypeGradient = (type: Certificate["type"]) => {
   }
 };
 
-const CertificateCard = ({ certificate, delay = 0 }: CertificateCardProps) => {
+const CertificateCard = ({ certificate, delay = 0 }) => {
   const handleDownload = () => {
     console.log(`Downloading certificate: ${certificate.title} for ${certificate.recipient}`);
-    // In a real app, this would trigger a file download
   };
 
   return (

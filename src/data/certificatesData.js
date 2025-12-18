@@ -1,13 +1,4 @@
-export interface Certificate {
-  id: string;
-  title: string;
-  recipient: string;
-  issueDate: string;
-  type: "participation" | "mentor" | "topper" | "completion";
-  downloadUrl: string;
-}
-
-export const certificatesData: Certificate[] = [
+export const certificatesData = [
   {
     id: "cert-001",
     title: "Certificate of Participation",

@@ -1,13 +1,4 @@
-export interface Contributor {
-  rank: number;
-  name: string;
-  points: number;
-  avatar: string;
-  contributions: number;
-  badge?: "gold" | "silver" | "bronze";
-}
-
-export const leaderboardData: Contributor[] = [
+export const leaderboardData = [
   {
     rank: 1,
     name: "Sarah Chen",
