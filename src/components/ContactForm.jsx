@@ -5,14 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
-
 const ContactForm = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
@@ -21,18 +15,15 @@ const ContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
     console.log("Form submitted:", formData);
     
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -45,7 +36,6 @@ const ContactForm = () => {
       description: "Thank you for reaching out. We'll get back to you soon.",
     });
 
-    // Reset form after 3 seconds
     setTimeout(() => {
       setFormData({ name: "", email: "", message: "" });
       setIsSubmitted(false);

@@ -1,14 +1,4 @@
-import { LucideIcon } from "lucide-react";
-
-interface HighlightCardProps {
-  icon: LucideIcon;
-  title: string;
-  value: string;
-  description: string;
-  delay?: number;
-}
-
-const HighlightCard = ({ icon: Icon, title, value, description, delay = 0 }: HighlightCardProps) => {
+const HighlightCard = ({ icon: Icon, title, value, description, delay = 0 }) => {
   return (
     <div 
       className="glass-card p-6 hover-lift group opacity-0 animate-fade-in"

@@ -1,11 +1,6 @@
 import { Trophy, Medal, Award } from "lucide-react";
-import { Contributor } from "@/data/leaderboardData";
 
-interface LeaderboardTableProps {
-  data: Contributor[];
-}
-
-const getBadgeIcon = (badge?: "gold" | "silver" | "bronze") => {
+const getBadgeIcon = (badge) => {
   switch (badge) {
     case "gold":
       return <Trophy className="w-5 h-5 text-amber-500" />;
@@ -18,7 +13,7 @@ const getBadgeIcon = (badge?: "gold" | "silver" | "bronze") => {
   }
 };
 
-const LeaderboardTable = ({ data }: LeaderboardTableProps) => {
+const LeaderboardTable = ({ data }) => {
   return (
     <div className="glass-card overflow-hidden">
       {/* Desktop Table */}
