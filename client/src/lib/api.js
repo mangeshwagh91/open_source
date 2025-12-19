@@ -3,9 +3,14 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 // Generic fetch wrapper
 const fetchAPI = async (endpoint, options = {}) => {
   const url = `${API_URL}${endpoint}`;
+  
+  // Get token from localStorage
+  const token = localStorage.getItem('token');
+  
   const config = {
     headers: {
       'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` }),
       ...options.headers,
     },
     ...options,
@@ -150,5 +155,35 @@ export const assignmentsAPI = {
   }),
   delete: (id) => fetchAPI(`/assignments/${id}`, {
     method: 'DELETE',
+  }),
+};
+
+// Proposals API
+export const proposalsAPI = {
+  getAll: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return fetchAPI(`/proposals${queryString ? `?${queryString}` : ''}`);
+  },
+  getById: (id) => fetchAPI(`/proposals/${id}`),
+  getMyProposals: () => fetchAPI('/proposals/my-proposals'),
+  getStats: () => fetchAPI('/proposals/stats'),
+  create: (data) => fetchAPI('/proposals', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+  update: (id, data) => fetchAPI(`/proposals/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  }),
+  delete: (id) => fetchAPI(`/proposals/${id}`, {
+    method: 'DELETE',
+  }),
+  accept: (id, data) => fetchAPI(`/proposals/${id}/accept`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+  reject: (id, data) => fetchAPI(`/proposals/${id}/reject`, {
+    method: 'POST',
+    body: JSON.stringify(data),
   }),
 };

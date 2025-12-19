@@ -1,6 +1,7 @@
 import Student from '../models/Student.js';
 import jwt from 'jsonwebtoken';
 import { asyncHandler } from '../middleware/validationMiddleware.js';
+import { sendPasswordResetEmail } from '../utils/emailService.js';
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -137,16 +138,26 @@ export const forgotPassword = asyncHandler(async (req, res) => {
 
   await student.save({ validateBeforeSave: false });
 
-  // In production, send this via email
-  // For now, return it in response (REMOVE IN PRODUCTION)
-  console.log('Reset Code:', resetToken);
+  try {
+    // Send email with reset code
+    await sendPasswordResetEmail(email, resetToken, student.name);
 
-  res.json({
-    success: true,
-    message: 'Password reset code sent to email',
-    // REMOVE THIS IN PRODUCTION - only for development
-    resetCode: resetToken
-  });
+    res.json({
+      success: true,
+      message: 'Password reset code sent to your email'
+    });
+  } catch (error) {
+    // If email fails, clear the reset token
+    student.resetPasswordToken = undefined;
+    student.resetPasswordExpire = undefined;
+    await student.save({ validateBeforeSave: false });
+
+    console.error('Email error:', error);
+    return res.status(500).json({ 
+      message: 'Email could not be sent. Please check email configuration.',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
 });
 
 // @desc    Reset password

@@ -13,6 +13,9 @@ import Roadmap from "./pages/Roadmap";
 import Contact from "./pages/Contact";
 import Academics from "./pages/Academics";
 import Profile from "./pages/Profile";
+import ProposeProject from "./pages/ProposeProject";
+import MyProposals from "./pages/MyProposals";
+import ReviewProposals from "./pages/ReviewProposals";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -44,6 +47,9 @@ const App = () => (
           <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
           <Route path="/academics" element={<ProtectedRoute><Academics /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/propose-project" element={<ProtectedRoute><ProposeProject /></ProtectedRoute>} />
+          <Route path="/my-proposals" element={<ProtectedRoute><MyProposals /></ProtectedRoute>} />
+          <Route path="/review-proposals" element={<ProtectedRoute><ReviewProposals /></ProtectedRoute>} />
           
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />

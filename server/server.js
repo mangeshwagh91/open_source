@@ -17,6 +17,7 @@ import roadmapRoutes from './routes/roadmapRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
 import assignmentRoutes from './routes/assignmentRoutes.js';
+import proposalRoutes from './routes/proposalRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -58,7 +59,8 @@ app.get('/', (req, res) => {
       projects: '/api/projects',
       roadmaps: '/api/roadmaps',
       students: '/api/students',
-      assignments: '/api/assignments'
+      assignments: '/api/assignments',
+      proposals: '/api/proposals'
     }
   });
 });
@@ -71,6 +73,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/roadmaps', roadmapRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/assignments', assignmentRoutes);
+app.use('/api/proposals', proposalRoutes);
 
 // Error handling middleware
 app.use(notFound);

@@ -21,6 +21,8 @@ const publicLinks = [
 // Protected routes (logged in)
 const protectedLinks = [
   { to: "/projects", label: "Projects" },
+  { to: "/propose-project", label: "Propose Project" },
+  { to: "/my-proposals", label: "My Proposals" },
   { to: "/leaderboard", label: "Leaderboard" },
   { to: "/certificates", label: "Certificates" },
   { to: "/roadmap", label: "Roadmap" },
@@ -45,7 +47,7 @@ const Navbar = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('student');
     setStudent(null);
-    navigate('/login');
+    navigate('/');
   };
 
   const navLinks = student ? protectedLinks : publicLinks;
