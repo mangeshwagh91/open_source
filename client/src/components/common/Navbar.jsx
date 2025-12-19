@@ -21,8 +21,6 @@ const publicLinks = [
 // Protected routes (logged in)
 const protectedLinks = [
   { to: "/projects", label: "Projects" },
-  { to: "/propose-project", label: "Propose Project" },
-  { to: "/my-proposals", label: "My Proposals" },
   { to: "/leaderboard", label: "Leaderboard" },
   { to: "/certificates", label: "Certificates" },
   { to: "/roadmap", label: "Roadmap" },

@@ -2,9 +2,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Github, User, Star, GitFork, Eye, Calendar } from "lucide-react";
+import { useGithubRepo, formatNumber, formatRelativeTime } from "@/hooks/useGithubRepo";
 
 const ProjectCard = ({ project, viewMode = "grid" }) => {
   const { name, description, techStack, adminName, githubRepo } = project;
+  const { stars, forks, watchers, updatedAt, loading } = useGithubRepo(githubRepo);
 
   const handleGithubClick = () => {
     window.open(githubRepo, "_blank", "noopener,noreferrer");
@@ -61,15 +63,15 @@ const ProjectCard = ({ project, viewMode = "grid" }) => {
               <div className="grid grid-cols-3 gap-2 text-center">
                 <div className="p-2 rounded-lg bg-muted/30">
                   <Star className="w-4 h-4 mx-auto mb-1 text-yellow-500" />
-                  <div className="text-xs font-medium">4.8</div>
+                  <div className="text-xs font-medium">{loading ? '...' : formatNumber(stars)}</div>
                 </div>
                 <div className="p-2 rounded-lg bg-muted/30">
                   <GitFork className="w-4 h-4 mx-auto mb-1 text-primary" />
-                  <div className="text-xs font-medium">127</div>
+                  <div className="text-xs font-medium">{loading ? '...' : formatNumber(forks)}</div>
                 </div>
                 <div className="p-2 rounded-lg bg-muted/30">
                   <Eye className="w-4 h-4 mx-auto mb-1 text-muted-foreground" />
-                  <div className="text-xs font-medium">2.3k</div>
+                  <div className="text-xs font-medium">{loading ? '...' : formatNumber(watchers)}</div>
                 </div>
               </div>
 
@@ -98,7 +100,7 @@ const ProjectCard = ({ project, viewMode = "grid" }) => {
           </CardTitle>
           <div className="flex items-center gap-1 text-yellow-500">
             <Star className="w-4 h-4 fill-current" />
-            <span className="text-xs font-medium">4.8</span>
+            <span className="text-xs font-medium">{loading ? '...' : formatNumber(stars)}</span>
           </div>
         </div>
         <CardDescription className="text-muted-foreground line-clamp-3 min-h-[60px] leading-relaxed">
@@ -128,17 +130,17 @@ const ProjectCard = ({ project, viewMode = "grid" }) => {
         <div className="grid grid-cols-3 gap-2 mb-4 text-center">
           <div className="flex flex-col items-center">
             <GitFork className="w-4 h-4 text-primary mb-1" />
-            <span className="text-xs font-medium">127</span>
+            <span className="text-xs font-medium">{loading ? '...' : formatNumber(forks)}</span>
             <span className="text-xs text-muted-foreground">forks</span>
           </div>
           <div className="flex flex-col items-center">
             <Eye className="w-4 h-4 text-muted-foreground mb-1" />
-            <span className="text-xs font-medium">2.3k</span>
+            <span className="text-xs font-medium">{loading ? '...' : formatNumber(watchers)}</span>
             <span className="text-xs text-muted-foreground">views</span>
           </div>
           <div className="flex flex-col items-center">
             <Calendar className="w-4 h-4 text-accent mb-1" />
-            <span className="text-xs font-medium">2d</span>
+            <span className="text-xs font-medium">{loading ? '...' : formatRelativeTime(updatedAt)}</span>
             <span className="text-xs text-muted-foreground">ago</span>
           </div>
         </div>

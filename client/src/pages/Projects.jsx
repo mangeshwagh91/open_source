@@ -3,10 +3,11 @@ import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import ProjectCard from "@/components/Projects/ProjectCard";
 import { projectsAPI } from "@/lib/api";
-import { Code2, Search, Filter, Grid, List, Star, Users, GitBranch } from "lucide-react";
+import { Code2, Search, Filter, Grid, List, Star, Users, GitBranch, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,6 +15,7 @@ const Projects = () => {
   const [viewMode, setViewMode] = useState("grid");
   const [projectsData, setProjectsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -68,15 +70,30 @@ const Projects = () => {
 
       <main className="container mx-auto px-4 pt-24 pb-16">
         {/* Enhanced Header Section */}
-        <div className="text-center mb-16 space-y-8">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-6 py-3 animate-fade-in">
-            <Code2 className="w-5 h-5 text-primary" />
-            <span className="text-primary text-sm font-medium">Explore & Contribute</span>
+        <div className="mb-16 space-y-8">
+          {/* Top section with badge and button */}
+          <div className="relative">
+            <div className="text-center">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-6 py-3 animate-fade-in">
+                <Code2 className="w-5 h-5 text-primary" />
+                <span className="text-primary text-sm font-medium">Explore & Contribute</span>
+              </div>
+            </div>
+            {/* Propose Project Button - Absolute positioned */}
+            <div className="absolute right-0 top-0">
+              <Button
+                onClick={() => navigate('/propose-project')}
+                className="btn-gradient"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Propose Project
+              </Button>
+            </div>
           </div>
 
           {/* Main Title */}
-          <div className="space-y-4">
+          <div className="space-y-4 text-center">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold gradient-text leading-tight animate-fade-in">
               Open Source Projects
             </h1>
@@ -87,7 +104,7 @@ const Projects = () => {
           </div>
 
           {/* Statistics */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto animate-fade-in">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto animate-fade-in text-center">
             <div className="glass-card p-4 text-center">
               <div className="text-2xl font-bold gradient-text">{stats.totalProjects}</div>
               <div className="text-sm text-muted-foreground">Active Projects</div>

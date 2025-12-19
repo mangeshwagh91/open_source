@@ -42,14 +42,14 @@ const App = () => (
           
           {/* Protected Routes */}
           <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
+          <Route path="/propose-project" element={<ProtectedRoute><ProposeProject /></ProtectedRoute>} />
+          <Route path="/my-proposals" element={<ProtectedRoute><MyProposals /></ProtectedRoute>} />
+          <Route path="/review-proposals" element={<ProtectedRoute><ReviewProposals /></ProtectedRoute>} />
           <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
           <Route path="/certificates" element={<ProtectedRoute><Certificates /></ProtectedRoute>} />
           <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
           <Route path="/academics" element={<ProtectedRoute><Academics /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-          <Route path="/propose-project" element={<ProtectedRoute><ProposeProject /></ProtectedRoute>} />
-          <Route path="/my-proposals" element={<ProtectedRoute><MyProposals /></ProtectedRoute>} />
-          <Route path="/review-proposals" element={<ProtectedRoute><ReviewProposals /></ProtectedRoute>} />
           
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
