@@ -14,6 +14,8 @@ import leaderboardRoutes from './routes/leaderboardRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import roadmapRoutes from './routes/roadmapRoutes.js';
+import studentRoutes from './routes/studentRoutes.js';
+import assignmentRoutes from './routes/assignmentRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -45,7 +47,9 @@ app.get('/', (req, res) => {
       leaderboard: '/api/leaderboard',
       contacts: '/api/contacts',
       projects: '/api/projects',
-      roadmaps: '/api/roadmaps'
+      roadmaps: '/api/roadmaps',
+      students: '/api/students',
+      assignments: '/api/assignments'
     }
   });
 });
@@ -55,6 +59,8 @@ app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/contacts', contactRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/roadmaps', roadmapRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/assignments', assignmentRoutes);
 
 // Error handling middleware
 app.use(notFound);
