@@ -1,0 +1,21 @@
+{
+  "name": "opensource",
+  "version": "1.0.0",
+  "description": "**Empowering aspiring developers to discover, contribute, and thrive in open-source projects** — tailored for college students chasing GSoC dreams and beyond.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eleutherian13/OpenSource.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Eleutherian13/OpenSource/issues"
+  },
+  "homepage": "https://github.com/Eleutherian13/OpenSource#readme"
+}
