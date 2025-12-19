@@ -43,7 +43,6 @@ const Navbar = () => {
                 }`}
               >
                 {link.label}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full" />
               </NavLink>
             ))}
           </div>
