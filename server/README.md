@@ -6,18 +6,32 @@ Backend API for the Open Source Project web application built with Node.js, Expr
 
 - RESTful API endpoints
 - MongoDB database with Mongoose ODM
-- Input validation with express-validator
+- JWT Authentication & Authorization
+- Role-based access control (RBAC)
+- Input validation & sanitization with Zod
+- Password hashing with bcryptjs
 - Error handling middleware
 - CORS enabled
 - Rate limiting
 - Security headers with Helmet
 - Request logging with Morgan
+- Account lockout protection
+- Refresh token rotation
+
+## Tech Stack
+
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: MongoDB with Mongoose
+- **Authentication**: JWT (Access + Refresh tokens)
+- **Validation**: Zod
+- **Security**: bcryptjs, Helmet, CORS, Rate Limiting
 
 ## Installation
 
 1. Install dependencies:
 ```bash
-cd backend
+cd server
 npm install
 ```
 
@@ -27,12 +41,59 @@ cp .env.example .env
 ```
 
 3. Update `.env` with your configuration:
-```
-PORT=5000
+```env
+# Database
 MONGODB_URI=mongodb://localhost:27017/opensource_db
+
+# JWT Secrets (Generate strong random strings)
+JWT_ACCESS_SECRET=your_access_token_secret_here
+JWT_REFRESH_SECRET=your_refresh_token_secret_here
+
+# JWT Expiration
+JWT_ACCESS_EXPIRE=15m
+JWT_REFRESH_EXPIRE=7d
+
+# Server
+PORT=5000
 NODE_ENV=development
+
+# CORS
 CLIENT_URL=http://localhost:5173
 ```
+
+## Authentication
+
+The API uses JWT for authentication with access and refresh tokens.
+
+### User Roles
+- **user**: Basic user permissions
+- **admin**: Full access to all endpoints
+
+### Protected Routes
+All POST, PUT, DELETE operations require authentication and appropriate roles.
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `POST /api/auth/refresh` - Refresh access token
+- `POST /api/auth/logout` - Logout user
+- `GET /api/auth/profile` - Get user profile
+- `PUT /api/auth/profile` - Update user profile
+
+### Projects
+- `GET /api/projects` - Get all projects (public)
+- `GET /api/projects/:id` - Get project by ID (public)
+- `POST /api/projects` - Create project (admin only)
+- `PUT /api/projects/:id` - Update project (admin only)
+- `DELETE /api/projects/:id` - Delete project (admin only)
+
+### Other Endpoints
+- Certificates: `/api/certificates`
+- Leaderboard: `/api/leaderboard`
+- Contacts: `/api/contacts`
+- Roadmaps: `/api/roadmaps`
 
 ## Running the Application
 

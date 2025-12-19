@@ -14,6 +14,7 @@ import leaderboardRoutes from './routes/leaderboardRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import roadmapRoutes from './routes/roadmapRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -35,12 +36,20 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 const limiter = rateLimit(rateLimitOptions);
 app.use('/api/', limiter);
 
+// Auth rate limiting (stricter for auth endpoints)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 auth requests per windowMs
+  message: 'Too many authentication attempts, please try again later.'
+});
+
 // Routes
 app.get('/', (req, res) => {
   res.json({
     message: 'Welcome to Open Source Project API',
     version: '1.0.0',
     endpoints: {
+      auth: '/api/auth',
       certificates: '/api/certificates',
       leaderboard: '/api/leaderboard',
       contacts: '/api/contacts',
@@ -50,6 +59,7 @@ app.get('/', (req, res) => {
   });
 });
 
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/contacts', contactRoutes);
