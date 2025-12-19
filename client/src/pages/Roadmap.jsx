@@ -1,10 +1,29 @@
+import { useState, useEffect } from "react";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import RoadmapCard from "@/components/Roadmap/RoadmapCard";
-import { roadmapsData } from "@/data/roadmapsData";
+import { roadmapsAPI } from "@/lib/api";
 import { Code2 } from "lucide-react";
 
 const Roadmap = () => {
+  const [roadmapsData, setRoadmapsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRoadmaps = async () => {
+      try {
+        const data = await roadmapsAPI.getAll();
+        setRoadmapsData(data);
+      } catch (error) {
+        console.error("Error fetching roadmaps:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRoadmaps();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background main-bg-pattern">
       <Navbar />

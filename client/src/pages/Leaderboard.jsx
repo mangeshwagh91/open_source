@@ -1,8 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import LeaderboardTable from "@/components/Leaderboard/LeaderboardTable";
-import { leaderboardData } from "@/data/leaderboardData";
+import { leaderboardAPI } from "@/lib/api";
 import {
   Trophy,
   Search,
@@ -29,6 +29,23 @@ const Leaderboard = () => {
   const [sortOrder, setSortOrder] = useState("desc");
   const [timeFilter, setTimeFilter] = useState("all");
   const [viewMode, setViewMode] = useState("table");
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const data = await leaderboardAPI.getAll();
+        setLeaderboardData(data);
+      } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaderboard();
+  }, []);
 
   // Enhanced filtering and sorting logic
   const processedData = useMemo(() => {

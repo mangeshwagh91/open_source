@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { contactAPI } from "@/lib/api";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -68,23 +69,29 @@ const ContactForm = () => {
 
     setIsSubmitting(true);
 
-    console.log("Form submitted:", formData);
+    try {
+      await contactAPI.create(formData);
+      
+      setIsSubmitted(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      toast({
+        title: "Message Sent Successfully! 🎉",
+        description: "Thank you for reaching out. We'll get back to you within 24 hours.",
+      });
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-
-    toast({
-      title: "Message Sent Successfully! 🎉",
-      description: "Thank you for reaching out. We'll get back to you within 24 hours.",
-    });
-
-    setTimeout(() => {
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setIsSubmitted(false);
-    }, 5000);
+      setTimeout(() => {
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setIsSubmitted(false);
+      }, 5000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {

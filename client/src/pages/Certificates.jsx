@@ -25,11 +25,11 @@ import {
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import CertificateCard from "@/components/Certificates/CertificateCard";
-import { certificatesData } from "@/data/certificatesData";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { certificatesAPI } from "@/lib/api";
 
 const stats = [
   {
@@ -58,45 +58,62 @@ const stats = [
   }
 ];
 
-const certificateTypes = [
-  {
-    type: "participation",
-    title: "Participation Certificate",
-    description: "Awarded to all contributors who complete at least one successful PR",
-    icon: CheckCircle,
-    color: "from-blue-500 to-cyan-500",
-    count: certificatesData.filter(cert => cert.type === "participation").length
-  },
-  {
-    type: "completion",
-    title: "Completion Certificate",
-    description: "For contributors who complete all program milestones and requirements",
-    icon: Trophy,
-    color: "from-emerald-500 to-teal-500",
-    count: certificatesData.filter(cert => cert.type === "completion").length
-  },
-  {
-    type: "topper",
-    title: "Excellence Certificate",
-    description: "For top performers in each project category with outstanding contributions",
-    icon: Crown,
-    color: "from-amber-500 to-orange-500",
-    count: certificatesData.filter(cert => cert.type === "topper").length
-  },
-  {
-    type: "mentor",
-    title: "Mentor Certificate",
-    description: "Special recognition for project mentors and community guides",
-    icon: Star,
-    color: "from-purple-500 to-pink-500",
-    count: certificatesData.filter(cert => cert.type === "mentor").length
-  }
-];
-
 const Certificates = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("all");
   const [viewMode, setViewMode] = useState("grid");
+  const [certificatesData, setCertificatesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCertificates = async () => {
+      try {
+        const data = await certificatesAPI.getAll();
+        setCertificatesData(data);
+      } catch (error) {
+        console.error("Error fetching certificates:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCertificates();
+  }, []);
+
+  const certificateTypes = useMemo(() => [
+    {
+      type: "participation",
+      title: "Participation Certificate",
+      description: "Awarded to all contributors who complete at least one successful PR",
+      icon: CheckCircle,
+      color: "from-blue-500 to-cyan-500",
+      count: certificatesData.filter(cert => cert.type === "participation").length
+    },
+    {
+      type: "completion",
+      title: "Completion Certificate",
+      description: "For contributors who complete all program milestones and requirements",
+      icon: Trophy,
+      color: "from-emerald-500 to-teal-500",
+      count: certificatesData.filter(cert => cert.type === "completion").length
+    },
+    {
+      type: "topper",
+      title: "Excellence Certificate",
+      description: "For top performers in each project category with outstanding contributions",
+      icon: Crown,
+      color: "from-amber-500 to-orange-500",
+      count: certificatesData.filter(cert => cert.type === "topper").length
+    },
+    {
+      type: "mentor",
+      title: "Mentor Certificate",
+      description: "Special recognition for project mentors and community guides",
+      icon: Star,
+      color: "from-purple-500 to-pink-500",
+      count: certificatesData.filter(cert => cert.type === "mentor").length
+    }
+  ], [certificatesData]);
 
   // Filter certificates based on search and type
   const filteredCertificates = useMemo(() => {
