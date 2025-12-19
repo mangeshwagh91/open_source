@@ -10,6 +10,7 @@ const navLinks = [
   { to: "/leaderboard", label: "Leaderboard" },
   { to: "/certificates", label: "Certificates" },
   { to: "/roadmap", label: "Roadmap" },
+  { to: "/academics", label: "Academics" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -18,38 +19,40 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/30 shadow-soft">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/40">
+      <div className="container mx-auto px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <NavLink to="/" className="flex items-center gap-3 group">
             <div className="relative">
-              <div className="w-11 h-11 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-105 transition-all duration-300 shadow-lg">
-                <Code2 className="w-6 h-6 text-white drop-shadow-sm" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                <Code2 className="w-5 h-5 text-primary-foreground" />
               </div>
-              <div className="absolute inset-0 w-11 h-11 rounded-2xl bg-white/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300" />
             </div>
-            <span className="font-bold text-2xl gradient-text group-hover:scale-105 transition-transform duration-300">CodeFest</span>
+            <span className="font-bold text-xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">CodeFest</span>
           </NavLink>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-2">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
-                className={`nav-link relative px-3 py-2 rounded-lg transition-all duration-300 group ${
-                  location.pathname === link.to ? "active" : "hover:bg-muted/50"
-                }`}
+                className="relative px-4 py-2 text-sm font-medium transition-colors duration-200 text-foreground/80 hover:text-foreground group"
               >
                 {link.label}
+                <span 
+                  className={`absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ${
+                    location.pathname === link.to ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                />
               </NavLink>
             ))}
           </div>
 
           {/* CTA Button - Desktop */}
-          <div className="hidden md:block">
-            <Button className="btn-gradient hover:opacity-90 transition-opacity text-primary-foreground font-medium px-6 shadow-lg">
+          <div className="hidden lg:block">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 h-10">
               Register Now
             </Button>
           </div>
@@ -57,7 +60,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+            className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -65,23 +68,23 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t border-border/50 animate-fade-in">
-            <div className="flex flex-col gap-2">
+          <div className="lg:hidden pb-6 pt-2 border-t border-border/40 animate-in slide-in-from-top-2 duration-200">
+            <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <NavLink
                   key={link.to}
                   to={link.to}
                   onClick={() => setIsOpen(false)}
-                  className={`px-4 py-3 rounded-lg transition-colors ${
+                  className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                     location.pathname === link.to
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "hover:bg-muted"
+                      ? "bg-primary/10 text-primary"
+                      : "text-foreground/80 hover:text-foreground hover:bg-muted/50"
                   }`}
                 >
                   {link.label}
                 </NavLink>
               ))}
-              <Button className="btn-gradient text-primary-foreground font-medium mt-2 mx-4 shadow-lg">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium mt-4 mx-4">
                 Register Now
               </Button>
             </div>

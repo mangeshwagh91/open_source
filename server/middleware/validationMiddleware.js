@@ -44,5 +44,3 @@ export const asyncHandler = (fn) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
 };
-  body('contributions').isInt({ min: 0 }).withMessage('Contributions must be a non-negative integer'),
-];

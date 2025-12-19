@@ -50,9 +50,6 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Index for email
-userSchema.index({ email: 1 });
-
 // Virtual for account lock
 userSchema.virtual('isLocked').get(function() {
   return !!(this.lockUntil && this.lockUntil > Date.now());

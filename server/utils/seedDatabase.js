@@ -4,6 +4,8 @@ import Certificate from '../models/Certificate.js';
 import Leaderboard from '../models/Leaderboard.js';
 import Project from '../models/Project.js';
 import Roadmap from '../models/Roadmap.js';
+import Student from '../models/Student.js';
+import ProjectAssignment from '../models/ProjectAssignment.js';
 import connectDB from '../config/database.js';
 
 // Load env vars
@@ -133,6 +135,63 @@ const roadmaps = [
   },
 ];
 
+const students = [
+  {
+    studentId: "STU2024001",
+    name: "Alice Johnson",
+    email: "alice.johnson@university.edu",
+    class: "CS-A",
+    section: "A",
+    department: "Computer Science",
+    semester: "5"
+  },
+  {
+    studentId: "STU2024002",
+    name: "Bob Smith",
+    email: "bob.smith@university.edu",
+    class: "CS-A",
+    section: "A",
+    department: "Computer Science",
+    semester: "5"
+  },
+  {
+    studentId: "STU2024003",
+    name: "Carol Williams",
+    email: "carol.williams@university.edu",
+    class: "CS-B",
+    section: "B",
+    department: "Computer Science",
+    semester: "5"
+  },
+  {
+    studentId: "STU2024004",
+    name: "David Brown",
+    email: "david.brown@university.edu",
+    class: "IT-A",
+    section: "A",
+    department: "Information Technology",
+    semester: "6"
+  },
+  {
+    studentId: "STU2024005",
+    name: "Emma Davis",
+    email: "emma.davis@university.edu",
+    class: "CS-A",
+    section: "A",
+    department: "Computer Science",
+    semester: "5"
+  },
+  {
+    studentId: "STU2024006",
+    name: "Frank Miller",
+    email: "frank.miller@university.edu",
+    class: "CS-B",
+    section: "B",
+    department: "Computer Science",
+    semester: "7"
+  }
+];
+
 const seedDatabase = async () => {
   try {
     await connectDB();
@@ -142,6 +201,8 @@ const seedDatabase = async () => {
     await Leaderboard.deleteMany();
     await Project.deleteMany();
     await Roadmap.deleteMany();
+    await Student.deleteMany();
+    await ProjectAssignment.deleteMany();
 
     console.log('Cleared existing data');
 
@@ -150,8 +211,54 @@ const seedDatabase = async () => {
     await Leaderboard.insertMany(leaderboard);
     await Project.insertMany(projects);
     await Roadmap.insertMany(roadmaps);
+    const insertedStudents = await Student.insertMany(students);
+
+    // Create sample assignments
+    const assignments = [
+      {
+        title: "E-Commerce Website",
+        description: "Build a full-stack e-commerce platform with shopping cart, payment integration, and admin panel.",
+        assignedTo: [insertedStudents[0]._id, insertedStudents[1]._id],
+        assignedBy: "Dr. Sarah Mitchell",
+        dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+        status: "in-progress",
+        priority: "high",
+        techStack: ["React", "Node.js", "MongoDB", "Stripe"],
+        isGroupProject: true
+      },
+      {
+        title: "Blog Management System",
+        description: "Create a blog platform with user authentication, CRUD operations, and markdown support.",
+        assignedTo: [insertedStudents[2]._id],
+        assignedBy: "Prof. John Davis",
+        dueDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000), // 20 days from now
+        status: "pending",
+        priority: "medium",
+        techStack: ["Vue.js", "Express", "PostgreSQL"],
+        isGroupProject: false
+      },
+      {
+        title: "Mobile App for Campus",
+        description: "Develop a mobile application for campus management including attendance, grades, and notifications.",
+        assignedTo: [insertedStudents[3]._id, insertedStudents[4]._id, insertedStudents[5]._id],
+        assignedBy: "Dr. Sarah Mitchell",
+        dueDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000), // 45 days from now
+        status: "pending",
+        priority: "high",
+        techStack: ["React Native", "Firebase", "Redux"],
+        isGroupProject: true
+      }
+    ];
+
+    await ProjectAssignment.insertMany(assignments);
 
     console.log('Database seeded successfully!');
+    console.log(`- ${certificates.length} certificates`);
+    console.log(`- ${leaderboard.length} leaderboard entries`);
+    console.log(`- ${projects.length} projects`);
+    console.log(`- ${roadmaps.length} roadmaps`);
+    console.log(`- ${students.length} students`);
+    console.log(`- ${assignments.length} assignments`);
     process.exit(0);
   } catch (error) {
     console.error('Error seeding database:', error);

@@ -110,3 +110,45 @@ export const roadmapsAPI = {
     method: 'DELETE',
   }),
 };
+
+// Students API
+export const studentsAPI = {
+  getAll: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return fetchAPI(`/students${queryString ? `?${queryString}` : ''}`);
+  },
+  getById: (id) => fetchAPI(`/students/${id}`),
+  getByClass: (className) => fetchAPI(`/students/class/${className}`),
+  create: (data) => fetchAPI('/students', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+  update: (id, data) => fetchAPI(`/students/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  }),
+  delete: (id) => fetchAPI(`/students/${id}`, {
+    method: 'DELETE',
+  }),
+};
+
+// Assignments API
+export const assignmentsAPI = {
+  getAll: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return fetchAPI(`/assignments${queryString ? `?${queryString}` : ''}`);
+  },
+  getById: (id) => fetchAPI(`/assignments/${id}`),
+  getByStudent: (studentId) => fetchAPI(`/assignments/student/${studentId}`),
+  create: (data) => fetchAPI('/assignments', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+  update: (id, data) => fetchAPI(`/assignments/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  }),
+  delete: (id) => fetchAPI(`/assignments/${id}`, {
+    method: 'DELETE',
+  }),
+};

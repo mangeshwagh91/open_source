@@ -37,36 +37,28 @@ export const createContact = asyncHandler(async (req, res) => {
 // @route   PUT /api/contacts/:id
 // @access  Private (Admin only)
 export const updateContact = asyncHandler(async (req, res) => {
-  try {
-    const contact = await Contact.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
-    
-    if (!contact) {
-      return res.status(404).json({ message: 'Contact message not found' });
-    }
-    
-    res.json(contact);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+  const contact = await Contact.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true, runValidators: true }
+  );
+
+  if (!contact) {
+    return res.status(404).json({ message: 'Contact message not found' });
   }
-};
+
+  res.json(contact);
+});
 
 // @desc    Delete contact message
 // @route   DELETE /api/contacts/:id
-// @access  Public
-export const deleteContact = async (req, res) => {
-  try {
-    const contact = await Contact.findByIdAndDelete(req.params.id);
-    
-    if (!contact) {
-      return res.status(404).json({ message: 'Contact message not found' });
-    }
-    
-    res.json({ message: 'Contact message deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+// @access  Private (Admin only)
+export const deleteContact = asyncHandler(async (req, res) => {
+  const contact = await Contact.findByIdAndDelete(req.params.id);
+
+  if (!contact) {
+    return res.status(404).json({ message: 'Contact message not found' });
   }
-};
+
+  res.json({ message: 'Contact message deleted successfully' });
+});

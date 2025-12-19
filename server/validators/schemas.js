@@ -147,3 +147,63 @@ export const querySchema = z.object({
     search: z.string().optional()
   })
 });
+
+// Student validation schemas
+export const studentSchema = z.object({
+  body: z.object({
+    name: z.string()
+      .min(1, 'Name is required')
+      .trim(),
+    studentId: z.string()
+      .min(1, 'Student ID is required')
+      .trim(),
+    email: z.string()
+      .email('Valid email is required')
+      .trim(),
+    class: z.string()
+      .min(1, 'Class is required')
+      .trim(),
+    department: z.string()
+      .min(1, 'Department is required')
+      .trim(),
+    status: z.enum(['active', 'inactive', 'graduated'], {
+      errorMap: () => ({ message: 'Invalid status' })
+    }).optional(),
+    phone: z.string().optional(),
+    address: z.string().optional()
+  }),
+  params: z.object({
+    id: objectIdSchema.optional(),
+    className: z.string().optional()
+  })
+});
+
+// Assignment validation schemas
+export const assignmentSchema = z.object({
+  body: z.object({
+    title: z.string()
+      .min(1, 'Title is required')
+      .trim(),
+    description: z.string()
+      .min(1, 'Description is required')
+      .trim(),
+    studentId: objectIdSchema,
+    subject: z.string()
+      .min(1, 'Subject is required')
+      .trim(),
+    dueDate: z.string()
+      .min(1, 'Due date is required'),
+    status: z.enum(['pending', 'submitted', 'graded'], {
+      errorMap: () => ({ message: 'Invalid status' })
+    }).optional(),
+    grade: z.number()
+      .min(0, 'Grade must be non-negative')
+      .max(100, 'Grade cannot exceed 100')
+      .optional(),
+    feedback: z.string().optional()
+  }),
+  params: z.object({
+    id: objectIdSchema.optional(),
+    studentId: objectIdSchema.optional()
+  })
+});
