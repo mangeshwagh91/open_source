@@ -1,138 +1,188 @@
-import User from '../models/User.js';
-import { generateTokens, verifyRefreshToken, clearRefreshToken } from '../services/authService.js';
+import Student from '../models/Student.js';
+import jwt from 'jsonwebtoken';
 import { asyncHandler } from '../middleware/validationMiddleware.js';
 
-// @desc    Register user
-// @route   POST /api/auth/register
-// @access  Public
-export const register = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+// Generate JWT Token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET || 'your-secret-key', {
+    expiresIn: '30d'
+  });
+};
 
-  // Check if user exists
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-    return res.status(400).json({ message: 'User already exists' });
+// @desc    Register student
+// @route   POST /api/auth/signup
+// @access  Public
+export const signup = asyncHandler(async (req, res) => {
+  const { studentId, name, email, password, department, passingYear, github, linkedin } = req.body;
+
+  // Check if student exists
+  const studentExists = await Student.findOne({ $or: [{ email }, { studentId }] });
+  if (studentExists) {
+    return res.status(400).json({ 
+      message: studentExists.email === email 
+        ? 'Email already registered' 
+        : 'College ID already registered' 
+    });
   }
 
-  // Create user
-  const user = await User.create({
+  // Create student
+  const student = await Student.create({
+    studentId,
     name,
     email,
-    password
+    password,
+    department,
+    passingYear,
+    github,
+    linkedin: linkedin || ''
   });
 
-  if (user) {
-    const { accessToken, refreshToken } = await generateTokens(user._id);
+  if (student) {
+    const token = generateToken(student._id);
 
     res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      accessToken,
-      refreshToken
+      success: true,
+      token,
+      student: {
+        _id: student._id,
+        studentId: student.studentId,
+        name: student.name,
+        email: student.email,
+        department: student.department,
+        passingYear: student.passingYear,
+        github: student.github,
+        linkedin: student.linkedin
+      }
     });
   } else {
-    res.status(400).json({ message: 'Invalid user data' });
+    res.status(400).json({ message: 'Invalid student data' });
   }
 });
 
-// @desc    Authenticate user & get token
+// @desc    Authenticate student & get token
 // @route   POST /api/auth/login
 // @access  Public
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  // Check for user
-  const user = await User.findOne({ email }).select('+password');
-  if (!user) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
-
-  // Check if account is locked
-  if (user.isLocked) {
-    return res.status(423).json({ message: 'Account is locked due to too many failed login attempts' });
+  // Check for student
+  const student = await Student.findOne({ email }).select('+password');
+  
+  if (!student) {
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
 
   // Check password
-  const isMatch = await user.comparePassword(password);
+  const isMatch = await student.comparePassword(password);
   if (!isMatch) {
-    await user.incLoginAttempts();
-    return res.status(401).json({ message: 'Invalid credentials' });
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
 
-  // Reset login attempts on successful login
-  await user.resetLoginAttempts();
-
-  const { accessToken, refreshToken } = await generateTokens(user._id);
+  const token = generateToken(student._id);
 
   res.json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    accessToken,
-    refreshToken
+    success: true,
+    token,
+    student: {
+      _id: student._id,
+      studentId: student.studentId,
+      name: student.name,
+      email: student.email,
+      department: student.department,
+      passingYear: student.passingYear,
+      github: student.github,
+      linkedin: student.linkedin,
+      avatar: student.avatar
+    }
   });
 });
 
-// @desc    Refresh access token
-// @route   POST /api/auth/refresh
+// @desc    Get current logged in student
+// @route   GET /api/auth/me
+// @access  Private
+export const getMe = asyncHandler(async (req, res) => {
+  const student = await Student.findById(req.user.id);
+
+  res.json({
+    success: true,
+    student: {
+      _id: student._id,
+      studentId: student.studentId,
+      name: student.name,
+      email: student.email,
+      department: student.department,
+      passingYear: student.passingYear,
+      github: student.github,
+      linkedin: student.linkedin,
+      avatar: student.avatar,
+      status: student.status
+    }
+  });
+});
+
+// @desc    Forgot password - send reset code
+// @route   POST /api/auth/forgot-password
 // @access  Public
-export const refresh = asyncHandler(async (req, res) => {
-  const { refreshToken } = req.body;
+export const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
 
-  if (!refreshToken) {
-    return res.status(401).json({ message: 'Refresh token required' });
+  const student = await Student.findOne({ email });
+
+  if (!student) {
+    return res.status(404).json({ message: 'No account with that email address' });
   }
 
-  const user = await verifyRefreshToken(refreshToken);
-  const { accessToken, newRefreshToken } = await generateTokens(user._id);
+  // Get reset token (6-digit code)
+  const resetToken = student.getResetPasswordToken();
+
+  await student.save({ validateBeforeSave: false });
+
+  // In production, send this via email
+  // For now, return it in response (REMOVE IN PRODUCTION)
+  console.log('Reset Code:', resetToken);
 
   res.json({
-    accessToken,
-    refreshToken: newRefreshToken
+    success: true,
+    message: 'Password reset code sent to email',
+    // REMOVE THIS IN PRODUCTION - only for development
+    resetCode: resetToken
   });
 });
 
-// @desc    Logout user
-// @route   POST /api/auth/logout
-// @access  Private
-export const logout = asyncHandler(async (req, res) => {
-  await clearRefreshToken(req.user._id);
-  res.json({ message: 'Logged out successfully' });
-});
+// @desc    Reset password
+// @route   POST /api/auth/reset-password
+// @access  Public
+export const resetPassword = asyncHandler(async (req, res) => {
+  const { email, resetCode, newPassword } = req.body;
 
-// @desc    Get current user profile
-// @route   GET /api/auth/profile
-// @access  Private
-export const getProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-  res.json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    createdAt: user.createdAt,
-    lastLogin: user.lastLogin
+  const student = await Student.findOne({
+    email,
+    resetPasswordToken: resetCode,
+    resetPasswordExpire: { $gt: Date.now() }
   });
-});
 
-// @desc    Update user profile
-// @route   PUT /api/auth/profile
-// @access  Private
-export const updateProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  if (!student) {
+    return res.status(400).json({ message: 'Invalid or expired reset code' });
+  }
 
-  if (req.body.name) user.name = req.body.name;
-  if (req.body.email) user.email = req.body.email;
+  // Set new password
+  student.password = newPassword;
+  student.resetPasswordToken = undefined;
+  student.resetPasswordExpire = undefined;
 
-  const updatedUser = await user.save();
+  await student.save();
+
+  const token = generateToken(student._id);
 
   res.json({
-    _id: updatedUser._id,
-    name: updatedUser.name,
-    email: updatedUser.email,
-    role: updatedUser.role
+    success: true,
+    message: 'Password reset successful',
+    token,
+    student: {
+      _id: student._id,
+      studentId: student.studentId,
+      name: student.name,
+      email: student.email
+    }
   });
 });

@@ -8,11 +8,11 @@ export const getStudents = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const sort = req.query.sort || 'name';
-  const { class: classFilter, department, status, search } = req.query;
+  const { passingYear, department, status, search } = req.query;
 
   let query = {};
 
-  if (classFilter) query.class = classFilter;
+  if (passingYear) query.passingYear = parseInt(passingYear);
   if (department) query.department = department;
   if (status) query.status = status;
   if (search) {
@@ -94,10 +94,10 @@ export const deleteStudent = asyncHandler(async (req, res) => {
   res.json({ message: 'Student deleted successfully' });
 });
 
-// @desc    Get students by class
-// @route   GET /api/students/class/:className
+// @desc    Get students by passing year
+// @route   GET /api/students/year/:year
 // @access  Private (Admin only)
-export const getStudentsByClass = asyncHandler(async (req, res) => {
-  const students = await Student.find({ class: req.params.className }).sort({ name: 1 });
+export const getStudentsByYear = asyncHandler(async (req, res) => {
+  const students = await Student.find({ passingYear: parseInt(req.params.year) }).sort({ name: 1 });
   res.json(students);
 });

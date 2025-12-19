@@ -69,9 +69,10 @@ const Certificates = () => {
     const fetchCertificates = async () => {
       try {
         const data = await certificatesAPI.getAll();
-        setCertificatesData(data);
+        setCertificatesData(Array.isArray(data) ? data : (data.certificates || []));
       } catch (error) {
         console.error("Error fetching certificates:", error);
+        setCertificatesData([]);
       } finally {
         setLoading(false);
       }
@@ -87,7 +88,7 @@ const Certificates = () => {
       description: "Awarded to all contributors who complete at least one successful PR",
       icon: CheckCircle,
       color: "from-blue-500 to-cyan-500",
-      count: certificatesData.filter(cert => cert.type === "participation").length
+      count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "participation").length : 0
     },
     {
       type: "completion",
@@ -95,7 +96,7 @@ const Certificates = () => {
       description: "For contributors who complete all program milestones and requirements",
       icon: Trophy,
       color: "from-emerald-500 to-teal-500",
-      count: certificatesData.filter(cert => cert.type === "completion").length
+      count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "completion").length : 0
     },
     {
       type: "topper",
@@ -103,7 +104,7 @@ const Certificates = () => {
       description: "For top performers in each project category with outstanding contributions",
       icon: Crown,
       color: "from-amber-500 to-orange-500",
-      count: certificatesData.filter(cert => cert.type === "topper").length
+      count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "topper").length : 0
     },
     {
       type: "mentor",
@@ -111,12 +112,13 @@ const Certificates = () => {
       description: "Special recognition for project mentors and community guides",
       icon: Star,
       color: "from-purple-500 to-pink-500",
-      count: certificatesData.filter(cert => cert.type === "mentor").length
+      count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "mentor").length : 0
     }
   ], [certificatesData]);
 
   // Filter certificates based on search and type
   const filteredCertificates = useMemo(() => {
+    if (!Array.isArray(certificatesData)) return [];
     return certificatesData.filter(certificate => {
       const matchesSearch = certificate.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            certificate.recipient.toLowerCase().includes(searchQuery.toLowerCase());
@@ -130,44 +132,6 @@ const Certificates = () => {
       <Navbar />
 
       <main className="pt-24 pb-20">
-        {/* Enhanced Hero Section */}
-        <section className="px-4 py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5" />
-          <div className="container mx-auto relative">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-6 py-3 mb-8 hover-lift">
-                <Award className="w-5 h-5 text-primary" />
-                <span className="text-primary text-sm font-semibold">Achievement Recognition</span>
-              </div>
-
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold gradient-text leading-tight mb-8">
-                Your Achievements,
-                <span className="block mt-2">Celebrated Forever</span>
-              </h1>
-
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12">
-                Showcase your CodeFest accomplishments with professionally designed certificates. Each certificate is digitally signed, verifiable, and recognized by leading tech companies worldwide.
-              </p>
-
-              {/* Quick Stats */}
-              <div className="flex flex-wrap justify-center gap-8 mb-12">
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text">5000+</div>
-                  <div className="text-sm text-muted-foreground">Certificates Issued</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text">95%</div>
-                  <div className="text-sm text-muted-foreground">Completion Rate</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text">150+</div>
-                  <div className="text-sm text-muted-foreground">Partner Companies</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Statistics Dashboard */}
         <section className="px-4 py-16">
           <div className="container mx-auto">

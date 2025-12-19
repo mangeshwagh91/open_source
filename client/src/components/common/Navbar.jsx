@@ -1,11 +1,25 @@
-import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { Menu, X, Code2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, Code2, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-const navLinks = [
+// Public routes (not logged in)
+const publicLinks = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
+  { to: "/contact", label: "Contact" },
+];
+
+// Protected routes (logged in)
+const protectedLinks = [
   { to: "/projects", label: "Projects" },
   { to: "/leaderboard", label: "Leaderboard" },
   { to: "/certificates", label: "Certificates" },
@@ -16,7 +30,25 @@ const navLinks = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [student, setStudent] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const studentData = localStorage.getItem('student');
+    if (studentData) {
+      setStudent(JSON.parse(studentData));
+    }
+  }, [location.pathname]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('student');
+    setStudent(null);
+    navigate('/login');
+  };
+
+  const navLinks = student ? protectedLinks : publicLinks;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/40">
@@ -50,11 +82,51 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA Button - Desktop */}
+          {/* Auth Buttons - Desktop */}
           <div className="hidden lg:block">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 h-10">
-              Register Now
-            </Button>
+            {student ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    {student.name}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem className="text-sm">
+                    <div className="flex flex-col">
+                      <span className="font-medium">{student.name}</span>
+                      <span className="text-xs text-muted-foreground">{student.email}</span>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/profile')} className="cursor-pointer">
+                    <User className="mr-2 h-4 w-4" />
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout} className="text-destructive cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate('/login')}
+                  className="font-medium"
+                >
+                  Login
+                </Button>
+                <Button 
+                  onClick={() => navigate('/signup')}
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 h-10"
+                >
+                  Sign Up
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -84,9 +156,44 @@ const Navbar = () => {
                   {link.label}
                 </NavLink>
               ))}
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium mt-4 mx-4">
-                Register Now
-              </Button>
+              
+              {student ? (
+                <>
+                  <div className="px-4 py-3 mt-2 border-t border-border/40">
+                    <p className="text-sm font-medium">{student.name}</p>
+                    <p className="text-xs text-muted-foreground">{student.email}</p>
+                  </div>
+                  <Button 
+                    onClick={handleLogout}
+                    variant="destructive"
+                    className="mx-4 mt-2"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <div className="flex flex-col gap-2 mt-4 mx-4">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      navigate('/login');
+                      setIsOpen(false);
+                    }}
+                  >
+                    Login
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      navigate('/signup');
+                      setIsOpen(false);
+                    }}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+                  >
+                    Sign Up
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         )}

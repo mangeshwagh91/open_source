@@ -34,7 +34,7 @@ const Academics = () => {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [classFilter, setClassFilter] = useState("all");
+  const [yearFilter, setYearFilter] = useState("all");
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [showAssignDialog, setShowAssignDialog] = useState(false);
   const [showAddStudentDialog, setShowAddStudentDialog] = useState(false);
@@ -54,8 +54,7 @@ const Academics = () => {
     studentId: "",
     name: "",
     email: "",
-    class: "",
-    section: "",
+    passingYear: "",
     department: "",
     semester: ""
   });
@@ -70,8 +69,8 @@ const Academics = () => {
         studentsAPI.getAll(),
         assignmentsAPI.getAll()
       ]);
-      setStudents(studentsData);
-      setAssignments(assignmentsData);
+      setStudents(studentsData.students || studentsData);
+      setAssignments(assignmentsData.assignments || assignmentsData);
     } catch (error) {
       console.error("Error fetching data:", error);
       toast({
@@ -87,11 +86,11 @@ const Academics = () => {
   const filteredStudents = students.filter(student => {
     const matchesSearch = student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          student.studentId.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesClass = classFilter === "all" || student.class === classFilter;
-    return matchesSearch && matchesClass;
+    const matchesYear = yearFilter === "all" || student.passingYear === parseInt(yearFilter);
+    return matchesSearch && matchesYear;
   });
 
-  const uniqueClasses = [...new Set(students.map(s => s.class))].sort();
+  const uniqueYears = [...new Set(students.map(s => s.passingYear))].sort((a, b) => b - a);
 
   const handleStudentSelect = (studentId) => {
     setSelectedStudents(prev => 
@@ -248,12 +247,12 @@ const Academics = () => {
 
           <Card className="glass-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Classes</CardTitle>
+              <CardTitle className="text-sm font-medium">Passing Years</CardTitle>
               <BookOpen className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{uniqueClasses.length}</div>
-              <p className="text-xs text-muted-foreground">Different classes</p>
+              <div className="text-2xl font-bold">{uniqueYears.length}</div>
+              <p className="text-xs text-muted-foreground">Different years</p>
             </CardContent>
           </Card>
         </div>
@@ -275,15 +274,15 @@ const Academics = () => {
             </div>
 
             <div className="flex gap-3 w-full md:w-auto">
-              <Select value={classFilter} onValueChange={setClassFilter}>
+              <Select value={yearFilter} onValueChange={setYearFilter}>
                 <SelectTrigger className="w-full md:w-[180px]">
                   <Filter className="w-4 h-4 mr-2" />
-                  <SelectValue placeholder="Filter by class" />
+                  <SelectValue placeholder="Filter by year" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Classes</SelectItem>
-                  {uniqueClasses.map(className => (
-                    <SelectItem key={className} value={className}>{className}</SelectItem>
+                  <SelectItem value="all">All Years</SelectItem>
+                  {uniqueYears.map(year => (
+                    <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -333,33 +332,16 @@ const Academics = () => {
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <Label htmlFor="class">Class</Label>
+                        <Label htmlFor="passingYear">Passing Year</Label>
                         <Input
-                          id="class"
+                          id="passingYear"
+                          type="number"
                           required
-                          value={studentForm.class}
-                          onChange={(e) => setStudentForm({...studentForm, class: e.target.value})}
-                          placeholder="e.g., CS-A"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="section">Section</Label>
-                        <Input
-                          id="section"
-                          value={studentForm.section}
-                          onChange={(e) => setStudentForm({...studentForm, section: e.target.value})}
-                          placeholder="e.g., A"
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <Label htmlFor="department">Department</Label>
-                        <Input
-                          id="department"
-                          value={studentForm.department}
-                          onChange={(e) => setStudentForm({...studentForm, department: e.target.value})}
-                          placeholder="Computer Science"
+                          value={studentForm.passingYear}
+                          onChange={(e) => setStudentForm({...studentForm, passingYear: e.target.value})}
+                          placeholder="e.g., 2026"
+                          min="2000"
+                          max="2100"
                         />
                       </div>
                       <div>
@@ -533,8 +515,7 @@ const Academics = () => {
                   <CardContent className="space-y-2">
                     <div className="flex items-center gap-2 text-sm">
                       <BookOpen className="w-4 h-4 text-muted-foreground" />
-                      <span>{student.class}</span>
-                      {student.section && <span className="text-muted-foreground">• Section {student.section}</span>}
+                      <span>Passing Year: {student.passingYear}</span>
                     </div>
                     {student.department && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">

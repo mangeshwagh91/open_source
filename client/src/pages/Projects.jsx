@@ -19,9 +19,10 @@ const Projects = () => {
     const fetchProjects = async () => {
       try {
         const data = await projectsAPI.getAll();
-        setProjectsData(data);
+        setProjectsData(Array.isArray(data) ? data : (data.projects || []));
       } catch (error) {
         console.error("Error fetching projects:", error);
+        setProjectsData([]);
       } finally {
         setLoading(false);
       }

@@ -5,7 +5,7 @@ import {
   createStudent,
   updateStudent,
   deleteStudent,
-  getStudentsByClass
+  getStudentsByYear
 } from '../controllers/studentController.js';
 import { protect, authorize } from '../middleware/authMiddleware.js';
 import { validate } from '../middleware/validationMiddleware.js';
@@ -14,14 +14,14 @@ import { studentSchema, querySchema } from '../validators/schemas.js';
 const router = express.Router();
 
 router.route('/')
-  .get(protect, authorize('admin'), validate(querySchema), getStudents)
+  .get(getStudents)
   .post(protect, authorize('admin'), validate(studentSchema), createStudent);
 
-router.route('/class/:className')
-  .get(protect, authorize('admin'), getStudentsByClass);
+router.route('/year/:year')
+  .get(getStudentsByYear);
 
 router.route('/:id')
-  .get(protect, authorize('admin'), validate(studentSchema), getStudentById)
+  .get(getStudentById)
   .put(protect, authorize('admin'), validate(studentSchema), updateStudent)
   .delete(protect, authorize('admin'), validate(studentSchema), deleteStudent);
 

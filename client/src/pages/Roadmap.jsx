@@ -13,9 +13,10 @@ const Roadmap = () => {
     const fetchRoadmaps = async () => {
       try {
         const data = await roadmapsAPI.getAll();
-        setRoadmapsData(data);
+        setRoadmapsData(Array.isArray(data) ? data : (data.roadmaps || []));
       } catch (error) {
         console.error("Error fetching roadmaps:", error);
+        setRoadmapsData([]);
       } finally {
         setLoading(false);
       }

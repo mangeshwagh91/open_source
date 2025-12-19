@@ -6,7 +6,7 @@ const connectDB = async () => {
       // Remove deprecated options
     });
 
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log(`MongoDB Connected Successfully`);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     process.exit(1);

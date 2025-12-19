@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import Student from '../models/Student.js';
 import { asyncHandler } from './validationMiddleware.js';
 
 // Middleware to protect routes - requires valid JWT
@@ -15,38 +15,28 @@ export const protect = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-    req.user = await User.findById(decoded.id).select('-password');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    req.user = await Student.findById(decoded.id).select('-password');
+    
+    if (!req.user) {
+      return res.status(401).json({ message: 'Student not found' });
+    }
+    
     next();
   } catch (error) {
     return res.status(401).json({ message: 'Not authorized, token failed' });
   }
 });
 
-// Middleware for role-based access control
+// Middleware for role-based access control (admin functionality)
 export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({ message: 'Not authorized' });
     }
 
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ message: 'Not authorized for this action' });
-    }
-
+    // For now, all authenticated students have access
+    // You can extend Student model to add role field if needed
     next();
   };
 };
-
-// Middleware to check if user account is active and not locked
-export const checkAccountStatus = asyncHandler(async (req, res, next) => {
-  if (!req.user.isActive) {
-    return res.status(401).json({ message: 'Account is deactivated' });
-  }
-
-  if (req.user.isLocked) {
-    return res.status(423).json({ message: 'Account is locked due to too many failed login attempts' });
-  }
-
-  next();
-});

@@ -137,58 +137,64 @@ const roadmaps = [
 
 const students = [
   {
-    studentId: "STU2024001",
+    studentId: "BT23F01F001",
     name: "Alice Johnson",
     email: "alice.johnson@university.edu",
-    class: "CS-A",
-    section: "A",
+    password: "password123",
+    passingYear: 2026,
     department: "Computer Science",
-    semester: "5"
+    github: "https://github.com/alicejohnson",
+    linkedin: "https://linkedin.com/in/alicejohnson"
   },
   {
-    studentId: "STU2024002",
+    studentId: "BT23F01F002",
     name: "Bob Smith",
     email: "bob.smith@university.edu",
-    class: "CS-A",
-    section: "A",
+    password: "password123",
+    passingYear: 2026,
     department: "Computer Science",
-    semester: "5"
+    github: "https://github.com/bobsmith",
+    linkedin: "https://linkedin.com/in/bobsmith"
   },
   {
-    studentId: "STU2024003",
+    studentId: "BT23F02F003",
     name: "Carol Williams",
     email: "carol.williams@university.edu",
-    class: "CS-B",
-    section: "B",
-    department: "Computer Science",
-    semester: "5"
+    password: "password123",
+    passingYear: 2026,
+    department: "Information Technology",
+    github: "https://github.com/carolwilliams",
+    linkedin: ""
   },
   {
-    studentId: "STU2024004",
+    studentId: "BT22F03F004",
     name: "David Brown",
     email: "david.brown@university.edu",
-    class: "IT-A",
-    section: "A",
-    department: "Information Technology",
-    semester: "6"
+    password: "password123",
+    passingYear: 2025,
+    department: "Electronics and Telecommunication",
+    github: "https://github.com/davidbrown",
+    linkedin: "https://linkedin.com/in/davidbrown"
   },
   {
-    studentId: "STU2024005",
+    studentId: "BT23F01F005",
     name: "Emma Davis",
     email: "emma.davis@university.edu",
-    class: "CS-A",
-    section: "A",
+    password: "password123",
+    passingYear: 2026,
     department: "Computer Science",
-    semester: "5"
+    github: "https://github.com/emmadavis",
+    linkedin: "https://linkedin.com/in/emmadavis"
   },
   {
-    studentId: "STU2024006",
+    studentId: "BT21F04F006",
     name: "Frank Miller",
     email: "frank.miller@university.edu",
-    class: "CS-B",
-    section: "B",
-    department: "Computer Science",
-    semester: "7"
+    password: "password123",
+    passingYear: 2024,
+    department: "Electrical",
+    github: "https://github.com/frankmiller",
+    linkedin: ""
   }
 ];
 

@@ -36,9 +36,10 @@ const Leaderboard = () => {
     const fetchLeaderboard = async () => {
       try {
         const data = await leaderboardAPI.getAll();
-        setLeaderboardData(data);
+        setLeaderboardData(Array.isArray(data) ? data : (data.leaderboard || []));
       } catch (error) {
         console.error("Error fetching leaderboard:", error);
+        setLeaderboardData([]);
       } finally {
         setLoading(false);
       }
