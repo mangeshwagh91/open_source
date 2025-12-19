@@ -1,4 +1,7 @@
-import { Trophy, Medal, Award } from "lucide-react";
+import { Trophy, Medal, Award, Star, TrendingUp, GitBranch, Calendar, Flame } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 
 const getBadgeIcon = (badge) => {
   switch (badge) {
@@ -13,17 +16,138 @@ const getBadgeIcon = (badge) => {
   }
 };
 
-const LeaderboardTable = ({ data }) => {
+const getRankColor = (rank) => {
+  switch (rank) {
+    case 1:
+      return "text-amber-500";
+    case 2:
+      return "text-slate-400";
+    case 3:
+      return "text-amber-700";
+    default:
+      return "text-muted-foreground";
+  }
+};
+
+const ContributorCard = ({ contributor, index }) => {
+  const progressPercentage = Math.min((contributor.points / 2500) * 100, 100);
+
   return (
-    <div className="glass-card overflow-hidden">
+    <Card className="glass-card-elevated border-border/30 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover-lift group">
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
+              contributor.rank <= 3 ? "bg-gradient-to-br from-primary/20 to-accent/20" : "bg-muted/50"
+            }`}>
+              <span className={`font-bold text-lg ${getRankColor(contributor.rank)}`}>
+                #{contributor.rank}
+              </span>
+            </div>
+            {getBadgeIcon(contributor.badge)}
+          </div>
+
+          <div className="text-right">
+            <div className="text-2xl font-bold gradient-text">{contributor.points.toLocaleString()}</div>
+            <div className="text-xs text-muted-foreground">points</div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 mb-4">
+          <div className="relative">
+            <img
+              src={contributor.avatar}
+              alt={contributor.name}
+              className="w-16 h-16 rounded-full border-2 border-border group-hover:border-primary/50 transition-colors"
+            />
+            {contributor.rank <= 3 && (
+              <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                <Star className="w-3 h-3 text-primary-foreground" />
+              </div>
+            )}
+          </div>
+
+          <div className="flex-1">
+            <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">
+              {contributor.name}
+            </h3>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
+              <div className="flex items-center gap-1">
+                <GitBranch className="w-4 h-4" />
+                <span>{contributor.contributions} PRs</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Flame className="w-4 h-4" />
+                <span>Level {Math.floor(contributor.points / 500) + 1}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="space-y-2">
+          <div className="flex justify-between text-xs text-muted-foreground">
+            <span>Progress to next level</span>
+            <span>{Math.round(progressPercentage)}%</span>
+          </div>
+          <Progress value={progressPercentage} className="h-2" />
+        </div>
+
+        {/* Achievement Badges */}
+        <div className="flex flex-wrap gap-2 mt-4">
+          {contributor.contributions >= 40 && (
+            <Badge variant="secondary" className="text-xs">
+              <Trophy className="w-3 h-3 mr-1" />
+              Top Contributor
+            </Badge>
+          )}
+          {contributor.contributions >= 30 && (
+            <Badge variant="secondary" className="text-xs">
+              <Star className="w-3 h-3 mr-1" />
+              Rising Star
+            </Badge>
+          )}
+          {contributor.rank <= 5 && (
+            <Badge variant="secondary" className="text-xs">
+              <Medal className="w-3 h-3 mr-1" />
+              Elite Member
+            </Badge>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+const LeaderboardTable = ({ data, viewMode = "table" }) => {
+  if (viewMode === "cards") {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {data.map((contributor, index) => (
+          <div
+            key={contributor.rank}
+            className="animate-fade-in-up"
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <ContributorCard contributor={contributor} index={index} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Enhanced Table View
+  return (
+    <div className="glass-card-elevated overflow-hidden">
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border/50">
+            <tr className="border-b border-border/50 bg-muted/30">
               <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">Rank</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">Contributor</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">Contributions</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">Champion</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold text-muted-foreground">Contributions</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold text-muted-foreground">Level</th>
               <th className="px-6 py-4 text-right text-sm font-semibold text-muted-foreground">Points</th>
             </tr>
           </thead>
@@ -31,37 +155,75 @@ const LeaderboardTable = ({ data }) => {
             {data.map((contributor, index) => (
               <tr
                 key={contributor.rank}
-                className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors opacity-0 animate-fade-in"
-                style={{ animationDelay: `${index * 0.05}s` }}
+                className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-all duration-200 group"
               >
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <span className={`font-bold text-lg ${
-                      contributor.rank === 1 ? "text-amber-500" :
-                      contributor.rank === 2 ? "text-slate-400" :
-                      contributor.rank === 3 ? "text-amber-700" :
-                      "text-muted-foreground"
+                <td className="px-6 py-5">
+                  <div className="flex items-center gap-3">
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                      contributor.rank <= 3 ? "bg-gradient-to-br from-primary/20 to-accent/20" : "bg-muted/50"
                     }`}>
-                      #{contributor.rank}
-                    </span>
+                      <span className={`font-bold ${getRankColor(contributor.rank)}`}>
+                        {contributor.rank}
+                      </span>
+                    </div>
                     {getBadgeIcon(contributor.badge)}
                   </div>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={contributor.avatar}
-                      alt={contributor.name}
-                      className="w-10 h-10 rounded-full bg-muted"
-                    />
-                    <span className="font-medium text-foreground">{contributor.name}</span>
+
+                <td className="px-6 py-5">
+                  <div className="flex items-center gap-4">
+                    <div className="relative">
+                      <img
+                        src={contributor.avatar}
+                        alt={contributor.name}
+                        className="w-12 h-12 rounded-full border-2 border-border group-hover:border-primary/50 transition-colors"
+                      />
+                      {contributor.rank <= 3 && (
+                        <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                          <Star className="w-2.5 h-2.5 text-primary-foreground" />
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                        {contributor.name}
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <TrendingUp className="w-3 h-3" />
+                        <span>+{Math.floor(contributor.points * 0.1)} this week</span>
+                      </div>
+                    </div>
                   </div>
                 </td>
-                <td className="px-6 py-4">
-                  <span className="text-muted-foreground">{contributor.contributions} PRs</span>
+
+                <td className="px-6 py-5 text-center">
+                  <div className="flex flex-col items-center">
+                    <span className="font-semibold text-foreground">{contributor.contributions}</span>
+                    <span className="text-xs text-muted-foreground">PRs</span>
+                  </div>
                 </td>
-                <td className="px-6 py-4 text-right">
-                  <span className="font-semibold gradient-text text-lg">{contributor.points}</span>
+
+                <td className="px-6 py-5 text-center">
+                  <div className="flex flex-col items-center">
+                    <Badge variant="outline" className="text-xs">
+                      {Math.floor(contributor.points / 500) + 1}
+                    </Badge>
+                    <div className="w-16 mt-1">
+                      <Progress
+                        value={Math.min((contributor.points % 500) / 5, 100)}
+                        className="h-1"
+                      />
+                    </div>
+                  </div>
+                </td>
+
+                <td className="px-6 py-5 text-right">
+                  <div className="flex flex-col items-end">
+                    <span className="font-bold gradient-text text-lg">
+                      {contributor.points.toLocaleString()}
+                    </span>
+                    <span className="text-xs text-muted-foreground">pts</span>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -69,39 +231,15 @@ const LeaderboardTable = ({ data }) => {
         </table>
       </div>
 
-      {/* Mobile Cards */}
-      <div className="md:hidden divide-y divide-border/30">
+      {/* Enhanced Mobile Cards */}
+      <div className="md:hidden space-y-4 p-4">
         {data.map((contributor, index) => (
           <div
             key={contributor.rank}
-            className="p-4 opacity-0 animate-fade-in"
+            className="animate-fade-in-up"
             style={{ animationDelay: `${index * 0.05}s` }}
           >
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <span className={`font-bold text-lg ${
-                  contributor.rank === 1 ? "text-amber-500" :
-                  contributor.rank === 2 ? "text-slate-400" :
-                  contributor.rank === 3 ? "text-amber-700" :
-                  "text-muted-foreground"
-                }`}>
-                  #{contributor.rank}
-                </span>
-                {getBadgeIcon(contributor.badge)}
-              </div>
-              <span className="font-semibold gradient-text text-lg">{contributor.points} pts</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <img
-                src={contributor.avatar}
-                alt={contributor.name}
-                className="w-12 h-12 rounded-full bg-muted"
-              />
-              <div>
-                <div className="font-medium text-foreground">{contributor.name}</div>
-                <div className="text-sm text-muted-foreground">{contributor.contributions} contributions</div>
-              </div>
-            </div>
+            <ContributorCard contributor={contributor} index={index} />
           </div>
         ))}
       </div>
