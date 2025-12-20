@@ -18,6 +18,9 @@ import authRoutes from './routes/authRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
 import assignmentRoutes from './routes/assignmentRoutes.js';
 import proposalRoutes from './routes/proposalRoutes.js';
+import githubRoutes from './routes/githubRoutes.js';
+import contributionRoutes from './routes/contributionRoutes.js';
+import cron from 'node-cron';
 
 // Load environment variables
 dotenv.config();
@@ -60,7 +63,9 @@ app.get('/', (req, res) => {
       roadmaps: '/api/roadmaps',
       students: '/api/students',
       assignments: '/api/assignments',
-      proposals: '/api/proposals'
+      proposals: '/api/proposals',
+      github: '/api/github',
+      contributions: '/api/contributions'
     }
   });
 });
@@ -74,6 +79,8 @@ app.use('/api/roadmaps', roadmapRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/proposals', proposalRoutes);
+app.use('/api/github', githubRoutes);
+app.use('/api/contributions', contributionRoutes);
 
 // Error handling middleware
 app.use(notFound);
@@ -83,6 +90,28 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  
+  // Cron: auto-sync tracked repos every hour (initialize after server starts)
+  const tracked = (process.env.GITHUB_TRACKED_REPOS || '').split(',').map(s => s.trim()).filter(Boolean);
+  if (tracked.length) {
+    import('./services/githubService.js').then(({ syncRepoPRs }) => {
+      import('./services/leaderboardService.js').then(({ rebuildLeaderboardFromContributions }) => {
+        cron.schedule('0 * * * *', async () => {
+          try {
+            console.log('[Cron] GitHub sync starting...');
+            for (const repo of tracked) {
+              await syncRepoPRs(repo);
+            }
+            await rebuildLeaderboardFromContributions();
+            console.log('[Cron] GitHub sync completed.');
+          } catch (err) {
+            console.error('[Cron] GitHub sync failed:', err.message);
+          }
+        });
+        console.log(`[Cron] Scheduled auto-sync for ${tracked.length} repositories`);
+      });
+    });
+  }
 });
 
 export default app;

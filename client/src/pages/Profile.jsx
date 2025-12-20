@@ -27,17 +27,55 @@ import {
 const Profile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [stats, setStats] = useState({
+    totalPoints: 0,
+    totalContributions: 0,
+    rank: 0,
+    projectsContributed: 0,
+    certificates: 0
+  });
+  const [recentContributions, setRecentContributions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Get user from localStorage
     const studentData = localStorage.getItem('student');
     if (studentData) {
-      setUser(JSON.parse(studentData));
+      const parsedUser = JSON.parse(studentData);
+      setUser(parsedUser);
+      fetchUserStats(parsedUser._id || parsedUser.id);
     } else {
       // Redirect to login if no user data
       navigate('/login');
     }
   }, [navigate]);
+
+  const fetchUserStats = async (userId) => {
+    try {
+      // Fetch user stats from leaderboard
+      const leaderboardRes = await fetch('http://localhost:5000/api/leaderboard');
+      const leaderboardData = await leaderboardRes.json();
+      
+      // Find current user in leaderboard
+      const userRank = leaderboardData.leaderboard?.find(entry => 
+        entry.studentId === userId || entry.student?._id === userId
+      );
+      
+      if (userRank) {
+        setStats({
+          totalPoints: userRank.totalPoints || 0,
+          totalContributions: userRank.contributions || 0,
+          rank: userRank.rank || 0,
+          projectsContributed: userRank.projectsContributed || 0,
+          certificates: userRank.certificates || 0
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch user stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!user) {
     return (
@@ -172,37 +210,34 @@ const Profile = () => {
             <div className="glass-card p-6 hover-lift group">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <CheckCircle className="w-7 h-7 text-white" />
+                  <Star className="w-7 h-7 text-white" />
                 </div>
-                <Badge variant="secondary" className="text-xs">+0%</Badge>
               </div>
-              <div className="text-3xl font-bold gradient-text mb-1">0</div>
-              <div className="text-sm text-muted-foreground font-medium">Participation</div>
-              <div className="text-xs text-muted-foreground mt-1">Certificates earned</div>
+              <div className="text-3xl font-bold gradient-text mb-1">{stats.totalPoints}</div>
+              <div className="text-sm text-muted-foreground font-medium">Total Points</div>
+              <div className="text-xs text-muted-foreground mt-1">Contribution points earned</div>
             </div>
 
             <div className="glass-card p-6 hover-lift group">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Trophy className="w-7 h-7 text-white" />
+                  <Code2 className="w-7 h-7 text-white" />
                 </div>
-                <Badge variant="secondary" className="text-xs">+0%</Badge>
               </div>
-              <div className="text-3xl font-bold gradient-text mb-1">0</div>
-              <div className="text-sm text-muted-foreground font-medium">Completion</div>
-              <div className="text-xs text-muted-foreground mt-1">Milestones achieved</div>
+              <div className="text-3xl font-bold gradient-text mb-1">{stats.totalContributions}</div>
+              <div className="text-sm text-muted-foreground font-medium">Contributions</div>
+              <div className="text-xs text-muted-foreground mt-1">Pull requests merged</div>
             </div>
 
             <div className="glass-card p-6 hover-lift group">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Crown className="w-7 h-7 text-white" />
+                  <Trophy className="w-7 h-7 text-white" />
                 </div>
-                <Badge variant="secondary" className="text-xs">+0%</Badge>
               </div>
-              <div className="text-3xl font-bold gradient-text mb-1">0</div>
-              <div className="text-sm text-muted-foreground font-medium">Excellence</div>
-              <div className="text-xs text-muted-foreground mt-1">Top performer awards</div>
+              <div className="text-3xl font-bold gradient-text mb-1">#{stats.rank || 'N/A'}</div>
+              <div className="text-sm text-muted-foreground font-medium">Leaderboard Rank</div>
+              <div className="text-xs text-muted-foreground mt-1">Current position</div>
             </div>
 
             <div className="glass-card p-6 hover-lift group">
@@ -210,11 +245,10 @@ const Profile = () => {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Award className="w-7 h-7 text-white" />
                 </div>
-                <Badge variant="secondary" className="text-xs">+0%</Badge>
               </div>
-              <div className="text-3xl font-bold gradient-text mb-1">0</div>
-              <div className="text-sm text-muted-foreground font-medium">Total Certificates</div>
-              <div className="text-xs text-muted-foreground mt-1">All achievements</div>
+              <div className="text-3xl font-bold gradient-text mb-1">{stats.certificates}</div>
+              <div className="text-sm text-muted-foreground font-medium">Certificates</div>
+              <div className="text-xs text-muted-foreground mt-1">Total earned</div>
             </div>
           </div>
 

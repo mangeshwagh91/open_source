@@ -54,9 +54,11 @@ const Academics = () => {
     studentId: "",
     name: "",
     email: "",
-    passingYear: "",
+    password: "",
     department: "",
-    semester: ""
+    passingYear: "",
+    github: "",
+    linkedin: ""
   });
 
   useEffect(() => {
@@ -155,7 +157,11 @@ const Academics = () => {
     e.preventDefault();
     
     try {
-      await studentsAPI.create(studentForm);
+      const payload = {
+        ...studentForm,
+        passingYear: studentForm.passingYear ? parseInt(studentForm.passingYear, 10) : undefined
+      };
+      await studentsAPI.create(payload);
       
       toast({
         title: "Success!",
@@ -167,16 +173,17 @@ const Academics = () => {
         studentId: "",
         name: "",
         email: "",
-        class: "",
-        section: "",
+        password: "",
         department: "",
-        semester: ""
+        passingYear: "",
+        github: "",
+        linkedin: ""
       });
       fetchData();
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to add student. Please try again.",
+          description: error?.message || "Failed to add student. Please try again.",
         variant: "destructive"
       });
     }
@@ -207,23 +214,23 @@ const Academics = () => {
       <main className="container mx-auto px-4 pt-24 pb-16">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-6 py-3 mb-6">
+          <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-6 py-3 mb-6 animate-fade-in">
             <GraduationCap className="w-5 h-5 text-primary" />
             <span className="text-primary text-sm font-medium">Academic Management</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold gradient-text leading-tight mb-4">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold gradient-text leading-tight mb-4 animate-fade-in">
             Academics Portal
           </h1>
           
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in">
             Manage students, assign projects, and track academic progress all in one place.
           </p>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <Card className="glass-card">
+          <Card className="glass-card opacity-0 animate-fade-in" style={{ animationDelay: '0s' }}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Students</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
@@ -234,7 +241,7 @@ const Academics = () => {
             </CardContent>
           </Card>
 
-          <Card className="glass-card">
+          <Card className="glass-card opacity-0 animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Active Projects</CardTitle>
               <ClipboardList className="h-4 w-4 text-muted-foreground" />
@@ -245,7 +252,7 @@ const Academics = () => {
             </CardContent>
           </Card>
 
-          <Card className="glass-card">
+          <Card className="glass-card opacity-0 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Passing Years</CardTitle>
               <BookOpen className="h-4 w-4 text-muted-foreground" />
@@ -330,6 +337,34 @@ const Academics = () => {
                         placeholder="student@example.com"
                       />
                     </div>
+                    <div>
+                      <Label htmlFor="password">Temporary Password</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        required
+                        value={studentForm.password}
+                        onChange={(e) => setStudentForm({...studentForm, password: e.target.value})}
+                        placeholder="Set a temporary password"
+                      />
+                    </div>
+                    <div>
+                      <Label>Department</Label>
+                      <Select value={studentForm.department} onValueChange={(val) => setStudentForm({...studentForm, department: val})}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select department" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Computer Science">Computer Science</SelectItem>
+                          <SelectItem value="Information Technology">Information Technology</SelectItem>
+                          <SelectItem value="Electronics and Telecommunication">Electronics and Telecommunication</SelectItem>
+                          <SelectItem value="Electrical">Electrical</SelectItem>
+                          <SelectItem value="Mechanical">Mechanical</SelectItem>
+                          <SelectItem value="Civil">Civil</SelectItem>
+                          <SelectItem value="Others">Others</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <Label htmlFor="passingYear">Passing Year</Label>
@@ -345,14 +380,24 @@ const Academics = () => {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="semester">Semester</Label>
+                        <Label htmlFor="github">GitHub Profile URL</Label>
                         <Input
-                          id="semester"
-                          value={studentForm.semester}
-                          onChange={(e) => setStudentForm({...studentForm, semester: e.target.value})}
-                          placeholder="e.g., 5"
+                          id="github"
+                          required
+                          value={studentForm.github}
+                          onChange={(e) => setStudentForm({...studentForm, github: e.target.value})}
+                          placeholder="https://github.com/username"
                         />
                       </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="linkedin">LinkedIn Profile URL (optional)</Label>
+                      <Input
+                        id="linkedin"
+                        value={studentForm.linkedin}
+                        onChange={(e) => setStudentForm({...studentForm, linkedin: e.target.value})}
+                        placeholder="https://www.linkedin.com/in/username"
+                      />
                     </div>
                     <Button type="submit" className="w-full">Add Student</Button>
                   </form>

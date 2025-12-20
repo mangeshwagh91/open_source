@@ -84,35 +84,35 @@ const Certificates = () => {
   const certificateTypes = useMemo(() => [
     {
       type: "participation",
-      title: "Participation Certificate",
-      description: "Awarded to all contributors who complete at least one successful PR",
+      title: "Contributor Certificate",
+      description: "Awarded to all GECA students who make successful contributions to projects",
       icon: CheckCircle,
       color: "from-blue-500 to-cyan-500",
       count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "participation").length : 0
     },
     {
-      type: "completion",
-      title: "Completion Certificate",
-      description: "For contributors who complete all program milestones and requirements",
-      icon: Trophy,
-      color: "from-emerald-500 to-teal-500",
-      count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "completion").length : 0
-    },
-    {
       type: "topper",
-      title: "Excellence Certificate",
-      description: "For top performers in each project category with outstanding contributions",
+      title: "Top 3 Excellence Certificate",
+      description: "Special trophy and certificate for Top 3 students on the leaderboard each season",
       icon: Crown,
       color: "from-amber-500 to-orange-500",
       count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "topper").length : 0
     },
     {
-      type: "mentor",
-      title: "Mentor Certificate",
-      description: "Special recognition for project mentors and community guides",
+      type: "admin",
+      title: "Project Admin Certificate",
+      description: "Recognition for students who successfully led and managed approved projects",
       icon: Star,
       color: "from-purple-500 to-pink-500",
-      count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "mentor").length : 0
+      count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "admin").length : 0
+    },
+    {
+      type: "completion",
+      title: "Season Completion Certificate",
+      description: "For students who actively contributed throughout the entire season",
+      icon: Trophy,
+      color: "from-emerald-500 to-teal-500",
+      count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "completion").length : 0
     }
   ], [certificatesData]);
 
@@ -136,11 +136,17 @@ const Certificates = () => {
         <section className="px-4 py-16">
           <div className="container mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Program <span className="gradient-text">Impact</span>
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-6 py-3 mb-6 animate-fade-in">
+                <Award className="w-5 h-5 text-primary" />
+                <span className="text-primary text-sm font-medium">Achievement Recognition</span>
+              </div>
+
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 animate-fade-in">
+                Student <span className="gradient-text">Recognition</span>
               </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Real numbers showcasing the value and recognition our certificates bring to contributors
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-fade-in">
+                Celebrating GECA students' achievements through certificates and trophies for their project contributions
               </p>
             </div>
 
@@ -148,7 +154,7 @@ const Certificates = () => {
               {stats.map((stat, index) => (
                 <div
                   key={stat.label}
-                  className="glass-card-elevated p-8 text-center hover-lift group"
+                  className="glass-card-elevated p-8 text-center hover-lift group opacity-0 animate-fade-in"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -167,11 +173,11 @@ const Certificates = () => {
         <section className="px-4 py-16 bg-muted/20">
           <div className="container mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Certificate <span className="gradient-text">Categories</span>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 animate-fade-in">
+                Certificate <span className="gradient-text">Types</span>
               </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Earn different levels of recognition based on your participation and achievements in CodeFest
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-fade-in">
+                Different levels of recognition based on your contributions and achievements on the GECA platform
               </p>
             </div>
 
@@ -179,7 +185,7 @@ const Certificates = () => {
               {certificateTypes.map((certType, index) => (
                 <div
                   key={certType.type}
-                  className="glass-card-elevated p-8 hover-lift group relative overflow-hidden"
+                  className="glass-card-elevated p-8 hover-lift group relative overflow-hidden opacity-0 animate-fade-in"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${certType.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
@@ -215,10 +221,10 @@ const Certificates = () => {
         <section className="px-4 py-20">
           <div className="container mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 animate-fade-in">
                 Certificate <span className="gradient-text">Gallery</span>
               </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-fade-in">
                 Browse through our collection of achievement certificates. Each certificate represents dedication, skill, and contribution to the open-source community.
               </p>
             </div>

@@ -187,3 +187,22 @@ export const proposalsAPI = {
     body: JSON.stringify(data),
   }),
 };
+
+// GitHub API
+export const githubAPI = {
+  sync: (repoUrl) => fetchAPI('/github/sync', {
+    method: 'POST',
+    body: JSON.stringify({ repoUrl }),
+  }),
+};
+
+// Contributions API
+export const contributionsAPI = {
+  getStats: () => fetchAPI('/contributions/stats'),
+  getByRepo: (owner, repo) => fetchAPI(`/contributions/repo/${owner}/${repo}`),
+  getAll: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return fetchAPI(`/contributions${queryString ? `?${queryString}` : ''}`);
+  },
+};
+

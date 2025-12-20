@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 const HeroSection = () => {
   const [currentWord, setCurrentWord] = useState(0);
-  const words = ["Code", "Collaborate", "Create"];
+  const words = ["Build", "Contribute", "Lead"];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -72,7 +72,7 @@ const HeroSection = () => {
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
           <Sparkles className="w-5 h-5 text-primary-foreground animate-pulse" />
           <span className="text-primary-foreground text-sm font-semibold">
-            Season 2024 Now Open - Limited Spots Available
+            GECA Student Platform - Now Live & Accepting Projects
           </span>
         </div>
 
@@ -97,10 +97,10 @@ const HeroSection = () => {
 
           {/* Animated subtitle */}
           <div className="text-xl md:text-2xl text-primary-foreground/90 max-w-4xl mx-auto leading-relaxed opacity-0 animate-fade-in font-light">
-            Join the world's most comprehensive open-source program.
-            <span className="font-semibold text-primary-foreground"> Transform your skills</span>,
-            <span className="font-semibold text-primary-foreground"> build your portfolio</span>, and
-            <span className="font-semibold text-primary-foreground"> connect with industry leaders</span>.
+            Government Engineering College's official project platform.
+            <span className="font-semibold text-primary-foreground"> Propose projects</span>,
+            <span className="font-semibold text-primary-foreground"> contribute code</span>, and
+            <span className="font-semibold text-primary-foreground"> earn recognition</span>.
           </div>
         </div>
 
@@ -130,10 +130,10 @@ const HeroSection = () => {
         {/* Live Stats Preview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto mb-12 opacity-0 animate-fade-in">
           {[
-            { icon: Users, value: "5K+", label: "Contributors" },
-            { icon: Globe, value: "120+", label: "Countries" },
+            { icon: Users, value: "2K+", label: "Students" },
             { icon: Code2, value: "50+", label: "Projects" },
-            { icon: Star, value: "4.9/5", label: "Rating" }
+            { icon: Globe, value: "5K+", label: "Pull Requests" },
+            { icon: Star, value: "100K+", label: "Points" }
           ].map((stat, index) => (
             <div
               key={stat.label}
@@ -149,15 +149,15 @@ const HeroSection = () => {
 
         {/* Social Proof */}
         <div className="flex flex-col items-center gap-4 opacity-0 animate-fade-in">
-          <p className="text-primary-foreground/60 text-sm">Trusted by developers from</p>
+          <p className="text-primary-foreground/60 text-sm">Supporting departments</p>
           <div className="flex flex-wrap justify-center gap-6 opacity-70">
-            {["Google", "Microsoft", "Meta", "Amazon", "Netflix", "Spotify"].map((company, index) => (
+            {["Computer Science", "Information Technology", "Electronics", "Mechanical", "Civil", "Electrical"].map((dept, index) => (
               <div
-                key={company}
+                key={dept}
                 className="text-primary-foreground font-bold text-sm hover:text-primary transition-colors cursor-default"
                 style={{ animationDelay: `${0.8 + index * 0.1}s` }}
               >
-                {company}
+                {dept}
               </div>
             ))}
           </div>

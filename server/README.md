@@ -1,3 +1,57 @@
+## GitHub Contributions Sync
+
+This backend can sync GitHub pull requests and update the leaderboard based on labeled contribution levels.
+
+### Environment Variables
+
+- `GITHUB_TOKEN`: Personal access token with repo read permissions (recommended).
+- `GITHUB_WEBHOOK_SECRET`: Secret for validating GitHub webhook signatures.
+- `GITHUB_TRACKED_REPOS`: Comma-separated list of `owner/repo` slugs to auto-sync via cron (e.g., `org/app,org/api`).
+- `GITHUB_POINTS_LEVEL_1`: Points for `Level-1` label (default: 10)
+- `GITHUB_POINTS_LEVEL_2`: Points for `Level-2` label (default: 20)
+- `GITHUB_POINTS_LEVEL_3`: Points for `Level-3` label (default: 30)
+
+### API Routes
+
+- `POST /api/github/sync` (admin): Trigger a sync for a given repo.
+  - Body or Query: `{ repoUrl: "https://github.com/<owner>/<repo>" }` or `{ repo: "<owner>/<repo>" }`
+  - Response: `{ message, repo, prsProcessed, upserted, leaderboardUpdated }`
+
+- `POST /api/github/webhook`: GitHub webhook endpoint (set secret to validate signature).
+  - Receives `pull_request` events and re-syncs the repository.
+
+### Data Model
+
+- `Contribution`: Stores per-PR data (status, labels, points, author) and references `Student` where possible.
+- `Leaderboard`: Rebuilt from contributions to reflect total points and contribution count per student.
+
+### Cron Sync
+
+If `GITHUB_TRACKED_REPOS` is set, the server runs an hourly cron job to sync all listed repos and rebuild the leaderboard.
+
+### Setup
+
+1. Install dependencies:
+	```bash
+	cd server
+	npm install node-cron node-fetch
+	```
+2. Configure `.env`:
+	```env
+	GITHUB_TOKEN=ghp_xxx
+	GITHUB_WEBHOOK_SECRET=supersecret
+	GITHUB_TRACKED_REPOS=owner/repo
+	```
+3. Start server:
+	```bash
+	npm run dev
+	```
+
+### Notes
+
+- Students are matched to PR authors by the username in their `github` profile URL (e.g., `https://github.com/<username>`).
+- Labels `Level-1`, `Level-2`, `Level-3` determine points; highest matching level is used per PR.
+- Webhook verification uses `X-Hub-Signature-256` and `GITHUB_WEBHOOK_SECRET`.
 # Open Source Project Backend
 
 Backend API for the Open Source Project web application built with Node.js, Express, and MongoDB.

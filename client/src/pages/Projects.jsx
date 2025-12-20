@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import ProjectCard from "@/components/Projects/ProjectCard";
-import { projectsAPI } from "@/lib/api";
+import { projectsAPI, contributionsAPI } from "@/lib/api";
 import { Code2, Search, Filter, Grid, List, Star, Users, GitBranch, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,14 +14,19 @@ const Projects = () => {
   const [selectedTech, setSelectedTech] = useState("All");
   const [viewMode, setViewMode] = useState("grid");
   const [projectsData, setProjectsData] = useState([]);
+  const [contributionStats, setContributionStats] = useState({});
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const data = await projectsAPI.getAll();
-        setProjectsData(Array.isArray(data) ? data : (data.projects || []));
+        const [projectData, contribStats] = await Promise.all([
+          projectsAPI.getAll(),
+          contributionsAPI.getStats().catch(() => ({}))
+        ]);
+        setProjectsData(Array.isArray(projectData) ? projectData : (projectData.projects || []));
+        setContributionStats(contribStats || {});
       } catch (error) {
         console.error("Error fetching projects:", error);
         setProjectsData([]);
@@ -37,23 +42,30 @@ const Projects = () => {
   const allTechnologies = useMemo(() => {
     const techSet = new Set();
     projectsData.forEach(project => {
-      project.techStack.forEach(tech => techSet.add(tech));
+      if (project.techStack && Array.isArray(project.techStack)) {
+        project.techStack.forEach(tech => techSet.add(tech));
+      }
     });
     return ["All", ...Array.from(techSet).sort()];
-  }, []);
+  }, [projectsData]);
 
   // Filter projects based on search and tech filter
   const filteredProjects = useMemo(() => {
     return projectsData.filter(project => {
-      const matchesSearch = project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           project.adminName.toLowerCase().includes(searchQuery.toLowerCase());
+      const projectName = project.name || project.title || '';
+      const projectDesc = project.description || '';
+      const adminName = project.adminName || project.proposedBy?.name || '';
+      
+      const matchesSearch = projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           projectDesc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           adminName.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesTech = selectedTech === "All" || project.techStack.includes(selectedTech);
+      const matchesTech = selectedTech === "All" || 
+                         (project.techStack && project.techStack.includes(selectedTech));
 
       return matchesSearch && matchesTech;
     });
-  }, [searchQuery, selectedTech]);
+  }, [projectsData, searchQuery, selectedTech]);
 
   // Project statistics
   const stats = useMemo(() => {
@@ -95,11 +107,10 @@ const Projects = () => {
           {/* Main Title */}
           <div className="space-y-4 text-center">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold gradient-text leading-tight animate-fade-in">
-              Open Source Projects
+              GECA Student Projects
             </h1>
             <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed animate-fade-in">
-              Discover innovative projects, contribute to meaningful code, and collaborate with talented developers worldwide.
-              Find your next contribution opportunity.
+              Explore student-led projects across web development, mobile apps, AI/ML, and more. Contribute via GitHub pull requests and earn recognition points.
             </p>
           </div>
 
@@ -204,21 +215,41 @@ const Projects = () => {
         </div>
 
         {/* Projects Display */}
-        {filteredProjects.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-16">
+            <div className="glass-card-elevated p-12 max-w-md mx-auto">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center animate-pulse">
+                <Code2 className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Loading Projects...</h3>
+              <p className="text-muted-foreground">
+                Fetching the latest project data
+              </p>
+            </div>
+          </div>
+        ) : filteredProjects.length > 0 ? (
           <div className={`${
             viewMode === "grid"
               ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               : "space-y-6"
           }`}>
-            {filteredProjects.map((project, index) => (
-              <div
-                key={project.name}
-                className="animate-fade-in-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <ProjectCard project={project} viewMode={viewMode} />
-              </div>
-            ))}
+            {filteredProjects.map((project, index) => {
+              // Extract repo key from githubRepo URL
+              const repoKey = project.githubRepo?.includes('github.com')
+                ? project.githubRepo.split('github.com/')[1]?.replace('.git', '')
+                : null;
+              const stats = repoKey ? contributionStats[repoKey] : null;
+              
+              return (
+                <div
+                  key={project.name || index}
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <ProjectCard project={project} viewMode={viewMode} contributionStats={stats} />
+                </div>
+              );
+            })}
           </div>
         ) : (
           /* Empty State */

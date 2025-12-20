@@ -22,53 +22,53 @@ import Footer from "@/components/common/Footer";
 const stats = [
   {
     icon: Users,
-    value: "5000+",
-    label: "Contributors",
-    description: "From 80+ countries"
+    value: "2000+",
+    label: "GECA Students",
+    description: "Across all departments"
   },
   {
     icon: Code2,
     value: "50+",
-    label: "Projects",
-    description: "Real-world applications"
+    label: "Live Projects",
+    description: "Student-led initiatives"
   },
   {
     icon: Award,
-    value: "150+",
+    value: "30+",
     label: "Mentors",
-    description: "Industry experts"
+    description: "Faculty & industry experts"
   },
   {
     icon: TrendingUp,
-    value: "10K+",
-    label: "PRs Merged",
-    description: "Successful contributions"
+    value: "5K+",
+    label: "Contributions",
+    description: "GitHub pull requests"
   }
 ];
 
 const goals = [
   {
     icon: BookOpen,
-    title: "Learn by Doing",
-    description: "Gain hands-on experience contributing to real-world open-source projects with guidance from industry experts.",
+    title: "Skill Development",
+    description: "Gain hands-on experience with industry-standard tools, GitHub workflows, and real project development beyond traditional coursework.",
     color: "from-blue-500 to-cyan-500"
   },
   {
     icon: Users,
-    title: "Build Connections",
-    description: "Network with developers, mentors, and industry professionals from around the world in our global community.",
+    title: "Peer Collaboration",
+    description: "Work alongside fellow GECA students, learn from each other, and build projects that solve real problems together.",
     color: "from-purple-500 to-pink-500"
   },
   {
     icon: Rocket,
-    title: "Accelerate Growth",
-    description: "Fast-track your career with meaningful contributions, skill development, and industry-recognized achievements.",
+    title: "Project Leadership",
+    description: "Propose your ideas, become a Project Admin, manage contributors, and develop leadership skills valued by industry.",
     color: "from-orange-500 to-red-500"
   },
   {
     icon: Heart,
-    title: "Give Back",
-    description: "Contribute to projects that benefit millions of developers and make a lasting impact on the open-source ecosystem.",
+    title: "Portfolio Building",
+    description: "Build a strong GitHub portfolio with real contributions, earn points, and showcase your work to potential employers.",
     color: "from-green-500 to-emerald-500"
   },
 ];
@@ -76,63 +76,63 @@ const goals = [
 const participants = [
   {
     icon: Star,
-    title: "Students",
-    description: "University and college students looking to gain practical experience and build their portfolio.",
+    title: "Contributors",
+    description: "Any GECA student can contribute to projects through GitHub pull requests and earn points.",
     gradient: "from-blue-500/20 to-cyan-500/20"
   },
   {
     icon: Zap,
-    title: "Early Professionals",
-    description: "Junior developers wanting to build their portfolio and advance their careers.",
+    title: "Project Admins",
+    description: "Students whose project proposals are accepted become admins, managing contributions and reviews.",
     gradient: "from-purple-500/20 to-pink-500/20"
   },
   {
     icon: TrendingUp,
-    title: "Career Changers",
-    description: "Professionals transitioning into software development with structured guidance.",
+    title: "Faculty Mentors",
+    description: "Teachers review project proposals, provide guidance, and ensure quality standards are maintained.",
     gradient: "from-orange-500/20 to-red-500/20"
   },
   {
     icon: Globe,
-    title: "Open Source Enthusiasts",
-    description: "Anyone passionate about contributing to open-source software and community building.",
+    title: "Top Contributors",
+    description: "High-performing students earn leaderboard positions, certificates, and special recognition each season.",
     gradient: "from-green-500/20 to-emerald-500/20"
   },
 ];
 
 const timeline = [
   {
-    phase: "Registration",
-    date: "April 1 - 30",
-    description: "Sign up and select your preferred projects from our curated list of open-source initiatives.",
+    phase: "Project Proposal",
+    date: "Step 1",
+    description: "Students submit project ideas with details like tech stack, GitHub repo, and project goals.",
     icon: CheckCircle,
     status: "completed"
   },
   {
-    phase: "Community Bonding",
-    date: "May 1 - 15",
-    description: "Meet your mentors and fellow contributors through virtual meetups and team introductions.",
+    phase: "Faculty Review",
+    date: "Step 2",
+    description: "Teachers and mentors review proposals, provide feedback, and approve or reject based on feasibility.",
     icon: Users,
     status: "completed"
   },
   {
-    phase: "Coding Phase 1",
-    date: "May 16 - June 30",
-    description: "Start contributing to your assigned projects with regular check-ins and milestone tracking.",
+    phase: "Project Launch",
+    date: "Step 3",
+    description: "Approved projects go live on the platform. Proposer becomes Project Admin. Other students can contribute.",
     icon: Code2,
     status: "active"
   },
   {
-    phase: "Coding Phase 2",
-    date: "July 1 - August 15",
-    description: "Continue development, implement advanced features, and prepare for final evaluations.",
+    phase: "Contributions",
+    date: "Step 4",
+    description: "Students make pull requests. Admins review and assign contribution levels (Level 1/2/3 = 20/10/5 points).",
     icon: Rocket,
     status: "upcoming"
   },
   {
-    phase: "Final Evaluation",
-    date: "August 16 - 31",
-    description: "Final reviews, certificate distribution, and celebration of all achievements.",
+    phase: "Season End",
+    date: "Step 5",
+    description: "Top 3 students get trophies and certificates. All contributors receive participation certificates.",
     icon: Award,
     status: "upcoming"
   },
@@ -155,22 +155,22 @@ const About = () => {
               </div>
 
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold gradient-text leading-tight mb-8">
-                Empowering the Next Generation of
-                <span className="block mt-2">Open Source Contributors</span>
+                Building Tomorrow's
+                <span className="block mt-2">Tech Leaders at GECA</span>
               </h1>
 
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12">
-                CodeFest is a transformative 3-month program that brings together developers worldwide to contribute to meaningful projects, learn from industry experts, and accelerate their careers in open-source development.
+                The official project platform for Government Engineering College students. Propose projects, contribute code, earn recognition, and build real-world development experience through GitHub-based collaboration.
               </p>
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button className="gradient-bg text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg hover-lift hover:shadow-xl transition-all duration-300 flex items-center gap-2">
-                  Join CodeFest 2024
+                  Propose a Project
                   <ChevronRight className="w-5 h-5" />
                 </button>
                 <button className="glass-card px-8 py-4 rounded-xl font-semibold text-lg hover-lift transition-all duration-300">
-                  Learn More
+                  Browse Projects
                 </button>
               </div>
             </div>
@@ -223,11 +223,11 @@ const About = () => {
                     Our Vision
                   </h2>
                   <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                    We envision a world where open-source contribution is accessible to everyone, regardless of their background or experience level. Through CodeFest, we aim to democratize access to mentorship, create pathways for skill development, and foster a supportive community where every contributor can thrive and make meaningful impact on projects that matter.
+                    GECA's project platform aims to bridge the gap between classroom learning and industry requirements. We provide students with real project experience, GitHub workflows, code review practices, and collaborative development skills. Through our points-based recognition system and faculty mentorship, we create an environment where every student can grow, lead, and succeed.
                   </p>
                   <div className="flex items-center gap-4">
                     <Shield className="w-6 h-6 text-primary" />
-                    <span className="text-sm font-medium text-primary">Trusted by 5000+ developers worldwide</span>
+                    <span className="text-sm font-medium text-primary">Official GECA Student Platform</span>
                   </div>
                 </div>
               </div>
@@ -240,10 +240,10 @@ const About = () => {
           <div className="container mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Program <span className="gradient-text">Goals</span>
+                Platform <span className="gradient-text">Goals</span>
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                What we aim to achieve through CodeFest - creating opportunities for growth, learning, and meaningful contributions
+                What we aim to achieve through GECA's project platform - fostering practical skills, collaboration, and career readiness
               </p>
             </div>
 
@@ -279,10 +279,10 @@ const About = () => {
           <div className="container mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Who Can <span className="gradient-text">Participate</span>?
+                Platform <span className="gradient-text">Roles</span>
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                CodeFest welcomes developers at all skill levels and backgrounds. Whether you're just starting your journey or looking to make an impact, there's a place for you in our community.
+                Different roles within the GECA platform, each contributing to the ecosystem in unique ways.
               </p>
             </div>
 
@@ -313,10 +313,10 @@ const About = () => {
           <div className="container mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Program <span className="gradient-text">Timeline</span>
+                How It <span className="gradient-text">Works</span>
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                A comprehensive 3-month journey designed to maximize learning and contribution opportunities
+                A simple 5-step workflow from project proposal to recognition and certificates
               </p>
             </div>
 
@@ -379,18 +379,18 @@ const About = () => {
                 <Rocket className="w-10 h-10 text-primary-foreground" />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Ready to Start Your Journey?
+                Ready to Start Contributing?
               </h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Join thousands of developers who have transformed their careers through CodeFest. Your next big opportunity awaits.
+                Join your fellow GECA students in building amazing projects. Whether you want to propose a new project or contribute to existing ones, start your journey today.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button className="gradient-bg text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg hover-lift hover:shadow-xl transition-all duration-300 flex items-center gap-2">
-                  Apply Now
+                  Propose Project
                   <ChevronRight className="w-5 h-5" />
                 </button>
                 <button className="glass-card px-8 py-4 rounded-xl font-semibold text-lg hover-lift transition-all duration-300">
-                  View Projects
+                  View Leaderboard
                 </button>
               </div>
             </div>

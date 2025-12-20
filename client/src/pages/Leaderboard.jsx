@@ -50,9 +50,10 @@ const Leaderboard = () => {
 
   // Enhanced filtering and sorting logic
   const processedData = useMemo(() => {
-    let filtered = leaderboardData.filter((contributor) =>
-      contributor.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    let filtered = leaderboardData.filter((contributor) => {
+      const name = contributor.name || contributor.student?.name || '';
+      return name.toLowerCase().includes(searchQuery.toLowerCase());
+    });
 
     // Apply time-based filtering (simulated)
     if (timeFilter !== "all") {
@@ -62,8 +63,14 @@ const Leaderboard = () => {
 
     // Sort data
     filtered.sort((a, b) => {
-      let aValue = a[sortBy];
-      let bValue = b[sortBy];
+      let aValue = a[sortBy] || 0;
+      let bValue = b[sortBy] || 0;
+      
+      // Handle nested student properties
+      if (sortBy === 'points') {
+        aValue = a.totalPoints || a.points || 0;
+        bValue = b.totalPoints || b.points || 0;
+      }
 
       if (sortOrder === "asc") {
         return aValue > bValue ? 1 : -1;
@@ -75,10 +82,14 @@ const Leaderboard = () => {
     // Reassign ranks based on sorting
     return filtered.map((contributor, index) => ({
       ...contributor,
+      name: contributor.name || contributor.student?.name || 'Unknown',
+      points: contributor.totalPoints || contributor.points || 0,
+      contributions: contributor.contributions || 0,
       rank: index + 1,
-      badge: index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : null
+      badge: index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : null,
+      avatar: contributor.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(contributor.name || 'User')}&background=random`
     }));
-  }, [searchQuery, sortBy, sortOrder, timeFilter]);
+  }, [leaderboardData, searchQuery, sortBy, sortOrder, timeFilter]);
 
   // Calculate statistics
   const stats = useMemo(() => {
@@ -109,17 +120,16 @@ const Leaderboard = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-6 py-3 animate-fade-in">
             <Trophy className="w-5 h-5 text-primary" />
-            <span className="text-primary text-sm font-medium">Hall of Fame</span>
+            <span className="text-primary text-sm font-medium">Top Contributors</span>
           </div>
 
           {/* Main Title */}
           <div className="space-y-4">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold gradient-text leading-tight animate-fade-in">
-              Leaderboard
+              Student Leaderboard
             </h1>
             <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed animate-fade-in">
-              Celebrating the champions of open-source contribution. Every commit, every pull request,
-              every line of code makes a difference.
+              Students ranked by contribution points. Level 1 = 20 points, Level 2 = 10 points, Level 3 = 5 points. Top 3 each season earn trophies and certificates!
             </p>
           </div>
 
@@ -353,7 +363,19 @@ const Leaderboard = () => {
         </div>
 
         {/* Leaderboard Display */}
-        {processedData.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-16">
+            <div className="glass-card-elevated p-12 max-w-md mx-auto">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center animate-pulse">
+                <Trophy className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Loading Leaderboard...</h3>
+              <p className="text-muted-foreground">
+                Fetching the latest rankings
+              </p>
+            </div>
+          </div>
+        ) : processedData.length > 0 ? (
           <div className="animate-fade-in">
             <LeaderboardTable data={processedData} viewMode={viewMode} />
           </div>

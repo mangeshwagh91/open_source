@@ -123,16 +123,18 @@ const CertificateCard = ({ certificate, delay = 0 }) => {
           <div className="text-sm text-muted-foreground">
             Issued: {certificate.issueDate}
           </div>
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <span>ID: {certificate.id.slice(0, 8)}...</span>
-            <button
-              onClick={handleCopyId}
-              className="hover:text-primary transition-colors"
-              title="Copy certificate ID"
-            >
-              {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-            </button>
-          </div>
+          {certificate.id && (
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <span>ID: {certificate.id.slice(0, 8)}...</span>
+              <button
+                onClick={handleCopyId}
+                className="hover:text-primary transition-colors"
+                title="Copy certificate ID"
+              >
+                {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Action buttons */}

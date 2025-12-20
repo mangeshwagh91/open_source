@@ -148,7 +148,18 @@ export const querySchema = z.object({
   })
 });
 
-// Student validation schemas
+// GitHub sync schema
+export const githubSyncSchema = z.object({
+  body: z.object({
+    repoUrl: z.string().min(1, 'Repository URL or slug is required'),
+  }).partial(),
+  query: z.object({
+    repoUrl: z.string().min(1).optional(),
+    repo: z.string().min(1).optional(),
+  }).optional(),
+});
+
+// Student validation schemas (aligned with Student model)
 export const studentSchema = z.object({
   body: z.object({
     name: z.string()
@@ -160,21 +171,24 @@ export const studentSchema = z.object({
     email: z.string()
       .email('Valid email is required')
       .trim(),
-    class: z.string()
-      .min(1, 'Class is required')
-      .trim(),
+    password: z.string()
+      .min(6, 'Password must be at least 6 characters'),
     department: z.string()
       .min(1, 'Department is required')
       .trim(),
+    passingYear: z.number()
+      .min(2000, 'Passing year must be 2000 or later')
+      .max(2100, 'Passing year cannot exceed 2100'),
+    github: z.string()
+      .min(1, 'GitHub profile is required')
+      .trim(),
+    linkedin: z.string().optional(),
     status: z.enum(['active', 'inactive', 'graduated'], {
       errorMap: () => ({ message: 'Invalid status' })
-    }).optional(),
-    phone: z.string().optional(),
-    address: z.string().optional()
+    }).optional()
   }),
   params: z.object({
-    id: objectIdSchema.optional(),
-    className: z.string().optional()
+    id: objectIdSchema.optional()
   })
 });
 

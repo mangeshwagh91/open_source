@@ -1,11 +1,16 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Github, User, Star, GitFork, Eye, Calendar } from "lucide-react";
+import { Github, User, Star, GitFork, Eye, Calendar, GitPullRequest, Users } from "lucide-react";
 import { useGithubRepo, formatNumber, formatRelativeTime } from "@/hooks/useGithubRepo";
 
-const ProjectCard = ({ project, viewMode = "grid" }) => {
-  const { name, description, techStack, adminName, githubRepo } = project;
+const ProjectCard = ({ project, viewMode = "grid", contributionStats }) => {
+  const name = project.name || project.title || 'Untitled Project';
+  const description = project.description || 'No description available';
+  const techStack = project.techStack || [];
+  const adminName = project.adminName || project.proposedBy?.name || 'Unknown';
+  const githubRepo = project.githubRepo || project.github || '';
+  
   const { stars, forks, watchers, updatedAt, loading } = useGithubRepo(githubRepo);
 
   const handleGithubClick = () => {
@@ -74,6 +79,22 @@ const ProjectCard = ({ project, viewMode = "grid" }) => {
                   <div className="text-xs font-medium">{loading ? '...' : formatNumber(watchers)}</div>
                 </div>
               </div>
+
+              {/* Contribution Stats (if available) */}
+              {contributionStats && (
+                <div className="grid grid-cols-2 gap-2 p-3 rounded-lg bg-primary/5 border border-primary/20">
+                  <div className="text-center">
+                    <GitPullRequest className="w-4 h-4 mx-auto mb-1 text-primary" />
+                    <div className="text-xs font-bold text-primary">{contributionStats.mergedPRs || 0}</div>
+                    <div className="text-xs text-muted-foreground">Merged PRs</div>
+                  </div>
+                  <div className="text-center">
+                    <Users className="w-4 h-4 mx-auto mb-1 text-primary" />
+                    <div className="text-xs font-bold text-primary">{contributionStats.contributorCount || 0}</div>
+                    <div className="text-xs text-muted-foreground">Contributors</div>
+                  </div>
+                </div>
+              )}
 
               {/* Action Button */}
               <Button
@@ -144,6 +165,22 @@ const ProjectCard = ({ project, viewMode = "grid" }) => {
             <span className="text-xs text-muted-foreground">ago</span>
           </div>
         </div>
+
+        {/* Contribution Stats (if available) */}
+        {contributionStats && (
+          <div className="grid grid-cols-2 gap-2 mb-4 p-3 rounded-lg bg-primary/5 border border-primary/20">
+            <div className="text-center">
+              <GitPullRequest className="w-4 h-4 mx-auto mb-1 text-primary" />
+              <div className="text-sm font-bold text-primary">{contributionStats.mergedPRs || 0}</div>
+              <div className="text-xs text-muted-foreground">PRs Merged</div>
+            </div>
+            <div className="text-center">
+              <Users className="w-4 h-4 mx-auto mb-1 text-primary" />
+              <div className="text-sm font-bold text-primary">{contributionStats.contributorCount || 0}</div>
+              <div className="text-xs text-muted-foreground">Contributors</div>
+            </div>
+          </div>
+        )}
 
         {/* Project Admin */}
         <div className="flex items-center gap-2 text-sm p-3 rounded-lg bg-muted/30">

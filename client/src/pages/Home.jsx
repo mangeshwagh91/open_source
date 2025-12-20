@@ -33,45 +33,45 @@ import { useState, useEffect } from "react";
 
 const highlights = [
   {
-    icon: Calendar,
-    title: "Program Duration",
-    value: "3 Months",
-    description: "Intensive open-source contribution period from May to August 2024.",
+    icon: Users,
+    title: "GECA Students",
+    value: "2000+",
+    description: "Active students from Government Engineering College contributing to real projects.",
     color: "from-blue-500 to-cyan-500"
   },
   {
-    icon: Users,
-    title: "Participants",
-    value: "5000+",
-    description: "Developers from around the world joining our community.",
+    icon: GitBranch,
+    title: "Live Projects",
+    value: "50+",
+    description: "Student-led projects spanning web development, AI/ML, mobile apps, and more.",
     color: "from-emerald-500 to-teal-500"
   },
   {
     icon: Award,
-    title: "Mentors",
-    value: "150+",
-    description: "Industry experts guiding contributors throughout the journey.",
+    title: "Faculty Mentors",
+    value: "30+",
+    description: "Experienced teachers and industry mentors guiding student projects.",
     color: "from-purple-500 to-pink-500"
   },
   {
-    icon: GitBranch,
-    title: "Projects",
-    value: "50+",
-    description: "Open-source projects across various domains and technologies.",
+    icon: Code2,
+    title: "Contributions",
+    value: "5K+",
+    description: "GitHub pull requests merged through collaborative student contributions.",
     color: "from-orange-500 to-red-500"
   },
   {
-    icon: Code2,
-    title: "PRs Merged",
-    value: "10K+",
-    description: "Contributions successfully merged into production codebases.",
+    icon: Trophy,
+    title: "Total Points",
+    value: "100K+",
+    description: "Points earned by students through Level 1, 2, and 3 contributions.",
     color: "from-indigo-500 to-purple-500"
   },
   {
-    icon: Rocket,
-    title: "Prize Pool",
-    value: "$50K",
-    description: "Amazing prizes, swag, and goodies for top contributors.",
+    icon: Star,
+    title: "Certificates",
+    value: "1000+",
+    description: "Recognition certificates awarded to top performers and contributors.",
     color: "from-amber-500 to-orange-500"
   },
 ];
@@ -79,59 +79,59 @@ const highlights = [
 const features = [
   {
     icon: BookOpen,
-    title: "Learn & Grow",
-    description: "Master new technologies through real-world projects and mentorship from industry experts.",
-    benefits: ["Hands-on experience", "Mentor guidance", "Skill development"]
+    title: "Real Project Experience",
+    description: "Work on actual projects with GitHub-based workflows, code reviews, and production-ready code.",
+    benefits: ["Industry workflows", "GitHub expertise", "Portfolio building"]
   },
   {
     icon: Users,
-    title: "Build Community",
-    description: "Connect with passionate developers worldwide and build lasting professional relationships.",
-    benefits: ["Global network", "Collaborative learning", "Community support"]
+    title: "Collaborate & Lead",
+    description: "Propose your own projects, become a Project Admin, or contribute to peers' innovative ideas.",
+    benefits: ["Project ownership", "Team collaboration", "Leadership skills"]
   },
   {
     icon: Trophy,
-    title: "Win Rewards",
-    description: "Compete for amazing prizes, certificates, and recognition that boosts your career.",
-    benefits: ["Cash prizes", "Certificates", "Career boost"]
+    title: "Earn Recognition",
+    description: "Gain points through contributions, compete on the leaderboard, and earn certificates each season.",
+    benefits: ["Points system", "Leaderboard ranking", "Certificates & trophies"]
   }
 ];
 
 const testimonials = [
   {
-    name: "Sarah Chen",
-    role: "Full Stack Developer",
-    company: "TechCorp",
-    avatar: "SC",
-    content: "CodeFest transformed my career. The mentorship and real-world projects gave me the confidence to land my dream job.",
+    name: "Rahul Sharma",
+    role: "Final Year CSE",
+    company: "GECA",
+    avatar: "RS",
+    content: "Contributing to real projects on this platform gave me the confidence and skills to crack my campus placements. The points system kept me motivated!",
     rating: 5,
-    achievement: "Top Contributor 2023"
+    achievement: "Leaderboard Rank #1"
   },
   {
-    name: "Marcus Rodriguez",
-    role: "Open Source Contributor",
-    company: "OpenTech",
-    avatar: "MR",
-    content: "The community here is incredible. I learned more in 3 months than I did in 2 years of self-study.",
+    name: "Ananya Verma",
+    role: "Third Year IT",
+    company: "GECA",
+    avatar: "AV",
+    content: "I proposed a mobile app project and became a Project Admin. Leading my team and reviewing PRs taught me more than any textbook.",
     rating: 5,
-    achievement: "Mentor of the Year"
+    achievement: "Best Project Award"
   },
   {
-    name: "Priya Patel",
-    role: "DevOps Engineer",
-    company: "CloudSys",
-    avatar: "PP",
-    content: "CodeFest opened doors I never knew existed. The connections and skills I gained are invaluable.",
+    name: "Arjun Patel",
+    role: "Second Year ECE",
+    company: "GECA",
+    avatar: "AP",
+    content: "The GitHub-based workflow and faculty mentorship prepared me for real industry experience. Got my first internship because of this!",
     rating: 5,
-    achievement: "Innovation Award"
+    achievement: "Top 3 Contributor"
   }
 ];
 
 const stats = [
-  { label: "Active Contributors", value: 5000, suffix: "+", icon: Users },
-  { label: "Projects Completed", value: 50, suffix: "+", icon: GitBranch },
-  { label: "Countries Reached", value: 120, suffix: "+", icon: Globe },
-  { label: "Success Rate", value: 95, suffix: "%", icon: TrendingUp }
+  { label: "Active Students", value: 2000, suffix: "+", icon: Users },
+  { label: "Live Projects", value: 50, suffix: "+", icon: GitBranch },
+  { label: "Pull Requests", value: 5000, suffix: "+", icon: Code2 },
+  { label: "Contribution Rate", value: 92, suffix: "%", icon: TrendingUp }
 ];
 
 const Counter = ({ value, suffix, duration = 2000 }) => {
@@ -179,10 +179,10 @@ const Home = () => {
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <Zap className="w-4 h-4 mr-2" />
-                Live Statistics
+                Platform Statistics
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                CodeFest by the <span className="gradient-text">Numbers</span>
+                GECA Platform by the <span className="gradient-text">Numbers</span>
               </h2>
             </div>
 
@@ -212,14 +212,14 @@ const Home = () => {
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-6 py-3 mb-6">
                 <Star className="w-5 h-5 text-primary" />
-                <span className="text-primary text-sm font-semibold">Why Choose CodeFest</span>
+                <span className="text-primary text-sm font-semibold">Why Join GECA Platform</span>
               </div>
               <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-                Transform Your <span className="gradient-text">Development Journey</span>
+                Build Your <span className="gradient-text">Career Foundation</span>
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Join the world's most comprehensive open-source program and unlock your potential.
-                Learn from industry experts, contribute to real projects, and build a portfolio that opens doors.
+                GECA's official project platform where students gain real development experience.
+                Work on live projects, collaborate with peers, and build a portfolio that stands out.
               </p>
             </div>
 
@@ -252,10 +252,10 @@ const Home = () => {
           <div className="container mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                What You'll <span className="gradient-text">Experience</span>
+                How It <span className="gradient-text">Works</span>
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Every aspect of CodeFest is designed to maximize your learning and growth
+                A simple yet powerful system designed for student growth and collaboration
               </p>
             </div>
 

@@ -192,8 +192,8 @@ export default function ReviewProposals() {
       <Navbar />
       <main className="flex-1 container mx-auto px-4 py-8 mt-16">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Review Project Proposals</h1>
-          <p className="text-gray-600">Review and approve project submissions from contributors</p>
+          <h1 className="text-4xl font-bold mb-2">Review Student Proposals</h1>
+          <p className="text-gray-600">Review and approve project proposals from GECA students. Accepted projects go live on the platform.</p>
         </div>
 
         {/* Statistics Cards */}

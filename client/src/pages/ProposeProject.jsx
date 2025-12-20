@@ -180,7 +180,7 @@ const ProposeProject = () => {
               Propose a Project
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Have an innovative project idea? Share it with the community and become a project admin!
+              Have an innovative project idea? Submit your proposal for faculty review. If approved, you'll become the Project Admin!
             </p>
           </div>
 
@@ -189,15 +189,15 @@ const ProposeProject = () => {
             <Card className="border-primary/20">
               <CardContent className="pt-6">
                 <CheckCircle className="w-8 h-8 text-green-500 mb-2" />
-                <h3 className="font-semibold mb-1">Get Reviewed</h3>
-                <p className="text-sm text-muted-foreground">Faculty will review your proposal</p>
+                <h3 className="font-semibold mb-1">Faculty Review</h3>
+                <p className="text-sm text-muted-foreground">Teachers will review and approve/reject</p>
               </CardContent>
             </Card>
             <Card className="border-primary/20">
               <CardContent className="pt-6">
                 <Users className="w-8 h-8 text-blue-500 mb-2" />
-                <h3 className="font-semibold mb-1">Lead & Mentor</h3>
-                <p className="text-sm text-muted-foreground">Guide students working on your project</p>
+                <h3 className="font-semibold mb-1">Become Admin</h3>
+                <p className="text-sm text-muted-foreground">Manage PRs and assign contribution levels</p>
               </CardContent>
             </Card>
             <Card className="border-primary/20">
