@@ -130,10 +130,10 @@ const HeroSection = () => {
         {/* Live Stats Preview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto mb-12 opacity-0 animate-fade-in">
           {[
-            { icon: Users, value: "2K+", label: "Students" },
-            { icon: Code2, value: "50+", label: "Projects" },
-            { icon: Globe, value: "5K+", label: "Pull Requests" },
-            { icon: Star, value: "100K+", label: "Points" }
+            { icon: Users, value: "Growing", label: "Community" },
+            { icon: Code2, value: "Active", label: "Projects" },
+            { icon: Globe, value: "GitHub", label: "Workflow" },
+            { icon: Star, value: "Merit", label: "Recognition" }
           ].map((stat, index) => (
             <div
               key={stat.label}

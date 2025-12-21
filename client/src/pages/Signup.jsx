@@ -16,6 +16,8 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showMentorPassword, setShowMentorPassword] = useState(false);
+  const [showMentorConfirmPassword, setShowMentorConfirmPassword] = useState(false);
   
   // Student form data
   const [studentFormData, setStudentFormData] = useState({
@@ -411,7 +413,7 @@ const Signup = () => {
                     <div className="relative">
                       <Input
                         id="mentorPassword"
-                        type={showPassword ? "text" : "password"}
+                        type={showMentorPassword ? "text" : "password"}
                         placeholder="••••••••"
                         required
                         minLength={8}
@@ -420,10 +422,10 @@ const Signup = () => {
                       />
                       <button
                         type="button"
-                        onClick={() => setShowPassword(!showPassword)}
+                        onClick={() => setShowMentorPassword(!showMentorPassword)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showMentorPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>
@@ -432,7 +434,7 @@ const Signup = () => {
                     <div className="relative">
                       <Input
                         id="mentorConfirmPassword"
-                        type={showConfirmPassword ? "text" : "password"}
+                        type={showMentorConfirmPassword ? "text" : "password"}
                         placeholder="••••••••"
                         required
                         minLength={8}
@@ -441,10 +443,10 @@ const Signup = () => {
                       />
                       <button
                         type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onClick={() => setShowMentorConfirmPassword(!showMentorConfirmPassword)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
-                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showMentorConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>

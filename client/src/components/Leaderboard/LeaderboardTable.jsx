@@ -30,8 +30,6 @@ const getRankColor = (rank) => {
 };
 
 const ContributorCard = ({ contributor, index }) => {
-  const progressPercentage = Math.min((contributor.points / 2500) * 100, 100);
-
   return (
     <Card className="glass-card-elevated border-border/30 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover-lift group">
       <CardContent className="p-6">
@@ -48,8 +46,8 @@ const ContributorCard = ({ contributor, index }) => {
           </div>
 
           <div className="text-right">
-            <div className="text-2xl font-bold gradient-text">{contributor.points.toLocaleString()}</div>
-            <div className="text-xs text-muted-foreground">points</div>
+            <div className="text-2xl font-bold gradient-text">{contributor.contributions}</div>
+            <div className="text-xs text-muted-foreground">contributions</div>
           </div>
         </div>
 
@@ -74,23 +72,14 @@ const ContributorCard = ({ contributor, index }) => {
             <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
               <div className="flex items-center gap-1">
                 <GitBranch className="w-4 h-4" />
-                <span>{contributor.contributions} PRs</span>
+                <span>{contributor.contributions} contributions</span>
               </div>
               <div className="flex items-center gap-1">
-                <Flame className="w-4 h-4" />
-                <span>Level {Math.floor(contributor.points / 500) + 1}</span>
+                <Star className="w-4 h-4" />
+                <span>Active member</span>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>Progress to next level</span>
-            <span>{Math.round(progressPercentage)}%</span>
-          </div>
-          <Progress value={progressPercentage} className="h-2" />
         </div>
 
         {/* Achievement Badges */}
@@ -101,16 +90,16 @@ const ContributorCard = ({ contributor, index }) => {
               Top Contributor
             </Badge>
           )}
-          {contributor.contributions >= 30 && (
-            <Badge variant="secondary" className="text-xs">
-              <Star className="w-3 h-3 mr-1" />
-              Rising Star
+          {contributor.contributions >= 20 && (
+            <Badge variant="outline" className="text-xs">
+              <Award className="w-3 h-3 mr-1" />
+              Active Contributor
             </Badge>
           )}
-          {contributor.rank <= 5 && (
-            <Badge variant="secondary" className="text-xs">
+          {contributor.contributions >= 5 && (
+            <Badge variant="outline" className="text-xs">
               <Medal className="w-3 h-3 mr-1" />
-              Elite Member
+              Rising Star
             </Badge>
           )}
         </div>
@@ -190,7 +179,7 @@ const LeaderboardTable = ({ data, viewMode = "table" }) => {
                       </div>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <TrendingUp className="w-3 h-3" />
-                        <span>+{Math.floor(contributor.points * 0.1)} this week</span>
+                        <span>+{Math.floor(contributor.contributions * 0.1)} this week</span>
                       </div>
                     </div>
                   </div>
@@ -206,11 +195,11 @@ const LeaderboardTable = ({ data, viewMode = "table" }) => {
                 <td className="px-6 py-5 text-center">
                   <div className="flex flex-col items-center">
                     <Badge variant="outline" className="text-xs">
-                      {Math.floor(contributor.points / 500) + 1}
+                      {Math.floor(contributor.contributions / 500) + 1}
                     </Badge>
                     <div className="w-16 mt-1">
                       <Progress
-                        value={Math.min((contributor.points % 500) / 5, 100)}
+                        value={Math.min((contributor.contributions % 500) / 5, 100)}
                         className="h-1"
                       />
                     </div>
@@ -220,9 +209,9 @@ const LeaderboardTable = ({ data, viewMode = "table" }) => {
                 <td className="px-6 py-5 text-right">
                   <div className="flex flex-col items-end">
                     <span className="font-bold gradient-text text-lg">
-                      {contributor.points.toLocaleString()}
+                      {contributor.contributions.toLocaleString()}
                     </span>
-                    <span className="text-xs text-muted-foreground">pts</span>
+                    <span className="text-xs text-muted-foreground">contributions</span>
                   </div>
                 </td>
               </tr>

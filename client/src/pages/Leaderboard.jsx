@@ -17,7 +17,8 @@ import {
   Target,
   Calendar,
   Crown,
-  Flame
+  Flame,
+  Code2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -67,9 +68,9 @@ const Leaderboard = () => {
       let bValue = b[sortBy] || 0;
       
       // Handle nested student properties
-      if (sortBy === 'points') {
-        aValue = a.totalPoints || a.points || 0;
-        bValue = b.totalPoints || b.points || 0;
+      if (sortBy === 'contributions') {
+        aValue = a.contributions || 0;
+        bValue = b.contributions || 0;
       }
 
       if (sortOrder === "asc") {
@@ -83,7 +84,6 @@ const Leaderboard = () => {
     return filtered.map((contributor, index) => ({
       ...contributor,
       name: contributor.name || contributor.student?.name || 'Unknown',
-      points: contributor.totalPoints || contributor.points || 0,
       contributions: contributor.contributions || 0,
       rank: index + 1,
       badge: index === 0 ? "gold" : index === 1 ? "silver" : index === 2 ? "bronze" : null,
@@ -93,16 +93,12 @@ const Leaderboard = () => {
 
   // Calculate statistics
   const stats = useMemo(() => {
-    const totalPoints = processedData.reduce((sum, contributor) => sum + contributor.points, 0);
     const totalContributions = processedData.reduce((sum, contributor) => sum + contributor.contributions, 0);
-    const avgPoints = Math.round(totalPoints / processedData.length);
     const topContributor = processedData[0];
 
     return {
-      totalPoints: totalPoints.toLocaleString(),
       totalContributors: processedData.length,
       totalContributions,
-      avgPoints,
       topContributor
     };
   }, [processedData]);
@@ -129,7 +125,8 @@ const Leaderboard = () => {
               Student Leaderboard
             </h1>
             <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed animate-fade-in">
-              Students ranked by contribution points. Level 1 = 20 points, Level 2 = 10 points, Level 3 = 5 points. Top 3 each season earn trophies and certificates!
+              Community recognition for student contributors. Rankings are based on contribution quality, consistency, and impact.
+              Criteria may evolve as the platform grows.
             </p>
           </div>
 
@@ -137,31 +134,31 @@ const Leaderboard = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto animate-fade-in">
             <div className="glass-card p-6 text-center">
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
-                <Target className="w-6 h-6 text-primary" />
+                <Users className="w-6 h-6 text-primary" />
               </div>
-              <div className="text-2xl font-bold gradient-text">{stats.totalPoints}</div>
-              <div className="text-sm text-muted-foreground">Total Points</div>
+              <div className="text-2xl font-bold gradient-text">{stats.totalContributors}</div>
+              <div className="text-sm text-muted-foreground">Active Contributors</div>
             </div>
             <div className="glass-card p-6 text-center">
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-accent/10 flex items-center justify-center">
-                <Users className="w-6 h-6 text-accent" />
+                <Code2 className="w-6 h-6 text-accent" />
               </div>
-              <div className="text-2xl font-bold gradient-text">{stats.totalContributors}</div>
-              <div className="text-sm text-muted-foreground">Contributors</div>
+              <div className="text-2xl font-bold gradient-text">Growing</div>
+              <div className="text-sm text-muted-foreground">Community</div>
             </div>
             <div className="glass-card p-6 text-center">
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-secondary/10 flex items-center justify-center">
                 <Flame className="w-6 h-6 text-secondary" />
               </div>
               <div className="text-2xl font-bold gradient-text">{stats.totalContributions}</div>
-              <div className="text-sm text-muted-foreground">Contributions</div>
+              <div className="text-sm text-muted-foreground">Total Contributions</div>
             </div>
             <div className="glass-card p-6 text-center">
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
                 <TrendingUp className="w-6 h-6 text-primary" />
               </div>
-              <div className="text-2xl font-bold gradient-text">{stats.avgPoints}</div>
-              <div className="text-sm text-muted-foreground">Avg Points</div>
+              <div className="text-2xl font-bold gradient-text">Quality</div>
+              <div className="text-sm text-muted-foreground">Focus</div>
             </div>
           </div>
 
@@ -196,7 +193,7 @@ const Leaderboard = () => {
                   />
                   <h3 className="font-bold text-lg">{topThree[1]?.name}</h3>
                   <p className="text-muted-foreground text-sm mb-2">{topThree[1]?.contributions} contributions</p>
-                  <div className="text-2xl font-bold gradient-text">{topThree[1]?.points} pts</div>
+                  <div className="text-sm font-medium text-primary">Recognized Contributor</div>
                 </div>
                 <div className="h-24 bg-gradient-to-t from-slate-300 to-slate-200 rounded-t-lg mt-4 flex items-end justify-center pb-2">
                   <span className="text-slate-700 font-bold">2nd</span>
@@ -224,7 +221,7 @@ const Leaderboard = () => {
                   />
                   <h3 className="font-bold text-xl">{topThree[0]?.name}</h3>
                   <p className="text-muted-foreground text-sm mb-2">{topThree[0]?.contributions} contributions</p>
-                  <div className="text-3xl font-bold gradient-text">{topThree[0]?.points} pts</div>
+                  <div className="text-lg font-medium text-primary">Outstanding Contributor</div>
                 </div>
                 <div className="h-32 bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg mt-4 flex items-end justify-center pb-2">
                   <span className="text-yellow-800 font-bold text-lg">1st</span>
@@ -249,7 +246,7 @@ const Leaderboard = () => {
                   />
                   <h3 className="font-bold text-lg">{topThree[2]?.name}</h3>
                   <p className="text-muted-foreground text-sm mb-2">{topThree[2]?.contributions} contributions</p>
-                  <div className="text-2xl font-bold gradient-text">{topThree[2]?.points} pts</div>
+                  <div className="text-sm font-medium text-primary">Valued Contributor</div>
                 </div>
                 <div className="h-20 bg-gradient-to-t from-amber-600 to-amber-500 rounded-t-lg mt-4 flex items-end justify-center pb-2">
                   <span className="text-amber-100 font-bold">3rd</span>
@@ -286,7 +283,6 @@ const Leaderboard = () => {
                   onChange={(e) => setSortBy(e.target.value)}
                   className="px-3 py-2 rounded-lg border border-border/30 bg-background text-sm focus:border-primary/50"
                 >
-                  <option value="points">Points</option>
                   <option value="contributions">Contributions</option>
                   <option value="rank">Rank</option>
                 </select>

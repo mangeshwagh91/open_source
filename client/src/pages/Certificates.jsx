@@ -34,27 +34,27 @@ import { certificatesAPI } from "@/lib/api";
 const stats = [
   {
     icon: Award,
-    value: "5000+",
-    label: "Certificates Issued",
-    description: "Recognizing achievements worldwide"
+    value: "Community-Issued",
+    label: "Certificates",
+    description: "Earned through project contributions and learning milestones"
   },
   {
     icon: Users,
-    value: "95%",
-    label: "Completion Rate",
-    description: "Contributors finishing the program"
+    value: "Transparent",
+    label: "Evaluation",
+    description: "Clear criteria for earning recognition and certificates"
   },
   {
     icon: TrendingUp,
-    value: "4.9/5",
-    label: "Average Rating",
-    description: "Participant satisfaction"
+    value: "Growing",
+    label: "Recognition",
+    description: "Expanding opportunities for student achievements"
   },
   {
     icon: Target,
-    value: "150+",
-    label: "Partner Companies",
-    description: "Recognizing our certificates"
+    value: "Portfolio-Ready",
+    label: "Credentials",
+    description: "Professional certificates for your academic and career development"
   }
 ];
 
@@ -91,12 +91,12 @@ const Certificates = () => {
       count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "participation").length : 0
     },
     {
-      type: "topper",
-      title: "Top 3 Excellence Certificate",
-      description: "Special trophy and certificate for Top 3 students on the leaderboard each season",
+      type: "excellence",
+      title: "Excellence Certificate",
+      description: "Special recognition for outstanding contributions and leadership in platform activities",
       icon: Crown,
       color: "from-amber-500 to-orange-500",
-      count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "topper").length : 0
+      count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "excellence").length : 0
     },
     {
       type: "admin",
@@ -108,8 +108,8 @@ const Certificates = () => {
     },
     {
       type: "completion",
-      title: "Season Completion Certificate",
-      description: "For students who actively contributed throughout the entire season",
+      title: "Milestone Certificate",
+      description: "For students who achieve significant learning milestones and project completions",
       icon: Trophy,
       color: "from-emerald-500 to-teal-500",
       count: Array.isArray(certificatesData) ? certificatesData.filter(cert => cert.type === "completion").length : 0
