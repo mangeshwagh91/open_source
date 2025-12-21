@@ -6,6 +6,11 @@ const projectAssignmentSchema = new mongoose.Schema({
     required: [true, 'Assignment title is required'],
     trim: true
   },
+  subject: {
+    type: String,
+    required: [true, 'Subject/Course name is required'],
+    trim: true
+  },
   description: {
     type: String,
     required: [true, 'Assignment description is required'],

@@ -206,3 +206,27 @@ export const contributionsAPI = {
   },
 };
 
+// Academic Proposals API
+export const academicProposalsAPI = {
+  getAll: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return fetchAPI(`/academic-proposals${queryString ? `?${queryString}` : ''}`);
+  },
+  getById: (id) => fetchAPI(`/academic-proposals/${id}`),
+  getByStudent: (studentId) => fetchAPI(`/academic-proposals/student/${studentId}`),
+  create: (data) => fetchAPI('/academic-proposals', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+  accept: (id, data) => fetchAPI(`/academic-proposals/${id}/accept`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  }),
+  reject: (id, data) => fetchAPI(`/academic-proposals/${id}/reject`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  }),
+  delete: (id) => fetchAPI(`/academic-proposals/${id}`, {
+    method: 'DELETE',
+  }),
+};

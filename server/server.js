@@ -18,6 +18,7 @@ import authRoutes from './routes/authRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
 import assignmentRoutes from './routes/assignmentRoutes.js';
 import proposalRoutes from './routes/proposalRoutes.js';
+import academicProposalRoutes from './routes/academicProposalRoutes.js';
 import githubRoutes from './routes/githubRoutes.js';
 import contributionRoutes from './routes/contributionRoutes.js';
 import cron from 'node-cron';
@@ -64,6 +65,7 @@ app.get('/', (req, res) => {
       students: '/api/students',
       assignments: '/api/assignments',
       proposals: '/api/proposals',
+      academicProposals: '/api/academic-proposals',
       github: '/api/github',
       contributions: '/api/contributions'
     }
@@ -79,6 +81,7 @@ app.use('/api/roadmaps', roadmapRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/proposals', proposalRoutes);
+app.use('/api/academic-proposals', academicProposalRoutes);
 app.use('/api/github', githubRoutes);
 app.use('/api/contributions', contributionRoutes);
 

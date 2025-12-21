@@ -25,8 +25,13 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
+    enum: ['user', 'admin', 'teacher', 'mentor', 'contributor'],
+    default: 'contributor'
+  },
+  mentorCode: {
+    type: String,
+    trim: true,
+    select: false // Only used for verification, not exposed
   },
   isActive: {
     type: Boolean,

@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   signup,
+  signupUser,
   login,
   getMe,
   forgotPassword,
@@ -11,7 +12,8 @@ import { protect } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 // Public routes
-router.post('/signup', signup);
+router.post('/signup', signup); // Student signup
+router.post('/signup-user', signupUser); // Mentor/Contributor signup
 router.post('/login', login);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);

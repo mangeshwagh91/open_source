@@ -39,11 +39,18 @@ const Profile = () => {
 
   useEffect(() => {
     // Get user from localStorage
-    const studentData = localStorage.getItem('student');
-    if (studentData) {
-      const parsedUser = JSON.parse(studentData);
-      setUser(parsedUser);
-      fetchUserStats(parsedUser._id || parsedUser.id);
+    const studentData = localStorage.getItem('user') || localStorage.getItem('student');
+    if (studentData && studentData !== 'undefined') {
+      try {
+        const parsedUser = JSON.parse(studentData);
+        setUser(parsedUser);
+        fetchUserStats(parsedUser._id || parsedUser.id);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        localStorage.removeItem('user');
+        localStorage.removeItem('student');
+        navigate('/login');
+      }
     } else {
       // Redirect to login if no user data
       navigate('/login');

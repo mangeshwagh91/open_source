@@ -35,15 +35,22 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const studentData = localStorage.getItem('student');
-    if (studentData) {
-      setStudent(JSON.parse(studentData));
+    const studentData = localStorage.getItem('user') || localStorage.getItem('student');
+    if (studentData && studentData !== 'undefined') {
+      try {
+        setStudent(JSON.parse(studentData));
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        localStorage.removeItem('user');
+        localStorage.removeItem('student');
+      }
     }
   }, [location.pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('student');
+    localStorage.removeItem('user');
     setStudent(null);
     navigate('/');
   };

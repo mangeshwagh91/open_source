@@ -1,4 +1,5 @@
 import Student from '../models/Student.js';
+import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 import { asyncHandler } from '../middleware/validationMiddleware.js';
 import { sendPasswordResetEmail } from '../utils/emailService.js';
@@ -9,6 +10,58 @@ const generateToken = (id) => {
     expiresIn: '30d'
   });
 };
+
+// @desc    Register mentor or contributor
+// @route   POST /api/auth/signup-user
+// @access  Public
+export const signupUser = asyncHandler(async (req, res) => {
+  const { name, email, password, role, mentorCode } = req.body;
+
+  // Validate role
+  if (!['mentor', 'contributor'].includes(role)) {
+    return res.status(400).json({ message: 'Invalid role. Choose mentor or contributor.' });
+  }
+
+  // Verify mentor code if role is mentor
+  if (role === 'mentor') {
+    const validMentorCode = process.env.MENTOR_CODE || 'MENTOR2024';
+    if (!mentorCode || mentorCode !== validMentorCode) {
+      return res.status(400).json({ message: 'Invalid mentor code. Please contact administration.' });
+    }
+  }
+
+  // Check if user exists
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    return res.status(400).json({ message: 'Email already registered' });
+  }
+
+  // Create user
+  const user = await User.create({
+    name,
+    email,
+    password,
+    role,
+    ...(role === 'mentor' && { mentorCode })
+  });
+
+  if (user) {
+    const token = generateToken(user._id);
+
+    res.status(201).json({
+      success: true,
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } else {
+    res.status(400).json({ message: 'Invalid user data' });
+  }
+});
 
 // @desc    Register student
 // @route   POST /api/auth/signup
@@ -60,42 +113,64 @@ export const signup = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Authenticate student & get token
+// @desc    Authenticate user (student/mentor/contributor) & get token
 // @route   POST /api/auth/login
 // @access  Public
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  // Check for student
-  const student = await Student.findOne({ email }).select('+password');
+  // Check for user first (mentors/contributors/admins)
+  let user = await User.findOne({ email }).select('+password');
+  let isStudent = false;
   
-  if (!student) {
+  // If not found, check for student
+  if (!user) {
+    user = await Student.findOne({ email }).select('+password');
+    isStudent = true;
+  }
+  
+  if (!user) {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
 
   // Check password
-  const isMatch = await student.comparePassword(password);
+  const isMatch = await user.comparePassword(password);
   if (!isMatch) {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
 
-  const token = generateToken(student._id);
+  const token = generateToken(user._id);
 
-  res.json({
-    success: true,
-    token,
-    student: {
-      _id: student._id,
-      studentId: student.studentId,
-      name: student.name,
-      email: student.email,
-      department: student.department,
-      passingYear: student.passingYear,
-      github: student.github,
-      linkedin: student.linkedin,
-      avatar: student.avatar
-    }
-  });
+  // Return appropriate response based on user type
+  if (isStudent) {
+    res.json({
+      success: true,
+      token,
+      user: {
+        _id: user._id,
+        studentId: user.studentId,
+        name: user.name,
+        email: user.email,
+        role: 'student',
+        department: user.department,
+        passingYear: user.passingYear,
+        github: user.github,
+        linkedin: user.linkedin,
+        avatar: user.avatar
+      }
+    });
+  } else {
+    res.json({
+      success: true,
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  }
 });
 
 // @desc    Get current logged in student
