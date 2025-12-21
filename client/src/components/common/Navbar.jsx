@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Code2, User, LogOut } from "lucide-react";
+import { Menu, X, Code2, User, LogOut, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "./ThemeProvider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,6 +34,7 @@ const Navbar = () => {
   const [student, setStudent] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const studentData = localStorage.getItem('user') || localStorage.getItem('student');
@@ -90,7 +92,15 @@ const Navbar = () => {
           </div>
 
           {/* Auth Buttons - Desktop */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="w-9 h-9 p-0"
+            >
+              {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+            </Button>
             {student ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -166,6 +176,15 @@ const Navbar = () => {
               
               {student ? (
                 <>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={toggleTheme}
+                    className="mx-4 mt-2 justify-start"
+                  >
+                    {theme === 'light' ? <Moon className="w-4 h-4 mr-2" /> : <Sun className="w-4 h-4 mr-2" />}
+                    {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+                  </Button>
                   <div className="px-4 py-3 mt-2 border-t border-border/40">
                     <p className="text-sm font-medium">{student.name}</p>
                     <p className="text-xs text-muted-foreground">{student.email}</p>
@@ -181,6 +200,15 @@ const Navbar = () => {
                 </>
               ) : (
                 <div className="flex flex-col gap-2 mt-4 mx-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={toggleTheme}
+                    className="justify-start"
+                  >
+                    {theme === 'light' ? <Moon className="w-4 h-4 mr-2" /> : <Sun className="w-4 h-4 mr-2" />}
+                    {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+                  </Button>
                   <Button 
                     variant="outline" 
                     onClick={() => {

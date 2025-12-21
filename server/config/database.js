@@ -10,6 +10,8 @@ const connectDB = async () => {
   } catch (error) {
     console.error(`Error: ${error.message}`);
     process.exit(1);
+    // what it does is : it will exit the process with error code 1
+    
   }
 };
 

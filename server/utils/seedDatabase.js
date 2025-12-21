@@ -223,6 +223,7 @@ const seedDatabase = async () => {
     const assignments = [
       {
         title: "E-Commerce Website",
+        subject: "Full Stack Development",
         description: "Build a full-stack e-commerce platform with shopping cart, payment integration, and admin panel.",
         assignedTo: [insertedStudents[0]._id, insertedStudents[1]._id],
         assignedBy: "Dr. Sarah Mitchell",
@@ -234,6 +235,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Blog Management System",
+        subject: "Web Development",
         description: "Create a blog platform with user authentication, CRUD operations, and markdown support.",
         assignedTo: [insertedStudents[2]._id],
         assignedBy: "Prof. John Davis",
@@ -245,6 +247,7 @@ const seedDatabase = async () => {
       },
       {
         title: "Mobile App for Campus",
+        subject: "Mobile Application Development",
         description: "Develop a mobile application for campus management including attendance, grades, and notifications.",
         assignedTo: [insertedStudents[3]._id, insertedStudents[4]._id, insertedStudents[5]._id],
         assignedBy: "Dr. Sarah Mitchell",

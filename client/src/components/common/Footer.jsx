@@ -62,9 +62,9 @@ const Footer = () => {
               <a href="#" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                 Documentation
               </a>
-              <a href="#" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+              <NavLink to="/guidelines" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                 Guidelines
-              </a>
+              </NavLink>
               <a href="#" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                 FAQs
               </a>

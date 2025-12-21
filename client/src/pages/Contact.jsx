@@ -26,65 +26,65 @@ const contactMethods = [
   {
     icon: Mail,
     title: "Email Support",
-    primary: "contact@codefest.dev",
-    secondary: "support@codefest.dev",
-    description: "Get help with technical issues and general inquiries",
+    primary: "contact@geca.edu.in",
+    secondary: "For platform inquiries",
+    description: "Send us an email for questions about the platform, projects, or general support",
     color: "from-blue-500 to-cyan-500",
-    available: "24/7"
+    available: "Within 2-3 business days"
   },
   {
     icon: MessageSquare,
-    title: "Live Chat",
-    primary: "Available on Discord",
-    secondary: "Join our community server",
-    description: "Real-time support from our community moderators",
+    title: "Community Discord",
+    primary: "GECA Dev Community",
+    secondary: "Join our Discord server",
+    description: "Connect with fellow students, get real-time help, and participate in discussions",
     color: "from-purple-500 to-pink-500",
-    available: "Mon-Fri, 9AM-6PM EST"
+    available: "Community-driven support"
   },
   {
-    icon: Phone,
-    title: "Phone Support",
-    primary: "+1 (555) 123-4567",
-    secondary: "Premium support line",
-    description: "Speak directly with our support team",
+    icon: Users,
+    title: "Faculty Office Hours",
+    primary: "Department Coordinators",
+    secondary: "Scheduled meetings",
+    description: "Meet with faculty mentors during designated office hours for project guidance",
     color: "from-green-500 to-emerald-500",
-    available: "Mon-Fri, 9AM-6PM EST"
+    available: "By appointment"
   },
   {
     icon: MapPin,
-    title: "Office Location",
-    primary: "123 Developer Lane",
-    secondary: "San Francisco, CA 94102",
-    description: "Visit our headquarters for in-person meetings",
+    title: "GECA Campus",
+    primary: "Government Engineering College",
+    secondary: "Sector 28, Gandhinagar",
+    description: "Visit our campus for in-person meetings and events",
     color: "from-orange-500 to-red-500",
-    available: "By appointment only"
+    available: "During college hours"
   }
 ];
 
 const faqs = [
   {
-    question: "How do I get started with CodeFest?",
-    answer: "Simply register on our website during the registration period (April 1-30). You'll be matched with a project and mentor based on your skills and interests."
+    question: "Is GECA Platform new?",
+    answer: "Yes, this is an early-stage platform developed by and for GECA students. We're building a collaborative environment for learning through real project work, and our processes may evolve as the community grows."
   },
   {
-    question: "What programming languages are supported?",
-    answer: "We support all major programming languages including JavaScript, Python, Java, Go, Rust, and many more. Choose projects that match your preferred technology stack."
+    question: "How are certificates evaluated and awarded?",
+    answer: "Certificates are issued by faculty mentors based on contribution quality, consistency, and impact. We focus on meaningful participation rather than point accumulation. Recognition criteria are transparent and may be refined based on community feedback."
   },
   {
-    question: "Do I need prior open-source experience?",
-    answer: "No prior experience is required! CodeFest is designed for developers at all skill levels. Our mentors will guide you through your first contributions."
+    question: "Who runs and maintains the platform?",
+    answer: "The platform is maintained by GECA faculty and student developers. It's designed as a learning tool for our college community, with faculty oversight to ensure quality and fairness."
   },
   {
-    question: "How much time do I need to commit?",
-    answer: "We recommend 10-15 hours per week during the coding phases. This allows you to balance the program with your studies or work commitments."
+    question: "Is this platform free to use?",
+    answer: "Yes, the platform is completely free for all GECA students. We believe in providing accessible learning opportunities without financial barriers."
   },
   {
-    question: "Are certificates provided upon completion?",
-    answer: "Yes! All participants who complete the program requirements will receive a CodeFest completion certificate and digital badges for their achievements."
+    question: "What stage is the GECA student community in?",
+    answer: "We're in the early stages of building our community. As a new platform, we're focused on onboarding students, establishing best practices, and growing through collaborative projects. Your participation helps shape its future."
   },
   {
-    question: "Can I work on multiple projects?",
-    answer: "While you can explore different projects, we recommend focusing on 1-2 projects to ensure quality contributions and meaningful learning experiences."
+    question: "How can I get involved in platform development?",
+    answer: "If you're interested in contributing to the platform itself, reach out to faculty coordinators. We welcome student developers who want to help improve the tools we all use for learning."
   }
 ];
 
@@ -151,16 +151,16 @@ const Contact = () => {
               {/* Quick Stats */}
               <div className="flex flex-wrap justify-center gap-8 mb-12">
                 <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text">24/7</div>
-                  <div className="text-sm text-muted-foreground">Support Available</div>
+                  <div className="text-3xl font-bold gradient-text">Community</div>
+                  <div className="text-sm text-muted-foreground">Driven Support</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text">&lt;2hrs</div>
-                  <div className="text-sm text-muted-foreground">Average Response</div>
+                  <div className="text-3xl font-bold gradient-text">2-3 Days</div>
+                  <div className="text-sm text-muted-foreground">Response Time</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold gradient-text">150+</div>
-                  <div className="text-sm text-muted-foreground">Happy Partners</div>
+                  <div className="text-3xl font-bold gradient-text">Growing</div>
+                  <div className="text-sm text-muted-foreground">Student Community</div>
                 </div>
               </div>
             </div>

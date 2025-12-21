@@ -34,44 +34,44 @@ import { useState, useEffect } from "react";
 const highlights = [
   {
     icon: Users,
-    title: "GECA Students",
-    value: "2000+",
-    description: "Active students from Government Engineering College contributing to real projects.",
+    title: "Early Access Community",
+    value: "Growing",
+    description: "Founding members and early adopters building the future of collaborative learning at GECA.",
     color: "from-blue-500 to-cyan-500"
   },
   {
     icon: GitBranch,
-    title: "Live Projects",
-    value: "50+",
-    description: "Student-led projects spanning web development, AI/ML, mobile apps, and more.",
+    title: "Student-Led Projects",
+    value: "Active",
+    description: "Real projects initiated by students, mentored by faculty, and developed through community collaboration.",
     color: "from-emerald-500 to-teal-500"
   },
   {
     icon: Award,
-    title: "Faculty Mentors",
-    value: "30+",
-    description: "Experienced teachers and industry mentors guiding student projects.",
+    title: "Faculty Support",
+    value: "Dedicated",
+    description: "Experienced faculty mentors providing guidance and expertise to ensure project success.",
     color: "from-purple-500 to-pink-500"
   },
   {
     icon: Code2,
-    title: "Contributions",
-    value: "5K+",
-    description: "GitHub pull requests merged through collaborative student contributions.",
+    title: "Open-Source Focus",
+    value: "GitHub-Driven",
+    description: "Industry-standard development workflows with pull requests, code reviews, and collaborative coding practices.",
     color: "from-orange-500 to-red-500"
   },
   {
     icon: Trophy,
-    title: "Total Points",
-    value: "100K+",
-    description: "Points earned by students through Level 1, 2, and 3 contributions.",
+    title: "Recognition System",
+    value: "Merit-Based",
+    description: "Community-issued certificates and recognition for contributions, learning milestones, and project achievements.",
     color: "from-indigo-500 to-purple-500"
   },
   {
     icon: Star,
-    title: "Certificates",
-    value: "1000+",
-    description: "Recognition certificates awarded to top performers and contributors.",
+    title: "Learning Platform",
+    value: "Transparent",
+    description: "Honest assessment of skills, transparent progress tracking, and genuine opportunities for growth.",
     color: "from-amber-500 to-orange-500"
   },
 ];
@@ -92,8 +92,8 @@ const features = [
   {
     icon: Trophy,
     title: "Earn Recognition",
-    description: "Gain points through contributions, compete on the leaderboard, and earn certificates each season.",
-    benefits: ["Points system", "Leaderboard ranking", "Certificates & trophies"]
+    description: "Gain community recognition through meaningful contributions and milestone achievements.",
+    benefits: ["Community recognition", "Milestone tracking", "Achievement certificates"]
   }
 ];
 
@@ -103,27 +103,27 @@ const testimonials = [
     role: "Final Year CSE",
     company: "GECA",
     avatar: "RS",
-    content: "Contributing to real projects on this platform gave me the confidence and skills to crack my campus placements. The points system kept me motivated!",
+    content: "Contributing to real projects on this platform gave me the confidence and skills to crack my campus placements. The collaborative environment helped me learn from peers and faculty alike.",
     rating: 5,
-    achievement: "Leaderboard Rank #1"
+    achievement: "Project Contributor"
   },
   {
     name: "Ananya Verma",
     role: "Third Year IT",
     company: "GECA",
     avatar: "AV",
-    content: "I proposed a mobile app project and became a Project Admin. Leading my team and reviewing PRs taught me more than any textbook.",
+    content: "I proposed a mobile app project and became a Project Admin. Leading my team and reviewing PRs taught me more than any textbook ever could.",
     rating: 5,
-    achievement: "Best Project Award"
+    achievement: "Project Admin"
   },
   {
     name: "Arjun Patel",
     role: "Second Year ECE",
     company: "GECA",
     avatar: "AP",
-    content: "The GitHub-based workflow and faculty mentorship prepared me for real industry experience. Got my first internship because of this!",
+    content: "The GitHub-based workflow and faculty mentorship prepared me for real industry experience. Getting involved early in my college journey made all the difference.",
     rating: 5,
-    achievement: "Top 3 Contributor"
+    achievement: "Active Contributor"
   }
 ];
 
@@ -171,40 +171,6 @@ const Home = () => {
 
       <main className="relative">
         <HeroSection />
-
-        {/* Live Statistics Dashboard */}
-        <section className="py-16 px-4 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5" />
-          <div className="container mx-auto relative">
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Zap className="w-4 h-4 mr-2" />
-                Platform Statistics
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                GECA Platform by the <span className="gradient-text">Numbers</span>
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-              {stats.map((stat, index) => (
-                <div
-                  key={stat.label}
-                  className="glass-card-elevated p-6 text-center hover-lift group"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <stat.icon className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  <div className="text-3xl font-bold gradient-text mb-1">
-                    <Counter value={stat.value} suffix={stat.suffix} />
-                  </div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* Why Join CodeFest - Enhanced */}
         <section className="py-20 px-4 bg-muted/20">
@@ -441,7 +407,7 @@ const Home = () => {
                 <div className="relative z-10">
                   <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-6 py-3 mb-8">
                     <Clock className="w-5 h-5 text-primary" />
-                    <span className="text-primary text-sm font-semibold">Limited Time Offer</span>
+                    <span className="text-primary text-sm font-semibold">Early Access Available</span>
                   </div>
 
                   <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
@@ -449,16 +415,16 @@ const Home = () => {
                   </h2>
 
                   <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
-                    Join thousands of developers who are already transforming their careers.
-                    Applications close soon - don't miss your chance to be part of something extraordinary.
+                    Join our growing community of GECA students building real projects and gaining practical experience.
+                    Be among the founding members shaping the future of collaborative learning.
                   </p>
 
                   {/* Key benefits */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 max-w-4xl mx-auto">
                     {[
-                      { icon: DollarSign, text: "$50K+ in prizes" },
-                      { icon: Award, text: "Industry recognition" },
-                      { icon: Heart, text: "Lifetime community" }
+                      { icon: Users, text: "Community collaboration" },
+                      { icon: Award, text: "Faculty mentorship" },
+                      { icon: Heart, text: "GECA-focused platform" }
                     ].map((benefit, index) => (
                       <div key={index} className="flex items-center justify-center gap-3 text-foreground">
                         <benefit.icon className="w-5 h-5 text-primary" />
@@ -471,23 +437,23 @@ const Home = () => {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <button className="gradient-bg text-primary-foreground px-10 py-5 rounded-2xl font-bold text-lg hover-lift hover:shadow-2xl transition-all duration-300 flex items-center gap-3 group">
                       <Sparkles className="w-6 h-6 group-hover:animate-spin" />
-                      Register Now
+                      Join Now
                       <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </button>
 
                     <button className="glass-card px-10 py-5 rounded-2xl font-bold text-lg hover-lift transition-all duration-300 flex items-center gap-3">
                       <Play className="w-6 h-6" />
-                      Watch Demo
+                      Learn More
                     </button>
                   </div>
 
                   {/* Social proof */}
                   <div className="mt-12 pt-8 border-t border-border/50">
-                    <p className="text-sm text-muted-foreground mb-4">Trusted by developers from</p>
+                    <p className="text-sm text-muted-foreground mb-4">Supported by departments at</p>
                     <div className="flex flex-wrap justify-center gap-8 opacity-60">
-                      {["Google", "Microsoft", "Meta", "Amazon", "Netflix", "Spotify"].map((company) => (
-                        <div key={company} className="text-foreground font-semibold text-sm">
-                          {company}
+                      {["Computer Science", "Information Technology", "Electronics", "Mechanical", "Civil", "Electrical"].map((dept) => (
+                        <div key={dept} className="text-foreground font-semibold text-sm">
+                          {dept}
                         </div>
                       ))}
                     </div>
