@@ -43,14 +43,21 @@ const Login = () => {
 
       // Store token and user data
       localStorage.setItem('token', data.token);
-      localStorage.setItem('student', JSON.stringify(data.student));
+      localStorage.setItem('user', JSON.stringify(data.user));
 
       toast({
         title: "Welcome back!",
         description: "Login successful",
       });
 
-      navigate('/');
+      // Redirect based on role
+      if (data.user.role === 'student') {
+        navigate('/projects');
+      } else if (data.user.role === 'teacher' || data.user.role === 'mentor' || data.user.role === 'admin') {
+        navigate('/academics');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       toast({
         title: "Error",
