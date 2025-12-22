@@ -131,6 +131,11 @@ const StudentAcademics = ({ currentUser }) => {
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Propose Academic Project</DialogTitle>
+              <p className="text-sm text-muted-foreground mt-2">
+                <Badge variant="outline" className="bg-purple-500/10 text-purple-600 border-purple-300">
+                  Academic Section · For Course Assignments
+                </Badge>
+              </p>
             </DialogHeader>
             <form onSubmit={handleProposeProject} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

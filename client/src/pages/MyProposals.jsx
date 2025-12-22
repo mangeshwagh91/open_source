@@ -102,11 +102,14 @@ const MyProposals = () => {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-4xl font-bold gradient-text mb-2">
-                My Proposals
+                My Project Proposals
               </h1>
               <p className="text-muted-foreground text-lg">
-                Track the status of your project submissions
+                Track the status of your open-source project submissions
               </p>
+              <Badge variant="outline" className="mt-2 bg-blue-500/10 text-blue-600 border-blue-300">
+                Projects Section Proposals
+              </Badge>
             </div>
             <Button onClick={() => navigate('/propose-project')} className="gap-2">
               <Plus className="w-4 h-4" />

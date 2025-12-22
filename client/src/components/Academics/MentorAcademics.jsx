@@ -140,8 +140,11 @@ const MentorAcademics = ({ currentUser }) => {
         </div>
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold gradient-text leading-tight mb-4">Academic Management</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-          Manage students, review proposals, and assign academic projects
+          Manage students, review academic proposals, and assign course projects
         </p>
+        <Badge variant="outline" className="mt-4 bg-purple-500/10 text-purple-600 border-purple-300">
+          Academic Section · For Course Assignments & Academic Projects
+        </Badge>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
@@ -190,7 +193,7 @@ const MentorAcademics = ({ currentUser }) => {
       <Tabs defaultValue="students" className="w-full">
         <TabsList className="grid w-full grid-cols-3 mb-6">
           <TabsTrigger value="students" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Students</TabsTrigger>
-          <TabsTrigger value="proposals" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Proposals ({proposals.filter(p => p.status === 'pending').length})</TabsTrigger>
+          <TabsTrigger value="proposals" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Academic Proposals ({proposals.filter(p => p.status === 'pending').length})</TabsTrigger>
           <TabsTrigger value="projects" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Assigned Projects</TabsTrigger>
         </TabsList>
 

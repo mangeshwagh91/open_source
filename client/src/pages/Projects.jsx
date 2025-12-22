@@ -2,12 +2,14 @@ import { useState, useMemo, useEffect } from "react";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import ProjectCard from "@/components/Projects/ProjectCard";
-import { projectsAPI, contributionsAPI } from "@/lib/api";
-import { Code2, Search, Filter, Grid, List, Star, Users, GitBranch, Plus } from "lucide-react";
+import { projectsAPI, contributionsAPI, proposalsAPI } from "@/lib/api";
+import { Code2, Search, Filter, Grid, List, Star, Users, GitBranch, Plus, Clock, CheckCircle, XCircle, Eye, FileText } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,7 +18,16 @@ const Projects = () => {
   const [projectsData, setProjectsData] = useState([]);
   const [contributionStats, setContributionStats] = useState({});
   const [loading, setLoading] = useState(true);
+  const [myProposals, setMyProposals] = useState([]);
+  const [pendingProposals, setPendingProposals] = useState([]);
+  const [proposalsLoading, setProposalsLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  // Get user info from localStorage
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const isStudent = user.role === 'student';
+  const isMentor = user.role === 'admin' || user.role === 'mentor' || user.role === 'teacher';
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -37,6 +48,30 @@ const Projects = () => {
 
     fetchProjects();
   }, []);
+
+  // Fetch proposals based on user role
+  useEffect(() => {
+    const fetchProposals = async () => {
+      if (!user._id) return;
+      
+      setProposalsLoading(true);
+      try {
+        if (isStudent) {
+          const data = await proposalsAPI.getMyProposals();
+          setMyProposals(Array.isArray(data) ? data : (data.proposals || []));
+        } else if (isMentor) {
+          const data = await proposalsAPI.getAll({ status: 'pending' });
+          setPendingProposals(Array.isArray(data) ? data : (data.proposals || []));
+        }
+      } catch (error) {
+        console.error("Error fetching proposals:", error);
+      } finally {
+        setProposalsLoading(false);
+      }
+    };
+
+    fetchProposals();
+  }, [user._id, isStudent, isMentor]);
 
   // Get all unique technologies
   const allTechnologies = useMemo(() => {
@@ -75,6 +110,23 @@ const Projects = () => {
 
     return { totalProjects, totalContributors, totalTechStacks };
   }, [allTechnologies]);
+
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case 'pending':
+        return <Badge className="bg-amber-500"><Clock className="w-3 h-3 mr-1" />Pending</Badge>;
+      case 'accepted':
+        return <Badge className="bg-green-500"><CheckCircle className="w-3 h-3 mr-1" />Accepted</Badge>;
+      case 'rejected':
+        return <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" />Rejected</Badge>;
+      default:
+        return <Badge variant="secondary">{status}</Badge>;
+    }
+  };
+
+  const handleAcceptProposal = async (proposalId) => {
+    navigate(`/review-proposals`);
+  };
 
   return (
     <div className="min-h-screen bg-background main-bg-pattern">
@@ -133,6 +185,126 @@ const Projects = () => {
           {/* Decorative divider */}
           <div className="w-32 h-1 bg-gradient-to-r from-primary via-accent to-secondary rounded-full mx-auto" />
         </div>
+
+        {/* Student Proposals Section */}
+        {isStudent && myProposals.length > 0 && (
+          <div className="mb-12">
+            <Card className="glass-card-elevated">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <FileText className="w-6 h-6 text-primary" />
+                      My Project Proposals
+                    </CardTitle>
+                    <CardDescription>Track your submitted project proposals</CardDescription>
+                  </div>
+                  <Button
+                    onClick={() => navigate('/my-proposals')}
+                    variant="outline"
+                    size="sm"
+                  >
+                    View All
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {myProposals.slice(0, 3).map((proposal) => (
+                    <div key={proposal._id} className="glass-card p-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="font-semibold text-lg">{proposal.title}</h3>
+                            {getStatusBadge(proposal.status)}
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            {proposal.description?.substring(0, 120)}...
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline">{proposal.category}</Badge>
+                            <Badge variant="outline">{proposal.difficulty}</Badge>
+                            <Badge variant="outline">{proposal.expectedDuration} weeks</Badge>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => navigate(`/my-proposals`)}
+                          size="sm"
+                          variant="ghost"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Mentor Proposals Review Section */}
+        {isMentor && pendingProposals.length > 0 && (
+          <div className="mb-12">
+            <Card className="glass-card-elevated border-amber-500/20">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <Clock className="w-6 h-6 text-amber-500" />
+                      Pending Project Proposals
+                    </CardTitle>
+                    <CardDescription>Review and approve student project submissions</CardDescription>
+                  </div>
+                  <Badge className="bg-amber-500 text-white">
+                    {pendingProposals.length} Pending
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {pendingProposals.slice(0, 3).map((proposal) => (
+                    <div key={proposal._id} className="glass-card p-4 hover:shadow-md transition-shadow border-l-4 border-amber-500">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="font-semibold text-lg">{proposal.title}</h3>
+                            {getStatusBadge(proposal.status)}
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Proposed by: <span className="font-medium">{proposal.proposedBy?.name}</span>
+                          </p>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            {proposal.description?.substring(0, 120)}...
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline">{proposal.category}</Badge>
+                            <Badge variant="outline">{proposal.difficulty}</Badge>
+                            <Badge variant="outline">Team: {proposal.maxTeamSize}</Badge>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => handleAcceptProposal(proposal._id)}
+                          size="sm"
+                          className="btn-gradient"
+                        >
+                          Review
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  <Button
+                    onClick={() => navigate('/review-proposals')}
+                    className="w-full"
+                    variant="outline"
+                  >
+                    View All Pending Proposals
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Search and Filter Section */}
         <div className="mb-12 space-y-6">

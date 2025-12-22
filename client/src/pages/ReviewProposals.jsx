@@ -39,7 +39,7 @@ export default function ReviewProposals() {
       if (categoryFilter !== 'all') params.category = categoryFilter;
       
       const data = await proposalsAPI.getAll(params);
-      setProposals(data);
+      setProposals(Array.isArray(data) ? data : (data.proposals || []));
     } catch (error) {
       toast({
         title: 'Error',
@@ -54,7 +54,7 @@ export default function ReviewProposals() {
   const fetchStats = async () => {
     try {
       const data = await proposalsAPI.getStats();
-      setStats(data);
+      setStats(data.stats || data);
     } catch (error) {
       console.error('Failed to fetch stats:', error);
     }
@@ -71,7 +71,7 @@ export default function ReviewProposals() {
     }
 
     try {
-      await proposalsAPI.accept(selectedProposal._id, facultyFeedback);
+      await proposalsAPI.accept(selectedProposal._id, { facultyFeedback });
       toast({
         title: 'Proposal Accepted',
         description: 'The proposal has been accepted and published to projects',
@@ -101,7 +101,7 @@ export default function ReviewProposals() {
     }
 
     try {
-      await proposalsAPI.reject(selectedProposal._id, rejectionReason);
+      await proposalsAPI.reject(selectedProposal._id, { rejectionReason });
       toast({
         title: 'Proposal Rejected',
         description: 'The proposal has been rejected with feedback',
@@ -192,8 +192,11 @@ export default function ReviewProposals() {
       <Navbar />
       <main className="flex-1 container mx-auto px-4 py-8 mt-16">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Review Student Proposals</h1>
-          <p className="text-gray-600">Review and approve project proposals from GECA students. Accepted projects go live on the platform.</p>
+          <h1 className="text-4xl font-bold mb-2">Review Project Proposals</h1>
+          <p className="text-gray-600">Review and approve open-source project proposals from GECA students. Accepted projects go live on the platform.</p>
+          <Badge variant="outline" className="mt-2 bg-blue-500/10 text-blue-600 border-blue-300">
+            Projects Section · Not Academic Proposals
+          </Badge>
         </div>
 
         {/* Statistics Cards */}

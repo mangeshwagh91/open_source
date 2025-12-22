@@ -182,6 +182,11 @@ const ProposeProject = () => {
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Have an innovative project idea? Submit your proposal for faculty review. If approved, you'll become the Project Admin!
             </p>
+            <div className="mt-4">
+              <Badge variant="outline" className="bg-blue-500/10 text-blue-600 border-blue-300">
+                For Open Source Projects · Not for Academic Assignments
+              </Badge>
+            </div>
           </div>
 
           {/* Info Cards */}
