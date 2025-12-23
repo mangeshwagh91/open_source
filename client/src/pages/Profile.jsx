@@ -21,7 +21,11 @@ import {
   Crown,
   Target,
   TrendingUp,
-  Code2
+  Code2,
+  Trash2,
+  AlertTriangle,
+  Settings,
+  LogOut
 } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -38,6 +42,9 @@ const Profile = () => {
   });
   const [recentContributions, setRecentContributions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     // Get user from localStorage
@@ -84,6 +91,52 @@ const Profile = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText !== 'DELETE') {
+      alert('Please type DELETE to confirm');
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/students/${user._id || user.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        // Clear localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('student');
+        
+        // Redirect to home
+        alert('Your account has been deleted successfully');
+        navigate('/');
+      } else {
+        const data = await response.json();
+        alert(data.message || 'Failed to delete account');
+      }
+    } catch (error) {
+      console.error('Delete account error:', error);
+      alert('An error occurred while deleting your account');
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteDialog(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('student');
+    navigate('/login');
   };
 
   if (!user) {
@@ -151,10 +204,23 @@ const Profile = () => {
                         </div>
                       </div>
                     </div>
-                    <Button className="gradient-bg text-primary-foreground gap-2 hover:shadow-lg transition-all">
-                      <Edit className="w-4 h-4" />
-                      Edit Profile
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        className="gradient-bg text-primary-foreground gap-2 hover:shadow-lg transition-all"
+                        onClick={() => navigate('/edit-profile')}
+                      >
+                        <Edit className="w-4 h-4" />
+                        Edit Profile
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="gap-2 hover:bg-destructive/10 hover:border-destructive/50 hover:text-destructive transition-all"
+                        onClick={handleLogout}
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                      </Button>
+                    </div>
                   </div>
 
                   {/* Contact & Social */}
@@ -379,6 +445,132 @@ const Profile = () => {
               </Button>
             </div>
           </div>
+
+          {/* Account Settings Section */}
+          <div className="mt-8 glass-card p-8 rounded-2xl border-2 border-destructive/20">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 rounded-xl bg-destructive/10 flex items-center justify-center">
+                <Settings className="w-6 h-6 text-destructive" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-foreground">Account Settings</h3>
+                <p className="text-sm text-muted-foreground">Manage your account preferences</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {/* Delete Account Section */}
+              <div className="p-6 rounded-xl bg-destructive/5 border border-destructive/20">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-destructive/20 flex items-center justify-center flex-shrink-0 mt-1">
+                    <AlertTriangle className="w-5 h-5 text-destructive" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-foreground mb-2">Delete Account</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Once you delete your account, there is no going back. All your data, including contributions, 
+                      certificates, and leaderboard rankings will be permanently removed.
+                    </p>
+                    <Button 
+                      variant="destructive" 
+                      className="gap-2"
+                      onClick={() => setShowDeleteDialog(true)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      Delete Account
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Delete Confirmation Dialog */}
+          {showDeleteDialog && (
+            <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <div className="glass-card-elevated max-w-md w-full p-8 rounded-2xl animate-in fade-in zoom-in duration-200">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 rounded-full bg-destructive/20 flex items-center justify-center">
+                    <AlertTriangle className="w-7 h-7 text-destructive" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">Delete Account?</h3>
+                    <p className="text-sm text-muted-foreground">This action cannot be undone</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 mb-6">
+                  <p className="text-sm text-muted-foreground">
+                    You are about to permanently delete your account. This will:
+                  </p>
+                  <ul className="space-y-2 text-sm text-muted-foreground pl-5">
+                    <li className="flex items-start gap-2">
+                      <span className="text-destructive mt-1">•</span>
+                      <span>Remove all your personal information</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-destructive mt-1">•</span>
+                      <span>Delete your contribution history</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-destructive mt-1">•</span>
+                      <span>Remove you from the leaderboard</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-destructive mt-1">•</span>
+                      <span>Revoke all your certificates</span>
+                    </li>
+                  </ul>
+
+                  <div className="pt-4">
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Type <span className="font-bold text-destructive">DELETE</span> to confirm:
+                    </label>
+                    <input
+                      type="text"
+                      value={deleteConfirmText}
+                      onChange={(e) => setDeleteConfirmText(e.target.value)}
+                      className="w-full px-4 py-2 rounded-lg bg-muted/50 border border-border focus:border-destructive focus:outline-none focus:ring-2 focus:ring-destructive/20 transition-all"
+                      placeholder="Type DELETE"
+                      autoFocus
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => {
+                      setShowDeleteDialog(false);
+                      setDeleteConfirmText('');
+                    }}
+                    disabled={isDeleting}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    className="flex-1 gap-2"
+                    onClick={handleDeleteAccount}
+                    disabled={deleteConfirmText !== 'DELETE' || isDeleting}
+                  >
+                    {isDeleting ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Deleting...
+                      </>
+                    ) : (
+                      <>
+                        <Trash2 className="w-4 h-4" />
+                        Delete Forever
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
