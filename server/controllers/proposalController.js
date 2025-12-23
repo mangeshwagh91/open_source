@@ -187,6 +187,11 @@ export const acceptProposal = asyncHandler(async (req, res) => {
 
   // Create project from accepted proposal
   const project = await Project.create({
+    name: proposal.title,
+    description: proposal.description,
+    techStack: proposal.techStack,
+    adminName: proposal.proposedBy.name,
+    githubRepo: proposal.githubRepo,
     title: proposal.title,
     description: proposal.description,
     category: proposal.category,

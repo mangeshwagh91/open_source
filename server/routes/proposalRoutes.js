@@ -16,19 +16,19 @@ const router = express.Router();
 
 // Public/Protected routes
 router.route('/')
-  .get(protect, authorize('admin', 'mentor', 'teacher'), getProposals)
+  .get(protect, authorize('admin', 'mentor'), getProposals)
   .post(protect, createProposal);
 
 router.get('/my-proposals', protect, getMyProposals);
-router.get('/stats', protect, authorize('admin', 'mentor', 'teacher'), getProposalStats);
+router.get('/stats', protect, authorize('admin', 'mentor'), getProposalStats);
 
 router.route('/:id')
   .get(protect, getProposalById)
   .put(protect, updateProposal)
   .delete(protect, deleteProposal);
 
-// Admin/Mentor/Teacher routes
-router.post('/:id/accept', protect, authorize('admin', 'mentor', 'teacher'), acceptProposal);
-router.post('/:id/reject', protect, authorize('admin', 'mentor', 'teacher'), rejectProposal);
+// Admin/Mentor routes
+router.post('/:id/accept', protect, authorize('admin', 'mentor'), acceptProposal);
+router.post('/:id/reject', protect, authorize('admin', 'mentor'), rejectProposal);
 
 export default router;
