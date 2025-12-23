@@ -349,38 +349,16 @@ const Certificates = () => {
                       <h4 className="font-semibold text-foreground mb-1">Verify a Certificate</h4>
                       <p className="text-sm text-muted-foreground">Enter the certificate ID to verify its authenticity</p>
                     </div>
-                    <Button variant="outline" className="hover-lift">
+                    <Button 
+                      variant="outline" 
+                      className="hover-lift"
+                      onClick={() => alert('Certificate verification feature coming soon!')}
+                    >
                       Verify Now
                       <ChevronRight className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Call to Action */}
-        <section className="px-4 py-20">
-          <div className="container mx-auto">
-            <div className="glass-card-elevated p-12 md:p-16 text-center max-w-4xl mx-auto">
-              <div className="w-20 h-20 rounded-3xl gradient-bg flex items-center justify-center mx-auto mb-8">
-                <Trophy className="w-10 h-10 text-primary-foreground" />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Ready to Earn Your Certificate?
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Join CodeFest today and start your journey towards earning a recognized certificate that showcases your open-source contributions and skills.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="gradient-bg text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg hover-lift hover:shadow-xl transition-all duration-300 flex items-center gap-2">
-                  Join CodeFest
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-                <button className="glass-card px-8 py-4 rounded-xl font-semibold text-lg hover-lift transition-all duration-300">
-                  View Projects
-                </button>
               </div>
             </div>
           </div>

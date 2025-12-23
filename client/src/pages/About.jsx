@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
+import { Button } from "@/components/ui/button";
 
 const stats = [
   {
@@ -165,13 +166,19 @@ const About = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="gradient-bg text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg hover-lift hover:shadow-xl transition-all duration-300 flex items-center gap-2">
+                <Button 
+                  onClick={() => window.location.href = '/propose-project'}
+                  className="gradient-bg text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg hover-lift hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                >
                   Propose a Project
                   <ChevronRight className="w-5 h-5" />
-                </button>
-                <button className="glass-card px-8 py-4 rounded-xl font-semibold text-lg hover-lift transition-all duration-300">
+                </Button>
+                <Button 
+                  onClick={() => window.location.href = '/projects'}
+                  className="glass-card px-8 py-4 rounded-xl font-semibold text-lg hover-lift transition-all duration-300"
+                >
                   Browse Projects
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -385,13 +392,19 @@ const About = () => {
                 Join your fellow GECA students in building amazing projects. Whether you want to propose a new project or contribute to existing ones, start your journey today.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="gradient-bg text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg hover-lift hover:shadow-xl transition-all duration-300 flex items-center gap-2">
+                <Button 
+                  onClick={() => window.location.href = '/propose-project'}
+                  className="gradient-bg text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg hover-lift hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                >
                   Propose Project
                   <ChevronRight className="w-5 h-5" />
-                </button>
-                <button className="glass-card px-8 py-4 rounded-xl font-semibold text-lg hover-lift transition-all duration-300">
+                </Button>
+                <Button 
+                  onClick={() => window.location.href = '/leaderboard'}
+                  className="glass-card px-8 py-4 rounded-xl font-semibold text-lg hover-lift transition-all duration-300"
+                >
                   View Leaderboard
-                </button>
+                </Button>
               </div>
             </div>
           </div>

@@ -106,14 +106,16 @@ const HeroSection = () => {
 
         {/* Enhanced CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 opacity-0 animate-fade-in">
-          <Button
-            size="lg"
-            className="bg-white text-primary dark:bg-primary dark:text-white hover:bg-white/90 dark:hover:bg-primary/90 font-bold px-10 py-6 text-lg hover-lift hover:shadow-2xl transition-all duration-300 group border-2 border-white/30 dark:border-primary/30"
-          >
-            <Zap className="mr-3 w-6 h-6 group-hover:animate-pulse" />
-            Start Your Journey
-            <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          <NavLink to="/signup">
+            <Button
+              size="lg"
+              className="bg-white text-primary dark:bg-primary dark:text-white hover:bg-white/90 dark:hover:bg-primary/90 font-bold px-10 py-6 text-lg hover-lift hover:shadow-2xl transition-all duration-300 group border-2 border-white/30 dark:border-primary/30"
+            >
+              <Zap className="mr-3 w-6 h-6 group-hover:animate-pulse" />
+              Start Your Journey
+              <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </NavLink>
 
           <NavLink to="/about">
             <Button

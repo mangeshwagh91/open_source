@@ -446,34 +446,6 @@ const Projects = () => {
             </div>
           </div>
         )}
-
-        {/* Call to Action Section */}
-        {filteredProjects.length > 0 && (
-          <div className="mt-20 text-center">
-            <div className="glass-card-elevated p-8 md:p-12 max-w-4xl mx-auto">
-              <div className="space-y-6">
-                <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-                  <Star className="w-8 h-8 text-primary" />
-                </div>
-                <h2 className="text-3xl font-bold gradient-text">Ready to Contribute?</h2>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Join our community of developers making a difference. Every contribution counts,
-                  from fixing bugs to adding features.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button className="btn-gradient px-8 py-3">
-                    <GitBranch className="w-5 h-5 mr-2" />
-                    Start Contributing
-                  </Button>
-                  <Button variant="outline" className="px-8 py-3 border-primary/30 hover:bg-primary/10">
-                    <Users className="w-5 h-5 mr-2" />
-                    Join Community
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </main>
 
       <Footer />

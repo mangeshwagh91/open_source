@@ -102,27 +102,39 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
   
-  // Cron: auto-sync tracked repos every hour (initialize after server starts)
-  const tracked = (process.env.GITHUB_TRACKED_REPOS || '').split(',').map(s => s.trim()).filter(Boolean);
-  if (tracked.length) {
-    import('./services/githubService.js').then(({ syncRepoPRs }) => {
-      import('./services/leaderboardService.js').then(({ rebuildLeaderboardFromContributions }) => {
+  // Cron: auto-sync ALL project repos every hour (initialize after server starts)
+  import('./services/githubService.js').then(({ syncRepoPRs }) => {
+    import('./services/leaderboardService.js').then(({ rebuildLeaderboardFromContributions }) => {
+      import('./models/Project.js').then(({ default: Project }) => {
         cron.schedule('0 * * * *', async () => {
           try {
             console.log('[Cron] GitHub sync starting...');
-            for (const repo of tracked) {
-              await syncRepoPRs(repo);
+            
+            // Fetch all projects with GitHub repos
+            const projects = await Project.find({ githubRepo: { $exists: true, $ne: '' } }).select('githubRepo name');
+            console.log(`[Cron] Found ${projects.length} projects to sync`);
+            
+            // Sync each project's GitHub repo
+            for (const project of projects) {
+              try {
+                console.log(`[Cron] Syncing ${project.name}: ${project.githubRepo}`);
+                await syncRepoPRs(project.githubRepo);
+              } catch (err) {
+                console.error(`[Cron] Failed to sync ${project.name}:`, err.message);
+              }
             }
+            
+            // Rebuild leaderboard with all contributions
             await rebuildLeaderboardFromContributions();
             console.log('[Cron] GitHub sync completed.');
           } catch (err) {
             console.error('[Cron] GitHub sync failed:', err.message);
           }
         });
-        console.log(`[Cron] Scheduled auto-sync for ${tracked.length} repositories`);
+        console.log('[Cron] Scheduled hourly auto-sync for all project repositories');
       });
     });
-  }
+  });
 });
 
 export default app;

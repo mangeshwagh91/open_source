@@ -435,16 +435,22 @@ const Home = () => {
 
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button className="gradient-bg text-primary-foreground px-10 py-5 rounded-2xl font-bold text-lg hover-lift hover:shadow-2xl transition-all duration-300 flex items-center gap-3 group">
+                    <Button 
+                      onClick={() => window.location.href = '/signup'}
+                      className="gradient-bg text-primary-foreground px-10 py-5 rounded-2xl font-bold text-lg hover-lift hover:shadow-2xl transition-all duration-300 flex items-center gap-3 group"
+                    >
                       <Sparkles className="w-6 h-6 group-hover:animate-spin" />
                       Join Now
                       <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </button>
+                    </Button>
 
-                    <button className="glass-card px-10 py-5 rounded-2xl font-bold text-lg hover-lift transition-all duration-300 flex items-center gap-3">
+                    <Button 
+                      onClick={() => window.location.href = '/about'}
+                      className="glass-card px-10 py-5 rounded-2xl font-bold text-lg hover-lift transition-all duration-300 flex items-center gap-3"
+                    >
                       <Play className="w-6 h-6" />
                       Learn More
-                    </button>
+                    </Button>
                   </div>
 
                   {/* Social proof */}

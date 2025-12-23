@@ -28,6 +28,65 @@ const Roadmap = () => {
   // Expanded roadmap data for different tracks
   const learningTracks = [
     {
+      id: "github-mastery",
+      title: "GitHub Mastery",
+      icon: Github,
+      description: "Master version control and collaboration with Git and GitHub. Learn everything from basic commands to advanced workflows.",
+      difficulty: "Beginner",
+      duration: "4-6 weeks",
+      color: "from-orange-500 to-red-500",
+      steps: [
+        { 
+          title: "Git Fundamentals", 
+          description: "Learn the basics of version control, Git installation, and essential commands.",
+          resources: [
+            { name: "Git Official Docs", url: "https://git-scm.com/doc" },
+            { name: "Git Tutorial", url: "https://www.atlassian.com/git/tutorials" }
+          ]
+        },
+        { 
+          title: "GitHub Basics", 
+          description: "Create repositories, manage issues, and understand GitHub's interface.",
+          resources: [
+            { name: "GitHub Docs", url: "https://docs.github.com/en" },
+            { name: "GitHub Skills", url: "https://skills.github.com/" }
+          ]
+        },
+        { 
+          title: "Branching & Merging", 
+          description: "Master branch management, merge strategies, and conflict resolution.",
+          resources: [
+            { name: "Git Branching", url: "https://learngitbranching.js.org/" },
+            { name: "GitHub Flow", url: "https://guides.github.com/introduction/flow/" }
+          ]
+        },
+        { 
+          title: "Pull Requests & Code Review", 
+          description: "Contribute to projects through pull requests and conduct code reviews.",
+          resources: [
+            { name: "PR Best Practices", url: "https://github.com/skills/review-pull-requests" },
+            { name: "Code Review Guide", url: "https://google.github.io/eng-practices/review/" }
+          ]
+        },
+        { 
+          title: "GitHub Actions", 
+          description: "Automate workflows with CI/CD pipelines and GitHub Actions.",
+          resources: [
+            { name: "Actions Documentation", url: "https://docs.github.com/en/actions" },
+            { name: "Actions Quickstart", url: "https://github.com/features/actions" }
+          ]
+        },
+        { 
+          title: "Advanced Workflows", 
+          description: "Rebase, cherry-pick, stash, and other advanced Git operations.",
+          resources: [
+            { name: "Pro Git Book", url: "https://git-scm.com/book/en/v2" },
+            { name: "Git Advanced", url: "https://www.atlassian.com/git/tutorials/advanced-overview" }
+          ]
+        }
+      ]
+    },
+    {
       id: "web-dev",
       title: "Web Development",
       icon: Globe,
@@ -479,23 +538,6 @@ const Roadmap = () => {
             </div>
           ))}
         </div>
-
-        {/* GitHub Tutorials Section (keeping existing) */}
-        {roadmapsData.length > 0 && (
-          <div className="mt-20">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold gradient-text mb-4">GitHub Learning Tracks</h2>
-              <p className="text-muted-foreground">Hands-on tutorials for mastering GitHub workflows</p>
-            </div>
-            <div className="space-y-8">
-              {roadmapsData.map((roadmap, index) => (
-                <div key={index} className="opacity-0 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <RoadmapCard roadmap={roadmap} />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </main>
 
       <Footer />
