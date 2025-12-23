@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.route('/')
   .get(validate(querySchema), getProjects)
-  .post(protect, authorize('admin'), validate(projectSchema), createProject);
+  .post(protect, authorize('mentor'), validate(projectSchema), createProject);
 
 router.route('/:id')
   .get(validate(projectSchema), getProjectById)
