@@ -8,6 +8,10 @@ const HeroSection = () => {
   const [currentWord, setCurrentWord] = useState(0);
   const words = ["Build", "Contribute", "Lead"];
 
+  // Check if user is logged in
+  const isLoggedIn = localStorage.getItem('token') || localStorage.getItem('user');
+  const journeyLink = isLoggedIn ? "/projects" : "/signup";
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWord((prev) => (prev + 1) % words.length);
@@ -106,7 +110,7 @@ const HeroSection = () => {
 
         {/* Enhanced CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 opacity-0 animate-fade-in">
-          <NavLink to="/signup">
+          <NavLink to={journeyLink}>
             <Button
               size="lg"
               className="bg-white text-primary dark:bg-primary dark:text-white hover:bg-white/90 dark:hover:bg-primary/90 font-bold px-10 py-6 text-lg hover-lift hover:shadow-2xl transition-all duration-300 group border-2 border-white/30 dark:border-primary/30"

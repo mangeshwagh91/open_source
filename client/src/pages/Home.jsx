@@ -158,6 +158,10 @@ const Counter = ({ value, suffix, duration = 2000 }) => {
 const Home = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
+  // Check if user is logged in
+  const isLoggedIn = localStorage.getItem('token') || localStorage.getItem('user');
+  const journeyLink = isLoggedIn ? "/projects" : "/signup";
+
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
@@ -436,7 +440,7 @@ const Home = () => {
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button 
-                      onClick={() => window.location.href = '/signup'}
+                      onClick={() => window.location.href = journeyLink}
                       className="gradient-bg text-primary-foreground px-10 py-5 rounded-2xl font-bold text-lg hover-lift hover:shadow-2xl transition-all duration-300 flex items-center gap-3 group"
                     >
                       <Sparkles className="w-6 h-6 group-hover:animate-spin" />
