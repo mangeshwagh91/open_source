@@ -10,7 +10,7 @@ const POINTS_MAP = {
   'Level-3': Number(process.env.GITHUB_POINTS_LEVEL_3 || 30),
 };
 
-const parseRepoUrl = (repoUrlOrSlug) => {
+export const parseRepoUrl = (repoUrlOrSlug) => {
   // Accepts full URL or owner/repo
   try {
     if (repoUrlOrSlug.includes('://')) {
@@ -25,7 +25,7 @@ const parseRepoUrl = (repoUrlOrSlug) => {
   throw new Error('Invalid repository URL or slug. Expected https://github.com/<owner>/<repo> or <owner>/<repo>.');
 };
 
-const getGitHubHeaders = () => ({
+export const getGitHubHeaders = () => ({
   'Accept': 'application/vnd.github+json',
   'User-Agent': 'GECA-Contrib-Service',
   ...(process.env.GITHUB_TOKEN ? { 'Authorization': `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
