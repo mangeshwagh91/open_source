@@ -170,7 +170,7 @@ const MyProposals = () => {
                       <div className="flex items-center gap-2 text-sm">
                         <Users className="w-4 h-4 text-muted-foreground" />
                         <span className="text-muted-foreground">Team:</span>
-                        <span className="font-medium">{proposal.maxTeamSize} max</span>
+                        <span className="font-medium">{(!proposal.maxTeamSize || proposal.maxTeamSize >= 9999) ? 'Unlimited' : proposal.maxTeamSize} max</span>
                       </div>
                     </div>
 

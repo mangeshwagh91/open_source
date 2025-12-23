@@ -280,7 +280,7 @@ const Projects = () => {
                           <div className="flex flex-wrap gap-2">
                             <Badge variant="outline">{proposal.category}</Badge>
                             <Badge variant="outline">{proposal.difficulty}</Badge>
-                            <Badge variant="outline">Team: {proposal.maxTeamSize}</Badge>
+                            <Badge variant="outline">Team: {(!proposal.maxTeamSize || proposal.maxTeamSize >= 9999) ? 'Unlimited' : proposal.maxTeamSize}</Badge>
                           </div>
                         </div>
                         <Button

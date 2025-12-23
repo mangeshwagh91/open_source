@@ -343,7 +343,7 @@ export default function ReviewProposals() {
                         </div>
                         <div className="flex items-center gap-1">
                           <Users className="w-4 h-4" />
-                          Max {proposal.maxTeamSize} members
+                          Max {(!proposal.maxTeamSize || proposal.maxTeamSize >= 9999) ? 'Unlimited' : proposal.maxTeamSize} members
                         </div>
                         <a
                           href={proposal.githubRepo}
@@ -442,7 +442,7 @@ export default function ReviewProposals() {
                     </div>
                     <div>
                       <h4 className="font-semibold mb-2">Max Team Size</h4>
-                      <p className="text-gray-700">{selectedProposal.maxTeamSize} members</p>
+                      <p className="text-gray-700">{(!selectedProposal.maxTeamSize || selectedProposal.maxTeamSize >= 9999) ? 'Unlimited' : selectedProposal.maxTeamSize} members</p>
                     </div>
                   </div>
                   

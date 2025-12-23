@@ -354,7 +354,6 @@ const ProposeProject = () => {
                         id="maxTeamSize"
                         type="number"
                         min="1"
-                        max="10"
                         value={formData.maxTeamSize}
                         onChange={(e) => handleChange('maxTeamSize', parseInt(e.target.value))}
                         required
