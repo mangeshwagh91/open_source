@@ -109,7 +109,7 @@ const Projects = () => {
     const totalTechStacks = allTechnologies.length - 1; // Exclude "All"
 
     return { totalProjects, totalContributors, totalTechStacks };
-  }, [allTechnologies]);
+  }, [projectsData.length, allTechnologies.length]);
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -125,7 +125,7 @@ const Projects = () => {
   };
 
   const handleAcceptProposal = async (proposalId) => {
-    navigate(`/review-proposals`);
+    navigate("/review-proposals");
   };
 
   return (
@@ -228,7 +228,7 @@ const Projects = () => {
                           </div>
                         </div>
                         <Button
-                          onClick={() => navigate(`/my-proposals`)}
+                          onClick={() => navigate("/my-proposals")}
                           size="sm"
                           variant="ghost"
                         >

@@ -3,7 +3,7 @@ import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import RoadmapCard from "@/components/Roadmap/RoadmapCard";
 import { roadmapsAPI } from "@/lib/api";
-import { Code2, Database, Cloud, Shield, Smartphone, Globe } from "lucide-react";
+import { Code2, Database, Cloud, Shield, Smartphone, Globe, ExternalLink, Github, BookOpen } from "lucide-react";
 
 const Roadmap = () => {
   const [roadmapsData, setRoadmapsData] = useState([]);
@@ -36,12 +36,54 @@ const Roadmap = () => {
       duration: "6-12 months",
       color: "from-blue-500 to-cyan-500",
       steps: [
-        { title: "HTML & CSS Fundamentals", description: "Learn semantic HTML and modern CSS techniques" },
-        { title: "JavaScript Essentials", description: "Master JavaScript programming and DOM manipulation" },
-        { title: "Frontend Frameworks", description: "React, Vue.js, or Angular development" },
-        { title: "Backend Development", description: "Node.js, Express, and API design" },
-        { title: "Full-Stack Projects", description: "Build complete web applications" },
-        { title: "Advanced Topics", description: "Performance, security, and deployment" }
+        { 
+          title: "HTML & CSS Fundamentals", 
+          description: "Learn semantic HTML and modern CSS techniques",
+          resources: [
+            { name: "MDN Web Docs", url: "https://developer.mozilla.org/" },
+            { name: "CSS Tricks", url: "https://css-tricks.com/" }
+          ]
+        },
+        { 
+          title: "JavaScript Essentials", 
+          description: "Master JavaScript programming and DOM manipulation",
+          resources: [
+            { name: "JavaScript.info", url: "https://javascript.info/" },
+            { name: "freeCodeCamp JS", url: "https://www.freecodecamp.org/learn/javascript/" }
+          ]
+        },
+        { 
+          title: "Frontend Frameworks", 
+          description: "React, Vue.js, or Angular development",
+          resources: [
+            { name: "React Docs", url: "https://react.dev/" },
+            { name: "Vue Guide", url: "https://vuejs.org/guide/" }
+          ]
+        },
+        { 
+          title: "Backend Development", 
+          description: "Node.js, Express, and API design",
+          resources: [
+            { name: "Node.js Docs", url: "https://nodejs.org/docs/" },
+            { name: "Express Guide", url: "https://expressjs.com/" }
+          ]
+        },
+        { 
+          title: "Full-Stack Projects", 
+          description: "Build complete web applications",
+          resources: [
+            { name: "The Odin Project", url: "https://www.theodinproject.com/" },
+            { name: "Full Stack Open", url: "https://fullstackopen.com/" }
+          ]
+        },
+        { 
+          title: "Advanced Topics", 
+          description: "Performance, security, and deployment",
+          resources: [
+            { name: "Web Dev Performance", url: "https://web.dev/" },
+            { name: "OWASP Security", url: "https://owasp.org/" }
+          ]
+        }
       ]
     },
     {
@@ -53,12 +95,54 @@ const Roadmap = () => {
       duration: "4-8 months",
       color: "from-green-500 to-emerald-500",
       steps: [
-        { title: "Mobile UI/UX Design", description: "Design principles for mobile interfaces" },
-        { title: "React Native Basics", description: "Cross-platform mobile development" },
-        { title: "Native Android/iOS", description: "Platform-specific development" },
-        { title: "App Store Deployment", description: "Publishing and distribution" },
-        { title: "Advanced Features", description: "Push notifications, offline support" },
-        { title: "Performance Optimization", description: "App performance and user experience" }
+        { 
+          title: "Mobile UI/UX Design", 
+          description: "Design principles for mobile interfaces",
+          resources: [
+            { name: "Material Design", url: "https://material.io/" },
+            { name: "Apple HIG", url: "https://developer.apple.com/design/human-interface-guidelines/" }
+          ]
+        },
+        { 
+          title: "React Native Basics", 
+          description: "Cross-platform mobile development",
+          resources: [
+            { name: "React Native Docs", url: "https://reactnative.dev/" },
+            { name: "Expo Docs", url: "https://docs.expo.dev/" }
+          ]
+        },
+        { 
+          title: "Native Android/iOS", 
+          description: "Platform-specific development",
+          resources: [
+            { name: "Android Dev", url: "https://developer.android.com/" },
+            { name: "iOS Dev", url: "https://developer.apple.com/swift/" }
+          ]
+        },
+        { 
+          title: "App Store Deployment", 
+          description: "Publishing and distribution",
+          resources: [
+            { name: "Play Store Guide", url: "https://play.google.com/console/" },
+            { name: "App Store Guide", url: "https://appstoreconnect.apple.com/" }
+          ]
+        },
+        { 
+          title: "Advanced Features", 
+          description: "Push notifications, offline support",
+          resources: [
+            { name: "Firebase Docs", url: "https://firebase.google.com/docs" },
+            { name: "React Query", url: "https://tanstack.com/query/" }
+          ]
+        },
+        { 
+          title: "Performance Optimization", 
+          description: "App performance and user experience",
+          resources: [
+            { name: "Android Performance", url: "https://developer.android.com/topic/performance" },
+            { name: "iOS Performance", url: "https://developer.apple.com/performance/" }
+          ]
+        }
       ]
     },
     {
@@ -70,12 +154,54 @@ const Roadmap = () => {
       duration: "6-12 months",
       color: "from-purple-500 to-pink-500",
       steps: [
-        { title: "Python for Data Science", description: "Python programming and data manipulation" },
-        { title: "Statistics & Mathematics", description: "Statistical analysis and probability" },
-        { title: "Machine Learning", description: "Supervised and unsupervised learning" },
-        { title: "Deep Learning", description: "Neural networks and AI models" },
-        { title: "Data Visualization", description: "Creating insightful data visualizations" },
-        { title: "Real-world Projects", description: "Applied data science projects" }
+        { 
+          title: "Python for Data Science", 
+          description: "Python programming and data manipulation",
+          resources: [
+            { name: "Python Docs", url: "https://docs.python.org/" },
+            { name: "Pandas Docs", url: "https://pandas.pydata.org/docs/" }
+          ]
+        },
+        { 
+          title: "Statistics & Mathematics", 
+          description: "Statistical analysis and probability",
+          resources: [
+            { name: "Khan Academy Stats", url: "https://www.khanacademy.org/math/statistics-probability" },
+            { name: "3Blue1Brown", url: "https://www.3blue1brown.com/" }
+          ]
+        },
+        { 
+          title: "Machine Learning", 
+          description: "Supervised and unsupervised learning",
+          resources: [
+            { name: "Scikit-learn", url: "https://scikit-learn.org/" },
+            { name: "Google ML Crash Course", url: "https://developers.google.com/machine-learning/crash-course" }
+          ]
+        },
+        { 
+          title: "Deep Learning", 
+          description: "Neural networks and AI models",
+          resources: [
+            { name: "TensorFlow", url: "https://www.tensorflow.org/" },
+            { name: "PyTorch", url: "https://pytorch.org/" }
+          ]
+        },
+        { 
+          title: "Data Visualization", 
+          description: "Creating insightful data visualizations",
+          resources: [
+            { name: "Matplotlib", url: "https://matplotlib.org/" },
+            { name: "Plotly", url: "https://plotly.com/python/" }
+          ]
+        },
+        { 
+          title: "Real-world Projects", 
+          description: "Applied data science projects",
+          resources: [
+            { name: "Kaggle", url: "https://www.kaggle.com/" },
+            { name: "Hugging Face", url: "https://huggingface.co/" }
+          ]
+        }
       ]
     },
     {
@@ -87,12 +213,54 @@ const Roadmap = () => {
       duration: "4-8 months",
       color: "from-orange-500 to-red-500",
       steps: [
-        { title: "Version Control & Git", description: "Advanced Git workflows and collaboration" },
-        { title: "CI/CD Pipelines", description: "Automated testing and deployment" },
-        { title: "Containerization", description: "Docker and container orchestration" },
-        { title: "Cloud Platforms", description: "AWS, Azure, or GCP fundamentals" },
-        { title: "Infrastructure as Code", description: "Automated infrastructure management" },
-        { title: "Monitoring & Security", description: "System monitoring and security practices" }
+        { 
+          title: "Version Control & Git", 
+          description: "Advanced Git workflows and collaboration",
+          resources: [
+            { name: "Git Documentation", url: "https://git-scm.com/doc" },
+            { name: "Atlassian Git Tutorials", url: "https://www.atlassian.com/git/tutorials" }
+          ]
+        },
+        { 
+          title: "CI/CD Pipelines", 
+          description: "Automated testing and deployment",
+          resources: [
+            { name: "GitHub Actions", url: "https://docs.github.com/en/actions" },
+            { name: "Jenkins", url: "https://www.jenkins.io/" }
+          ]
+        },
+        { 
+          title: "Containerization", 
+          description: "Docker and container orchestration",
+          resources: [
+            { name: "Docker Docs", url: "https://docs.docker.com/" },
+            { name: "Kubernetes", url: "https://kubernetes.io/docs/" }
+          ]
+        },
+        { 
+          title: "Cloud Platforms", 
+          description: "AWS, Azure, or GCP fundamentals",
+          resources: [
+            { name: "AWS Free Tier", url: "https://aws.amazon.com/free/" },
+            { name: "Google Cloud", url: "https://cloud.google.com/docs" }
+          ]
+        },
+        { 
+          title: "Infrastructure as Code", 
+          description: "Automated infrastructure management",
+          resources: [
+            { name: "Terraform", url: "https://www.terraform.io/" },
+            { name: "Ansible", url: "https://docs.ansible.com/" }
+          ]
+        },
+        { 
+          title: "Monitoring & Security", 
+          description: "System monitoring and security practices",
+          resources: [
+            { name: "Prometheus", url: "https://prometheus.io/" },
+            { name: "OWASP DevOps", url: "https://owasp.org/" }
+          ]
+        }
       ]
     },
     {
@@ -104,12 +272,54 @@ const Roadmap = () => {
       duration: "6-12 months",
       color: "from-red-500 to-pink-500",
       steps: [
-        { title: "Security Fundamentals", description: "Basic security concepts and principles" },
-        { title: "Network Security", description: "Network protocols and security measures" },
-        { title: "Web Application Security", description: "OWASP top 10 and secure coding" },
-        { title: "Ethical Hacking", description: "Penetration testing and vulnerability assessment" },
-        { title: "Cryptography", description: "Encryption and secure communication" },
-        { title: "Incident Response", description: "Security incident handling and recovery" }
+        { 
+          title: "Security Fundamentals", 
+          description: "Basic security concepts and principles",
+          resources: [
+            { name: "OWASP Top 10", url: "https://owasp.org/www-project-top-ten/" },
+            { name: "Security Academy", url: "https://www.cybrary.it/" }
+          ]
+        },
+        { 
+          title: "Network Security", 
+          description: "Network protocols and security measures",
+          resources: [
+            { name: "Wireshark", url: "https://www.wireshark.org/" },
+            { name: "TryHackMe", url: "https://tryhackme.com/" }
+          ]
+        },
+        { 
+          title: "Web Application Security", 
+          description: "OWASP top 10 and secure coding",
+          resources: [
+            { name: "OWASP WebGoat", url: "https://owasp.org/www-project-webgoat/" },
+            { name: "HackTheBox", url: "https://www.hackthebox.com/" }
+          ]
+        },
+        { 
+          title: "Ethical Hacking", 
+          description: "Penetration testing and vulnerability assessment",
+          resources: [
+            { name: "CEH Prep", url: "https://www.eccouncil.org/" },
+            { name: "Metasploit", url: "https://www.metasploit.com/" }
+          ]
+        },
+        { 
+          title: "Cryptography", 
+          description: "Encryption and secure communication",
+          resources: [
+            { name: "Crypto101", url: "https://www.crypto101.io/" },
+            { name: "Khan Academy Crypto", url: "https://www.khanacademy.org/" }
+          ]
+        },
+        { 
+          title: "Incident Response", 
+          description: "Security incident handling and recovery",
+          resources: [
+            { name: "NIST Incident Response", url: "https://csrc.nist.gov/" },
+            { name: "IR Best Practices", url: "https://www.sans.org/" }
+          ]
+        }
       ]
     },
     {
@@ -121,12 +331,54 @@ const Roadmap = () => {
       duration: "4-8 months",
       color: "from-indigo-500 to-purple-500",
       steps: [
-        { title: "Software Design Patterns", description: "Common design patterns and architecture" },
-        { title: "Testing & Quality Assurance", description: "Unit testing, integration testing" },
-        { title: "Agile Methodologies", description: "Scrum, Kanban, and agile practices" },
-        { title: "Code Quality", description: "Clean code, refactoring, and best practices" },
-        { title: "API Design", description: "RESTful APIs and microservices" },
-        { title: "Project Management", description: "Leading development teams and projects" }
+        { 
+          title: "Software Design Patterns", 
+          description: "Common design patterns and architecture",
+          resources: [
+            { name: "Refactoring.Guru", url: "https://refactoring.guru/" },
+            { name: "Design Patterns", url: "https://www.patterns.dev/" }
+          ]
+        },
+        { 
+          title: "Testing & Quality Assurance", 
+          description: "Unit testing, integration testing",
+          resources: [
+            { name: "Jest Testing", url: "https://jestjs.io/" },
+            { name: "Testing Library", url: "https://testing-library.com/" }
+          ]
+        },
+        { 
+          title: "Agile Methodologies", 
+          description: "Scrum, Kanban, and agile practices",
+          resources: [
+            { name: "Scrum Guide", url: "https://scrumguides.org/" },
+            { name: "Atlassian Agile", url: "https://www.atlassian.com/agile" }
+          ]
+        },
+        { 
+          title: "Code Quality", 
+          description: "Clean code, refactoring, and best practices",
+          resources: [
+            { name: "Clean Code", url: "https://www.oreilly.com/" },
+            { name: "Code Review Best Practices", url: "https://google.github.io/eng-practices/" }
+          ]
+        },
+        { 
+          title: "API Design", 
+          description: "RESTful APIs and microservices",
+          resources: [
+            { name: "REST Guidelines", url: "https://restfulapi.net/" },
+            { name: "API Design Patterns", url: "https://microservices.io/" }
+          ]
+        },
+        { 
+          title: "Project Management", 
+          description: "Leading development teams and projects",
+          resources: [
+            { name: "Project Management Institute", url: "https://www.pmi.org/" },
+            { name: "Agile Alliance", url: "https://www.agilealliance.org/" }
+          ]
+        }
       ]
     }
   ];
@@ -193,8 +445,24 @@ const Roadmap = () => {
                             </div>
                           </div>
                           <div className="flex-1">
-                            <h4 className="font-semibold mb-1">{step.title}</h4>
-                            <p className="text-sm text-muted-foreground">{step.description}</p>
+                            <h4 className="font-semibold mb-2">{step.title}</h4>
+                            <p className="text-sm text-muted-foreground mb-3">{step.description}</p>
+                            {step.resources && step.resources.length > 0 && (
+                              <div className="flex flex-wrap gap-2">
+                                {step.resources.map((resource) => (
+                                  <a
+                                    key={resource.url}
+                                    href={resource.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-primary/10 hover:bg-primary/20 rounded-md text-xs text-primary transition-colors"
+                                  >
+                                    <ExternalLink className="w-3 h-3" />
+                                    {resource.name}
+                                  </a>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         </div>
                       ))}
