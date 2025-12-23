@@ -1,4 +1,5 @@
 import Student from '../models/Student.js';
+import User from '../models/User.js';
 import { asyncHandler } from '../middleware/validationMiddleware.js';
 
 // @desc    Get all students with pagination, filtering, sorting
@@ -81,17 +82,25 @@ export const updateStudent = asyncHandler(async (req, res) => {
   res.json(student);
 });
 
-// @desc    Delete student
+// @desc    Delete student or user (mentor/admin)
 // @route   DELETE /api/students/:id
-// @access  Private (Admin only)
+// @access  Private (Admin, Mentor, or Own Account)
 export const deleteStudent = asyncHandler(async (req, res) => {
-  const student = await Student.findByIdAndDelete(req.params.id);
+  // Try to find and delete from Student model first
+  let student = await Student.findByIdAndDelete(req.params.id);
 
-  if (!student) {
-    return res.status(404).json({ message: 'Student not found' });
+  if (student) {
+    return res.json({ message: 'Student account deleted successfully' });
   }
 
-  res.json({ message: 'Student deleted successfully' });
+  // If not found in Student model, try User model (for mentors/admins)
+  const user = await User.findByIdAndDelete(req.params.id);
+
+  if (!user) {
+    return res.status(404).json({ message: 'Account not found' });
+  }
+
+  res.json({ message: 'User account deleted successfully' });
 });
 
 // @desc    Get students by passing year
