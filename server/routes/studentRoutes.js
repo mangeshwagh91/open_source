@@ -23,6 +23,6 @@ router.route('/year/:year')
 router.route('/:id')
   .get(getStudentById)
   .put(protect, authorize('admin'), validate(studentSchema), updateStudent)
-  .delete(protect, authorize('admin'), validate(studentSchema), deleteStudent);
+  .delete(protect, authorize('admin', 'mentor'), deleteStudent);
 
 export default router;

@@ -44,6 +44,12 @@ export const authorize = (...roles) => {
       return res.status(401).json({ message: 'Not authorized' });
     }
 
+    // Allow users to access their own resources (checking if ID in route matches user ID)
+    const resourceId = req.params.id;
+    if (resourceId && (req.user._id?.toString() === resourceId || req.user.id?.toString() === resourceId)) {
+      return next();
+    }
+
     // Check if user has a role field (User model has roles, Student model doesn't)
     if (req.user.role) {
       // User model - check if role matches
