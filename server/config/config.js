@@ -1,5 +1,8 @@
+// Remove trailing slash from CLIENT_URL if present
+const clientUrl = process.env.CLIENT_URL?.replace(/\/$/, '') || 'http://localhost:3000';
+
 export const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: clientUrl,
   credentials: true,
   optionsSuccessStatus: 200
 };
