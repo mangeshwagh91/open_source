@@ -1,5 +1,15 @@
+const clientUrl = process.env.CLIENT_URL?.replace(/\/$/, '') || 'http://localhost:5173';
+const allowedOrigins = Array.isArray(clientUrl) ? clientUrl : [
+  clientUrl,
+  'http://localhost:5173',
+  'http://localhost:8080',
+  'http://localhost:8081',
+  'http://localhost:8082',
+  'http://localhost:8083'
+];
+
 export const corsOptions = {
-  origin: process.env.CLIENT_URL || ['http://localhost:5173', 'http://localhost:8080', 'http://localhost:8081', 'http://localhost:8082', 'http://localhost:8083'],
+  origin: allowedOrigins,
   credentials: true,
   optionsSuccessStatus: 200
 };
