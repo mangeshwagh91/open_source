@@ -58,7 +58,6 @@ const projectProposalSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Maximum team size is required'],
     min: [1, 'Team size must be at least 1'],
-    max: [10, 'Team size cannot exceed 10'],
     default: 4
   },
   proposedBy: {
