@@ -18,29 +18,18 @@ export const useGithubRepo = (githubUrl) => {
       }
 
       try {
-        // Extract owner and repo from GitHub URL
-        const match = githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
-        if (!match) {
-          throw new Error('Invalid GitHub URL');
-        }
-
-        const [, owner, repo] = match;
-        const cleanRepo = repo.replace(/\.git$/, '');
-
-        // Fetch from GitHub API
-        const response = await fetch(`https://api.github.com/repos/${owner}/${cleanRepo}`);
-        
+        // Call backend proxy endpoint
+        const response = await fetch(`/api/github/repo?repoUrl=${encodeURIComponent(githubUrl)}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch repository data');
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || 'Failed to fetch repository data');
         }
-
         const data = await response.json();
-
         setRepoData({
-          stars: data.stargazers_count || 0,
-          forks: data.forks_count || 0,
-          watchers: data.watchers_count || 0,
-          updatedAt: data.updated_at,
+          stars: data.stars || 0,
+          forks: data.forks || 0,
+          watchers: data.watchers || 0,
+          updatedAt: data.updatedAt,
           loading: false,
           error: null
         });
