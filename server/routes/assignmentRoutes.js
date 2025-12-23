@@ -15,14 +15,14 @@ const router = express.Router();
 
 router.route('/')
   .get(getAssignments)
-  .post(protect, authorize('admin'), validate(assignmentSchema), createAssignment);
+  .post(protect, authorize('admin', 'mentor'), validate(assignmentSchema), createAssignment);
 
 router.route('/student/:studentId')
   .get(getAssignmentsByStudent);
 
 router.route('/:id')
   .get(getAssignmentById)
-  .put(protect, authorize('admin'), validate(assignmentSchema), updateAssignment)
-  .delete(protect, authorize('admin'), validate(assignmentSchema), deleteAssignment);
+  .put(protect, authorize('admin', 'mentor'), validate(assignmentSchema), updateAssignment)
+  .delete(protect, authorize('admin', 'mentor'), validate(assignmentSchema), deleteAssignment);
 
 export default router;

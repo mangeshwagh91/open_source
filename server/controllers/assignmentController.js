@@ -3,7 +3,7 @@ import { asyncHandler } from '../middleware/validationMiddleware.js';
 
 // @desc    Get all project assignments with pagination, filtering
 // @route   GET /api/assignments
-// @access  Private (Admin only)
+// @access  Private (mentor only)
 export const getAssignments = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
@@ -43,7 +43,7 @@ export const getAssignments = asyncHandler(async (req, res) => {
 
 // @desc    Get single assignment
 // @route   GET /api/assignments/:id
-// @access  Private (Admin only)
+// @access  Private (mentor only)
 export const getAssignmentById = asyncHandler(async (req, res) => {
   const assignment = await ProjectAssignment.findById(req.params.id)
     .populate('assignedTo', 'name studentId class email avatar');
@@ -57,7 +57,7 @@ export const getAssignmentById = asyncHandler(async (req, res) => {
 
 // @desc    Create new assignment
 // @route   POST /api/assignments
-// @access  Private (Admin only)
+// @access  Private (mentor only)
 export const createAssignment = asyncHandler(async (req, res) => {
   const assignment = await ProjectAssignment.create(req.body);
   const populatedAssignment = await ProjectAssignment.findById(assignment._id)
@@ -68,7 +68,7 @@ export const createAssignment = asyncHandler(async (req, res) => {
 
 // @desc    Update assignment
 // @route   PUT /api/assignments/:id
-// @access  Private (Admin only)
+// @access  Private (mentor only)
 export const updateAssignment = asyncHandler(async (req, res) => {
   const assignment = await ProjectAssignment.findByIdAndUpdate(
     req.params.id,
@@ -85,7 +85,7 @@ export const updateAssignment = asyncHandler(async (req, res) => {
 
 // @desc    Delete assignment
 // @route   DELETE /api/assignments/:id
-// @access  Private (Admin only)
+// @access  Private (mentor only)
 export const deleteAssignment = asyncHandler(async (req, res) => {
   const assignment = await ProjectAssignment.findByIdAndDelete(req.params.id);
 
@@ -98,7 +98,7 @@ export const deleteAssignment = asyncHandler(async (req, res) => {
 
 // @desc    Get assignments for a specific student
 // @route   GET /api/assignments/student/:studentId
-// @access  Private (Admin only)
+// @access  Private (mentor only)
 export const getAssignmentsByStudent = asyncHandler(async (req, res) => {
   const assignments = await ProjectAssignment.find({
     assignedTo: req.params.studentId
