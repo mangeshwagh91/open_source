@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { GraduationCap, Eye, EyeOff } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const ResetPassword = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -64,7 +66,7 @@ const ResetPassword = () => {
     setLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/auth/reset-password', {
+      const response = await fetch(`${API_URL}/auth/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

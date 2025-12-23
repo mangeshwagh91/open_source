@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { GraduationCap, Eye, EyeOff } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -27,7 +29,7 @@ const Login = () => {
     setLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

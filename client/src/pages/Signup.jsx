@@ -14,6 +14,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showMentorPassword, setShowMentorPassword] = useState(false);
@@ -83,7 +84,7 @@ const Signup = () => {
     setLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/auth/signup', {
+      const response = await fetch(`${API_URL}/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -154,7 +155,7 @@ const Signup = () => {
     setLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/auth/signup-user', {
+      const response = await fetch(`${API_URL}/auth/signup-user`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

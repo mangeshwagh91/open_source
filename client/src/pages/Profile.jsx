@@ -24,6 +24,8 @@ import {
   Code2
 } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const Profile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -60,7 +62,7 @@ const Profile = () => {
   const fetchUserStats = async (userId) => {
     try {
       // Fetch user stats from leaderboard
-      const leaderboardRes = await fetch('http://localhost:5000/api/leaderboard');
+      const leaderboardRes = await fetch(`${API_URL}/leaderboard`);
       const leaderboardData = await leaderboardRes.json();
       
       // Find current user in leaderboard
