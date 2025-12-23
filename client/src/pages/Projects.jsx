@@ -1,4 +1,3 @@
-
 import { useState, useMemo, useEffect } from "react";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
@@ -110,7 +109,7 @@ const Projects = () => {
     const totalTechStacks = allTechnologies.length - 1; // Exclude "All"
 
     return { totalProjects, totalContributors, totalTechStacks };
-  }, [allTechnologies]);
+  }, [projectsData.length, allTechnologies.length]);
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -126,7 +125,7 @@ const Projects = () => {
   };
 
   const handleAcceptProposal = async (proposalId) => {
-    navigate(/review-proposals);
+    navigate("/review-proposals");
   };
 
   return (
@@ -229,7 +228,7 @@ const Projects = () => {
                           </div>
                         </div>
                         <Button
-                          onClick={() => navigate(/my-proposals)}
+                          onClick={() => navigate("/my-proposals")}
                           size="sm"
                           variant="ghost"
                         >
@@ -359,7 +358,7 @@ const Projects = () => {
                   variant={viewMode === "grid" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setViewMode("grid")}
-                  className={px-3 ${viewMode === "grid" ? "btn-gradient" : ""}}
+                  className={`px-3 ${viewMode === "grid" ? "btn-gradient" : ""}`}
                 >
                   <Grid className="w-4 h-4" />
                 </Button>
@@ -367,7 +366,7 @@ const Projects = () => {
                   variant={viewMode === "list" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setViewMode("list")}
-                  className={px-3 ${viewMode === "list" ? "btn-gradient" : ""}}
+                  className={`px-3 ${viewMode === "list" ? "btn-gradient" : ""}`}
                 >
                   <List className="w-4 h-4" />
                 </Button>
@@ -417,7 +416,7 @@ const Projects = () => {
                 <div
                   key={project.name || index}
                   className="animate-fade-in-up"
-                  style={{ animationDelay: ${index * 0.1}s }}
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <ProjectCard project={project} viewMode={viewMode} contributionStats={stats} />
                 </div>
