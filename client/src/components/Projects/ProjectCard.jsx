@@ -80,21 +80,19 @@ const ProjectCard = ({ project, viewMode = "grid", contributionStats }) => {
                 </div>
               </div>
 
-              {/* Contribution Stats (if available) */}
-              {contributionStats && (
-                <div className="grid grid-cols-2 gap-2 p-3 rounded-lg bg-primary/5 border border-primary/20">
-                  <div className="text-center">
-                    <GitPullRequest className="w-4 h-4 mx-auto mb-1 text-primary" />
-                    <div className="text-xs font-bold text-primary">{contributionStats.mergedPRs || 0}</div>
-                    <div className="text-xs text-muted-foreground">Merged PRs</div>
-                  </div>
-                  <div className="text-center">
-                    <Users className="w-4 h-4 mx-auto mb-1 text-primary" />
-                    <div className="text-xs font-bold text-primary">{contributionStats.contributorCount || 0}</div>
-                    <div className="text-xs text-muted-foreground">Contributors</div>
-                  </div>
+              {/* Contribution Stats (always show) */}
+              <div className="grid grid-cols-2 gap-2 p-3 rounded-lg bg-primary/5 border border-primary/20">
+                <div className="text-center">
+                  <GitPullRequest className="w-4 h-4 mx-auto mb-1 text-primary" />
+                  <div className="text-xs font-bold text-primary">{(contributionStats?.mergedPRs ?? 0)}</div>
+                  <div className="text-xs text-muted-foreground">Merged PRs</div>
                 </div>
-              )}
+                <div className="text-center">
+                  <Users className="w-4 h-4 mx-auto mb-1 text-primary" />
+                  <div className="text-xs font-bold text-primary">{(contributionStats?.contributorCount ?? 0)}</div>
+                  <div className="text-xs text-muted-foreground">Contributors</div>
+                </div>
+              </div>
 
               {/* Action Button */}
               <Button
@@ -167,20 +165,19 @@ const ProjectCard = ({ project, viewMode = "grid", contributionStats }) => {
         </div>
 
         {/* Contribution Stats (if available) */}
-        {contributionStats && (
-          <div className="grid grid-cols-2 gap-2 mb-4 p-3 rounded-lg bg-primary/5 border border-primary/20">
-            <div className="text-center">
-              <GitPullRequest className="w-4 h-4 mx-auto mb-1 text-primary" />
-              <div className="text-sm font-bold text-primary">{contributionStats.mergedPRs || 0}</div>
-              <div className="text-xs text-muted-foreground">PRs Merged</div>
-            </div>
-            <div className="text-center">
-              <Users className="w-4 h-4 mx-auto mb-1 text-primary" />
-              <div className="text-sm font-bold text-primary">{contributionStats.contributorCount || 0}</div>
-              <div className="text-xs text-muted-foreground">Contributors</div>
-            </div>
+        {/* Contribution Stats (always show) */}
+        <div className="grid grid-cols-2 gap-2 mb-4 p-3 rounded-lg bg-primary/5 border border-primary/20">
+          <div className="text-center">
+            <GitPullRequest className="w-4 h-4 mx-auto mb-1 text-primary" />
+            <div className="text-sm font-bold text-primary">{(contributionStats?.mergedPRs ?? 0)}</div>
+            <div className="text-xs text-muted-foreground">PRs Merged</div>
           </div>
-        )}
+          <div className="text-center">
+            <Users className="w-4 h-4 mx-auto mb-1 text-primary" />
+            <div className="text-sm font-bold text-primary">{(contributionStats?.contributorCount ?? 0)}</div>
+            <div className="text-xs text-muted-foreground">Contributors</div>
+          </div>
+        </div>
 
         {/* Project Admin */}
         <div className="flex items-center gap-2 text-sm p-3 rounded-lg bg-muted/30">
