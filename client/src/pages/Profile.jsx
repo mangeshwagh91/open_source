@@ -25,7 +25,8 @@ import {
   Trash2,
   AlertTriangle,
   Settings,
-  LogOut
+  LogOut,
+  Users
 } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
