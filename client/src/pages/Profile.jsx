@@ -549,136 +549,75 @@ const Profile = () => {
             )}
           </div>
 
-          {/* Content Grid */}
+          {/* Content Grid - Only for Students */}
+          {!isMentor && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Quick Actions */}
             <div className="lg:col-span-2 glass-card p-8 rounded-2xl">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="text-2xl font-bold text-foreground mb-1">Quick Actions</h3>
-                  <p className="text-sm text-muted-foreground">{isMentor ? 'Manage mentorship' : 'Navigate to key sections'}</p>
+                  <p className="text-sm text-muted-foreground">Navigate to key sections</p>
                 </div>
                 <Target className="w-6 h-6 text-primary" />
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {isMentor ? (
-                  <>
-                    <Button 
-                      variant="outline" 
-                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                      onClick={() => navigate('/academics')}
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                        <Users className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="text-left">
-                        <div className="font-semibold text-base mb-1">Manage Students</div>
-                        <div className="text-xs text-muted-foreground">View and mentor students</div>
-                      </div>
-                    </Button>
+                <Button 
+                  variant="outline" 
+                  className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                  onClick={() => navigate('/certificates')}
+                >
+                  <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                    <Award className="w-6 h-6 text-primary-foreground" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-semibold text-base mb-1">Certificates</div>
+                    <div className="text-xs text-muted-foreground">View your achievements</div>
+                  </div>
+                </Button>
 
-                    <Button 
-                      variant="outline" 
-                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                      onClick={() => navigate('/projects')}
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                        <Code2 className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="text-left">
-                        <div className="font-semibold text-base mb-1">Projects</div>
-                        <div className="text-xs text-muted-foreground">Manage assigned projects</div>
-                      </div>
-                    </Button>
+                <Button 
+                  variant="outline" 
+                  className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                  onClick={() => navigate('/projects')}
+                >
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                    <Code2 className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-semibold text-base mb-1">Projects</div>
+                    <div className="text-xs text-muted-foreground">Explore opportunities</div>
+                  </div>
+                </Button>
 
-                    <Button 
-                      variant="outline" 
-                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                      onClick={() => navigate('/leaderboard')}
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                        <Trophy className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="text-left">
-                        <div className="font-semibold text-base mb-1">Leaderboard</div>
-                        <div className="text-xs text-muted-foreground">View student rankings</div>
-                      </div>
-                    </Button>
+                <Button 
+                  variant="outline" 
+                  className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                  onClick={() => navigate('/leaderboard')}
+                >
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-semibold text-base mb-1">Leaderboard</div>
+                    <div className="text-xs text-muted-foreground">Check your ranking</div>
+                  </div>
+                </Button>
 
-                    <Button 
-                      variant="outline" 
-                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                      onClick={() => navigate('/certificates')}
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                        <Award className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="text-left">
-                        <div className="font-semibold text-base mb-1">Certificates</div>
-                        <div className="text-xs text-muted-foreground">Award certifications</div>
-                      </div>
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button 
-                      variant="outline" 
-                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                      onClick={() => navigate('/certificates')}
-                    >
-                      <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                        <Award className="w-6 h-6 text-primary-foreground" />
-                      </div>
-                      <div className="text-left">
-                        <div className="font-semibold text-base mb-1">Certificates</div>
-                        <div className="text-xs text-muted-foreground">View your achievements</div>
-                      </div>
-                    </Button>
-
-                    <Button 
-                      variant="outline" 
-                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                      onClick={() => navigate('/projects')}
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                        <Code2 className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="text-left">
-                        <div className="font-semibold text-base mb-1">Projects</div>
-                        <div className="text-xs text-muted-foreground">Explore opportunities</div>
-                      </div>
-                    </Button>
-
-                    <Button 
-                      variant="outline" 
-                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                      onClick={() => navigate('/leaderboard')}
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                        <TrendingUp className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="text-left">
-                        <div className="font-semibold text-base mb-1">Leaderboard</div>
-                        <div className="text-xs text-muted-foreground">Check your ranking</div>
-                      </div>
-                    </Button>
-
-                    <Button 
-                      variant="outline" 
-                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                      onClick={() => navigate('/roadmap')}
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                        <Target className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="text-left">
-                        <div className="font-semibold text-base mb-1">Roadmap</div>
-                        <div className="text-xs text-muted-foreground">View learning path</div>
-                      </div>
-                    </Button>
-                  </>
-                )}
+                <Button 
+                  variant="outline" 
+                  className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                  onClick={() => navigate('/roadmap')}
+                >
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                    <Target className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-semibold text-base mb-1">Roadmap</div>
+                    <div className="text-xs text-muted-foreground">View learning path</div>
+                  </div>
+                </Button>
               </div>
             </div>
 
@@ -687,77 +626,41 @@ const Profile = () => {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="text-xl font-bold text-foreground mb-1">Activity</h3>
-                  <p className="text-sm text-muted-foreground">{isMentor ? 'Mentoring activity' : 'Recent progress'}</p>
+                  <p className="text-sm text-muted-foreground">Recent progress</p>
                 </div>
                 <TrendingUp className="w-5 h-5 text-primary" />
               </div>
               
               <div className="space-y-4">
-                {isMentor ? (
-                  <>
-                    <div className="p-4 rounded-xl bg-muted/30">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-2 h-2 rounded-full bg-blue-500" />
-                        <span className="text-sm font-medium">Welcome Mentor</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground pl-5">
-                        Start mentoring students and creating projects.
-                      </p>
-                    </div>
+                <div className="p-4 rounded-xl bg-muted/30">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-2 h-2 rounded-full bg-blue-500" />
+                    <span className="text-sm font-medium">Getting Started</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground pl-5">
+                    Welcome to CodeFest! Start exploring projects.
+                  </p>
+                </div>
 
-                    <div className="p-4 rounded-xl bg-muted/30 opacity-50">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                        <span className="text-sm font-medium">First Student Mentored</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground pl-5">
-                        Guide your first student through a project.
-                      </p>
-                    </div>
+                <div className="p-4 rounded-xl bg-muted/30 opacity-50">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                    <span className="text-sm font-medium">First Contribution</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground pl-5">
+                    Complete your first project contribution.
+                  </p>
+                </div>
 
-                    <div className="p-4 rounded-xl bg-muted/30 opacity-50">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-2 h-2 rounded-full bg-amber-500" />
-                        <span className="text-sm font-medium">Certificate Awarded</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground pl-5">
-                        Award your first student certificate.
-                      </p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="p-4 rounded-xl bg-muted/30">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-2 h-2 rounded-full bg-blue-500" />
-                        <span className="text-sm font-medium">Getting Started</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground pl-5">
-                        Welcome to CodeFest! Start exploring projects.
-                      </p>
-                    </div>
-
-                    <div className="p-4 rounded-xl bg-muted/30 opacity-50">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                        <span className="text-sm font-medium">First Contribution</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground pl-5">
-                        Complete your first project contribution.
-                      </p>
-                    </div>
-
-                    <div className="p-4 rounded-xl bg-muted/30 opacity-50">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-2 h-2 rounded-full bg-amber-500" />
-                        <span className="text-sm font-medium">Certificate Earned</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground pl-5">
-                        Earn your first certificate.
-                      </p>
-                    </div>
-                  </>
-                )}
+                <div className="p-4 rounded-xl bg-muted/30 opacity-50">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span className="text-sm font-medium">Certificate Earned</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground pl-5">
+                    Earn your first certificate.
+                  </p>
+                </div>
               </div>
 
               <Button variant="ghost" className="w-full mt-6" size="sm">
@@ -765,6 +668,7 @@ const Profile = () => {
               </Button>
             </div>
           </div>
+          )}
 
           {/* Account Settings Section */}
           <div className="mt-8 glass-card p-8 rounded-2xl border-2 border-destructive/20">
