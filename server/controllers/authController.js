@@ -49,9 +49,17 @@ export const signupUser = asyncHandler(async (req, res) => {
     const token = generateToken(user._id);
 
     // Send welcome email asynchronously (non-blocking)
-    setImmediate(() => {
-      sendWelcomeEmail(user.email, user.name)
-        .catch(error => console.error('Failed to send welcome email:', error));
+    setImmediate(async () => {
+      try {
+        const result = await sendWelcomeEmail(user.email, user.name);
+        if (result.success) {
+          console.log('📧 Welcome email sent successfully');
+        } else {
+          console.error('⚠️ Welcome email failed:', result.error);
+        }
+      } catch (error) {
+        console.error('❌ Exception in email sending:', error);
+      }
     });
 
     res.status(201).json({
@@ -101,9 +109,17 @@ export const signup = asyncHandler(async (req, res) => {
     const token = generateToken(student._id);
 
     // Send welcome email asynchronously (non-blocking)
-    setImmediate(() => {
-      sendWelcomeEmail(student.email, student.name, student.studentId)
-        .catch(error => console.error('Failed to send welcome email:', error));
+    setImmediate(async () => {
+      try {
+        const result = await sendWelcomeEmail(student.email, student.name, student.studentId);
+        if (result.success) {
+          console.log('📧 Welcome email sent successfully');
+        } else {
+          console.error('⚠️ Welcome email failed:', result.error);
+        }
+      } catch (error) {
+        console.error('❌ Exception in email sending:', error);
+      }
     });
 
     res.status(201).json({

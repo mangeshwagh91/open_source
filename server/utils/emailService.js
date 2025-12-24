@@ -2,12 +2,20 @@ import nodemailer from 'nodemailer';
 
 // Create email transporter
 const createTransporter = () => {
+  // Validate environment variables
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+    console.error('❌ Email configuration missing: EMAIL_USER or EMAIL_PASSWORD not set');
+    throw new Error('Email service not configured. Missing EMAIL_USER or EMAIL_PASSWORD');
+  }
+
+  console.log('📧 Creating transporter with email:', process.env.EMAIL_USER);
+  
   // Using Gmail as example - configure with your email provider
   return nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD // Use App Password for Gmail
+      pass: process.env.EMAIL_PASSWORD.trim() // Remove whitespace from app password
     }
   });
 };
@@ -216,11 +224,14 @@ export const sendWelcomeEmail = async (email, studentName, studentId) => {
       `
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log('Welcome email sent successfully');
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✅ Welcome email sent successfully to:', email, '| Message ID:', info.messageId);
+    return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('Error sending welcome email:', error);
+    console.error('❌ Error sending welcome email to', email, ':', error.message);
+    console.error('Full error:', error);
     // Don't throw error for welcome email - it's not critical
+    return { success: false, error: error.message };
   }
 };
 
