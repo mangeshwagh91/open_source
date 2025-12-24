@@ -46,6 +46,9 @@ const Profile = () => {
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Check if user is mentor/admin
+  const isMentor = user && (user.role === 'mentor' || user.role === 'admin' || user.role === 'teacher');
+
   useEffect(() => {
     // Get user from localStorage
     const studentData = localStorage.getItem('user') || localStorage.getItem('student');
@@ -176,8 +179,17 @@ const Profile = () => {
                       <User className="w-20 h-20 text-primary-foreground" />
                     </div>
                     <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1">
-                      <GraduationCap className="w-3 h-3 mr-1" />
-                      Student
+                      {isMentor ? (
+                        <>
+                          <Crown className="w-3 h-3 mr-1" />
+                          Mentor
+                        </>
+                      ) : (
+                        <>
+                          <GraduationCap className="w-3 h-3 mr-1" />
+                          Student
+                        </>
+                      )}
                     </Badge>
                   </div>
                 </div>
@@ -190,17 +202,27 @@ const Profile = () => {
                         {user.fullName}
                       </h1>
                       <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
-                        <div className="flex items-center gap-2">
-                          <GraduationCap className="w-4 h-4" />
-                          <span className="text-sm font-medium">{user.studentId}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Building2 className="w-4 h-4" />
-                          <span className="text-sm">{user.department}</span>
-                        </div>
+                        {!isMentor && (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <GraduationCap className="w-4 h-4" />
+                              <span className="text-sm font-medium">{user.studentId}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Building2 className="w-4 h-4" />
+                              <span className="text-sm">{user.department}</span>
+                            </div>
+                          </>
+                        )}
+                        {isMentor ? (
+                          <div className="flex items-center gap-2">
+                            <Crown className="w-4 h-4" />
+                            <span className="text-sm font-medium">Mentor</span>
+                          </div>
+                        ) : null}
                         <div className="flex items-center gap-2">
                           <CalendarDays className="w-4 h-4" />
-                          <span className="text-sm">Class of {user.passingYear}</span>
+                          <span className="text-sm">{isMentor ? 'Joined ' + new Date().getFullYear() : 'Class of ' + user.passingYear}</span>
                         </div>
                       </div>
                     </div>
@@ -282,49 +304,99 @@ const Profile = () => {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="glass-card p-6 hover-lift group">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Star className="w-7 h-7 text-white" />
+            {isMentor ? (
+              <>
+                <div className="glass-card p-6 hover-lift group">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Users className="w-7 h-7 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold gradient-text mb-1">{stats.totalPoints || 0}</div>
+                  <div className="text-sm text-muted-foreground font-medium">Students Mentored</div>
+                  <div className="text-xs text-muted-foreground mt-1">Total mentees</div>
                 </div>
-              </div>
-              <div className="text-3xl font-bold gradient-text mb-1">{stats.totalPoints}</div>
-              <div className="text-sm text-muted-foreground font-medium">Total Points</div>
-              <div className="text-xs text-muted-foreground mt-1">Contribution points earned</div>
-            </div>
 
-            <div className="glass-card p-6 hover-lift group">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Code2 className="w-7 h-7 text-white" />
+                <div className="glass-card p-6 hover-lift group">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Code2 className="w-7 h-7 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold gradient-text mb-1">{stats.totalContributions || 0}</div>
+                  <div className="text-sm text-muted-foreground font-medium">Projects Created</div>
+                  <div className="text-xs text-muted-foreground mt-1">Assigned projects</div>
                 </div>
-              </div>
-              <div className="text-3xl font-bold gradient-text mb-1">{stats.totalContributions}</div>
-              <div className="text-sm text-muted-foreground font-medium">Contributions</div>
-              <div className="text-xs text-muted-foreground mt-1">Pull requests merged</div>
-            </div>
 
-            <div className="glass-card p-6 hover-lift group">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Trophy className="w-7 h-7 text-white" />
+                <div className="glass-card p-6 hover-lift group">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Trophy className="w-7 h-7 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold gradient-text mb-1">{stats.rank || 0}</div>
+                  <div className="text-sm text-muted-foreground font-medium">Active Sessions</div>
+                  <div className="text-xs text-muted-foreground mt-1">Mentoring sessions</div>
                 </div>
-              </div>
-              <div className="text-3xl font-bold gradient-text mb-1">#{stats.rank || 'N/A'}</div>
-              <div className="text-sm text-muted-foreground font-medium">Leaderboard Rank</div>
-              <div className="text-xs text-muted-foreground mt-1">Current position</div>
-            </div>
 
-            <div className="glass-card p-6 hover-lift group">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Award className="w-7 h-7 text-white" />
+                <div className="glass-card p-6 hover-lift group">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Award className="w-7 h-7 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold gradient-text mb-1">{stats.certificates || 0}</div>
+                  <div className="text-sm text-muted-foreground font-medium">Certifications</div>
+                  <div className="text-xs text-muted-foreground mt-1">Awarded certifications</div>
                 </div>
-              </div>
-              <div className="text-3xl font-bold gradient-text mb-1">{stats.certificates}</div>
-              <div className="text-sm text-muted-foreground font-medium">Certificates</div>
-              <div className="text-xs text-muted-foreground mt-1">Total earned</div>
-            </div>
+              </>
+            ) : (
+              <>
+                <div className="glass-card p-6 hover-lift group">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Star className="w-7 h-7 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold gradient-text mb-1">{stats.totalPoints}</div>
+                  <div className="text-sm text-muted-foreground font-medium">Total Points</div>
+                  <div className="text-xs text-muted-foreground mt-1">Contribution points earned</div>
+                </div>
+
+                <div className="glass-card p-6 hover-lift group">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Code2 className="w-7 h-7 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold gradient-text mb-1">{stats.totalContributions}</div>
+                  <div className="text-sm text-muted-foreground font-medium">Contributions</div>
+                  <div className="text-xs text-muted-foreground mt-1">Pull requests merged</div>
+                </div>
+
+                <div className="glass-card p-6 hover-lift group">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Trophy className="w-7 h-7 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold gradient-text mb-1">#{stats.rank || 'N/A'}</div>
+                  <div className="text-sm text-muted-foreground font-medium">Leaderboard Rank</div>
+                  <div className="text-xs text-muted-foreground mt-1">Current position</div>
+                </div>
+
+                <div className="glass-card p-6 hover-lift group">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Award className="w-7 h-7 text-white" />
+                    </div>
+                  </div>
+                  <div className="text-3xl font-bold gradient-text mb-1">{stats.certificates}</div>
+                  <div className="text-sm text-muted-foreground font-medium">Certificates</div>
+                  <div className="text-xs text-muted-foreground mt-1">Total earned</div>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Content Grid */}
@@ -334,67 +406,129 @@ const Profile = () => {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="text-2xl font-bold text-foreground mb-1">Quick Actions</h3>
-                  <p className="text-sm text-muted-foreground">Navigate to key sections</p>
+                  <p className="text-sm text-muted-foreground">{isMentor ? 'Manage mentorship' : 'Navigate to key sections'}</p>
                 </div>
                 <Target className="w-6 h-6 text-primary" />
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Button 
-                  variant="outline" 
-                  className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                  onClick={() => navigate('/certificates')}
-                >
-                  <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                    <Award className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  <div className="text-left">
-                    <div className="font-semibold text-base mb-1">Certificates</div>
-                    <div className="text-xs text-muted-foreground">View your achievements</div>
-                  </div>
-                </Button>
+                {isMentor ? (
+                  <>
+                    <Button 
+                      variant="outline" 
+                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                      onClick={() => navigate('/mentor-academics')}
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                        <Users className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-base mb-1">Manage Students</div>
+                        <div className="text-xs text-muted-foreground">View and mentor students</div>
+                      </div>
+                    </Button>
 
-                <Button 
-                  variant="outline" 
-                  className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                  onClick={() => navigate('/projects')}
-                >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                    <Code2 className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="font-semibold text-base mb-1">Projects</div>
-                    <div className="text-xs text-muted-foreground">Explore opportunities</div>
-                  </div>
-                </Button>
+                    <Button 
+                      variant="outline" 
+                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                      onClick={() => navigate('/projects')}
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                        <Code2 className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-base mb-1">Projects</div>
+                        <div className="text-xs text-muted-foreground">Manage assigned projects</div>
+                      </div>
+                    </Button>
 
-                <Button 
-                  variant="outline" 
-                  className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                  onClick={() => navigate('/leaderboard')}
-                >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                    <TrendingUp className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="font-semibold text-base mb-1">Leaderboard</div>
-                    <div className="text-xs text-muted-foreground">Check your ranking</div>
-                  </div>
-                </Button>
+                    <Button 
+                      variant="outline" 
+                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                      onClick={() => navigate('/leaderboard')}
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                        <Trophy className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-base mb-1">Leaderboard</div>
+                        <div className="text-xs text-muted-foreground">View student rankings</div>
+                      </div>
+                    </Button>
 
-                <Button 
-                  variant="outline" 
-                  className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                  onClick={() => navigate('/roadmap')}
-                >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                    <Target className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="font-semibold text-base mb-1">Roadmap</div>
-                    <div className="text-xs text-muted-foreground">View learning path</div>
-                  </div>
-                </Button>
+                    <Button 
+                      variant="outline" 
+                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                      onClick={() => navigate('/certificates')}
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                        <Award className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-base mb-1">Certificates</div>
+                        <div className="text-xs text-muted-foreground">Award certifications</div>
+                      </div>
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button 
+                      variant="outline" 
+                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                      onClick={() => navigate('/certificates')}
+                    >
+                      <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                        <Award className="w-6 h-6 text-primary-foreground" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-base mb-1">Certificates</div>
+                        <div className="text-xs text-muted-foreground">View your achievements</div>
+                      </div>
+                    </Button>
+
+                    <Button 
+                      variant="outline" 
+                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                      onClick={() => navigate('/projects')}
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                        <Code2 className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-base mb-1">Projects</div>
+                        <div className="text-xs text-muted-foreground">Explore opportunities</div>
+                      </div>
+                    </Button>
+
+                    <Button 
+                      variant="outline" 
+                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                      onClick={() => navigate('/leaderboard')}
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                        <TrendingUp className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-base mb-1">Leaderboard</div>
+                        <div className="text-xs text-muted-foreground">Check your ranking</div>
+                      </div>
+                    </Button>
+
+                    <Button 
+                      variant="outline" 
+                      className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                      onClick={() => navigate('/roadmap')}
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                        <Target className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-semibold text-base mb-1">Roadmap</div>
+                        <div className="text-xs text-muted-foreground">View learning path</div>
+                      </div>
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
 
@@ -403,41 +537,77 @@ const Profile = () => {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="text-xl font-bold text-foreground mb-1">Activity</h3>
-                  <p className="text-sm text-muted-foreground">Recent progress</p>
+                  <p className="text-sm text-muted-foreground">{isMentor ? 'Mentoring activity' : 'Recent progress'}</p>
                 </div>
                 <TrendingUp className="w-5 h-5 text-primary" />
               </div>
               
               <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-muted/30">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-2 h-2 rounded-full bg-blue-500" />
-                    <span className="text-sm font-medium">Getting Started</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground pl-5">
-                    Welcome to CodeFest! Start exploring projects.
-                  </p>
-                </div>
+                {isMentor ? (
+                  <>
+                    <div className="p-4 rounded-xl bg-muted/30">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-blue-500" />
+                        <span className="text-sm font-medium">Welcome Mentor</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground pl-5">
+                        Start mentoring students and creating projects.
+                      </p>
+                    </div>
 
-                <div className="p-4 rounded-xl bg-muted/30 opacity-50">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                    <span className="text-sm font-medium">First Contribution</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground pl-5">
-                    Complete your first project contribution.
-                  </p>
-                </div>
+                    <div className="p-4 rounded-xl bg-muted/30 opacity-50">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                        <span className="text-sm font-medium">First Student Mentored</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground pl-5">
+                        Guide your first student through a project.
+                      </p>
+                    </div>
 
-                <div className="p-4 rounded-xl bg-muted/30 opacity-50">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-2 h-2 rounded-full bg-amber-500" />
-                    <span className="text-sm font-medium">Certificate Earned</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground pl-5">
-                    Earn your first certificate.
-                  </p>
-                </div>
+                    <div className="p-4 rounded-xl bg-muted/30 opacity-50">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-amber-500" />
+                        <span className="text-sm font-medium">Certificate Awarded</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground pl-5">
+                        Award your first student certificate.
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="p-4 rounded-xl bg-muted/30">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-blue-500" />
+                        <span className="text-sm font-medium">Getting Started</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground pl-5">
+                        Welcome to CodeFest! Start exploring projects.
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-muted/30 opacity-50">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                        <span className="text-sm font-medium">First Contribution</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground pl-5">
+                        Complete your first project contribution.
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-muted/30 opacity-50">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-amber-500" />
+                        <span className="text-sm font-medium">Certificate Earned</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground pl-5">
+                        Earn your first certificate.
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
 
               <Button variant="ghost" className="w-full mt-6" size="sm">

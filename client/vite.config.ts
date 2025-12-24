@@ -13,18 +13,33 @@ export default defineConfig(({ mode }) => ({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: mode === 'production'
+        drop_console: mode === 'production',
+        drop_debugger: mode === 'production',
+        passes: 3
+      },
+      mangle: true,
+      format: {
+        comments: false
       }
+    },
+    // Enable tree-shaking for unused code
+    treeshake: {
+      moduleSideEffects: false,
+      propertyReadSideEffects: false,
+      tryCatchDeoptimization: false
     },
     // Set appropriate chunk size limit
     chunkSizeWarningLimit: 1000,
+    // Source maps only for debugging
+    sourcemap: mode === 'development',
     rollupOptions: {
       output: {
         // Manual chunks for better code splitting
         manualChunks: {
-          'radix-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
+          'radix-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select', '@radix-ui/react-tabs'],
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['recharts', 'lucide-react', 'sonner']
+          'ui-vendor': ['recharts', 'lucide-react', 'sonner'],
+          'form-utils': ['@hookform/resolvers', 'react-hook-form', 'zod']
         }
       }
     }
@@ -35,4 +50,8 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Optimize dependencies
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', 'lucide-react', '@tanstack/react-query'],
+  }
 }));
