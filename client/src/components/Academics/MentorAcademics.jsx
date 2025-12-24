@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { studentsAPI, assignmentsAPI, academicProposalsAPI } from "@/lib/api";
-import { GraduationCap, Users, Search, Filter, Plus, Calendar, CheckCircle, XCircle, Clock, BookMarked, User, Mail, IdCard, BookOpen, MessageSquare, Send } from "lucide-react";
+import { studentsAPI, assignmentsAPI, academicProposalsAPI, projectsAPI } from "@/lib/api";
+import { GraduationCap, Users, Search, Filter, Plus, Calendar, CheckCircle, XCircle, Clock, BookMarked, User, Mail, IdCard, BookOpen, MessageSquare, Send, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -119,6 +119,32 @@ const MentorAcademics = ({ currentUser }) => {
       fetchMentorData();
     } catch (error) {
       toast({ title: "Error", description: error?.message || "Failed to reject proposal", variant: "destructive" });
+    }
+  };
+
+  const handleDeleteStudent = async (studentId, studentName) => {
+    if (!window.confirm(`Are you sure you want to delete ${studentName}? This action cannot be undone.`)) {
+      return;
+    }
+    try {
+      await studentsAPI.delete(studentId);
+      toast({ title: "Success!", description: `${studentName} has been deleted` });
+      fetchMentorData();
+    } catch (error) {
+      toast({ title: "Error", description: error?.message || "Failed to delete student", variant: "destructive" });
+    }
+  };
+
+  const handleDeleteProject = async (projectId, projectName) => {
+    if (!window.confirm(`Are you sure you want to delete "${projectName}"? This action cannot be undone.`)) {
+      return;
+    }
+    try {
+      await projectsAPI.delete(projectId);
+      toast({ title: "Success!", description: `Project deleted` });
+      fetchMentorData();
+    } catch (error) {
+      toast({ title: "Error", description: error?.message || "Failed to delete project", variant: "destructive" });
     }
   };
 
@@ -303,6 +329,18 @@ const MentorAcademics = ({ currentUser }) => {
                         <Mail className="w-4 h-4 flex-shrink-0" />
                         <span className="text-sm">{student.email}</span>
                       </div>
+
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteStudent(student._id, student.name);
+                        }}
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10 ml-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -420,6 +458,14 @@ const MentorAcademics = ({ currentUser }) => {
                         </div>
                         <CardDescription>{project.description}</CardDescription>
                       </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeleteProject(project._id, project.title)}
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
