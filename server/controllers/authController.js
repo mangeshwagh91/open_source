@@ -2,7 +2,7 @@ import Student from '../models/Student.js';
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 import { asyncHandler } from '../middleware/validationMiddleware.js';
-import { sendPasswordResetEmail } from '../utils/emailService.js';
+import { sendPasswordResetEmail, sendWelcomeEmail } from '../utils/emailService.js';
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -47,6 +47,14 @@ export const signupUser = asyncHandler(async (req, res) => {
 
   if (user) {
     const token = generateToken(user._id);
+
+    // Send welcome email
+    try {
+      await sendWelcomeEmail(user.email, user.name);
+    } catch (error) {
+      console.error('Failed to send welcome email:', error);
+      // Don't fail signup if email fails
+    }
 
     res.status(201).json({
       success: true,
@@ -93,6 +101,14 @@ export const signup = asyncHandler(async (req, res) => {
 
   if (student) {
     const token = generateToken(student._id);
+
+    // Send welcome email
+    try {
+      await sendWelcomeEmail(student.email, student.name, student.studentId);
+    } catch (error) {
+      console.error('Failed to send welcome email:', error);
+      // Don't fail signup if email fails
+    }
 
     res.status(201).json({
       success: true,

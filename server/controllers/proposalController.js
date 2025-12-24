@@ -1,8 +1,9 @@
 import ProjectProposal from '../models/ProjectProposal.js';
 import Project from '../models/Project.js';
 import Student from '../models/Student.js';
+import User from '../models/User.js';
 import { asyncHandler } from '../middleware/validationMiddleware.js';
-import { sendProposalAcceptanceEmail, sendProposalRejectionEmail } from '../utils/emailService.js';
+import { sendProposalAcceptanceEmail, sendProposalRejectionEmail, sendProposalNotificationToMentors } from '../utils/emailService.js';
 
 // @desc    Get all proposals (with filters)
 // @route   GET /api/proposals
@@ -93,6 +94,27 @@ export const createProposal = asyncHandler(async (req, res) => {
 
   const populatedProposal = await ProjectProposal.findById(proposal._id)
     .populate('proposedBy', 'name email studentId avatar');
+
+  // Send notification email to mentors
+  try {
+    const mentors = await User.find({ role: 'mentor' });
+    if (mentors.length > 0) {
+      const mentorEmails = mentors.map(mentor => mentor.email);
+      const studentName = populatedProposal.proposedBy.name;
+      const proposalLink = `${process.env.CLIENT_URL || 'http://localhost:8080'}/admin/proposals/${proposal._id}`;
+      
+      await sendProposalNotificationToMentors(
+        mentorEmails,
+        studentName,
+        proposal.title,
+        proposal.description,
+        proposalLink
+      );
+    }
+  } catch (error) {
+    console.error('Failed to send mentor notification email:', error);
+    // Don't fail proposal creation if email fails
+  }
 
   res.status(201).json({
     success: true,

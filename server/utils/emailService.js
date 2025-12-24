@@ -559,3 +559,275 @@ CodeFest Faculty Team
     throw new Error('Failed to send rejection email');
   }
 };
+
+// Send assignment notification email to student
+export const sendAssignmentNotificationEmail = async (email, studentName, projectTitle, projectLink, projectDescription) => {
+  try {
+    const transporter = createTransporter();
+
+    const mailOptions = {
+      from: `"CampusForge Team" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: `🎯 Project Assigned: ${projectTitle}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body {
+              font-family: 'Arial', sans-serif;
+              line-height: 1.6;
+              color: #333;
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+            }
+            .container {
+              background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+              border-radius: 10px;
+              padding: 30px;
+              color: white;
+            }
+            .content-box {
+              background: white;
+              color: #333;
+              padding: 25px;
+              border-radius: 8px;
+              margin: 20px 0;
+            }
+            .project-details {
+              background: #f0f9ff;
+              border-left: 4px solid #3b82f6;
+              padding: 15px;
+              margin: 15px 0;
+              border-radius: 4px;
+            }
+            .button {
+              display: inline-block;
+              padding: 14px 32px;
+              background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+              color: white;
+              text-decoration: none;
+              border-radius: 8px;
+              font-weight: bold;
+              margin: 20px 0;
+            }
+            .info-box {
+              background: rgba(255, 255, 255, 0.1);
+              padding: 15px;
+              border-radius: 8px;
+              margin-top: 20px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>🎯 New Project Assigned!</h1>
+            <p>Hello ${studentName},</p>
+            <p>Exciting news! A teacher has assigned you to a new project on CampusForge.</p>
+            
+            <div class="content-box">
+              <h2 style="color: #3b82f6; margin-top: 0;">Project Assignment Details</h2>
+              
+              <div class="project-details">
+                <h3 style="margin: 0 0 10px 0; color: #1d4ed8;">📌 ${projectTitle}</h3>
+                <p style="margin: 0;">${projectDescription}</p>
+              </div>
+              
+              <p style="margin-top: 20px;">Click the button below to view your project and get started:</p>
+              
+              <a href="${projectLink}" class="button">
+                View Project Assignment
+              </a>
+            </div>
+            
+            <div class="info-box">
+              <p><strong>📋 What's Next?</strong></p>
+              <ul style="margin: 10px 0; padding-left: 20px;">
+                <li>Review the project requirements and guidelines</li>
+                <li>Set up your development environment</li>
+                <li>Start contributing and learning!</li>
+                <li>Connect with mentors and team members</li>
+              </ul>
+            </div>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">
+              <p>If you're not logged in, the link will take you to the login page first, then to your project.</p>
+              <p style="font-size: 14px; opacity: 0.9;">
+                Best regards,<br>
+                CampusForge Team
+              </p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+      text: `
+Hello ${studentName},
+
+A teacher has assigned you to a new project: ${projectTitle}
+
+Project Description:
+${projectDescription}
+
+View your assignment here:
+${projectLink}
+
+If you're not logged in, you'll be redirected to login first.
+
+Next steps:
+1. Review the project requirements
+2. Set up your development environment
+3. Start contributing
+4. Connect with mentors
+
+Best regards,
+CampusForge Team
+      `
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Assignment notification email sent successfully:', info.messageId);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error('Error sending assignment email:', error);
+    throw new Error('Failed to send assignment email');
+  }
+};
+
+// Send proposal notification email to mentors when student proposes project
+export const sendProposalNotificationToMentors = async (mentorEmails, studentName, projectTitle, projectDescription, proposalLink) => {
+  try {
+    const transporter = createTransporter();
+
+    const mailOptions = {
+      from: `"CampusForge Team" <${process.env.EMAIL_USER}>`,
+      to: mentorEmails.join(', '),
+      subject: `📢 New Project Proposal: ${projectTitle}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body {
+              font-family: 'Arial', sans-serif;
+              line-height: 1.6;
+              color: #333;
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+            }
+            .container {
+              background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+              border-radius: 10px;
+              padding: 30px;
+              color: white;
+            }
+            .content-box {
+              background: white;
+              color: #333;
+              padding: 25px;
+              border-radius: 8px;
+              margin: 20px 0;
+            }
+            .proposal-details {
+              background: #fffbeb;
+              border-left: 4px solid #f59e0b;
+              padding: 15px;
+              margin: 15px 0;
+              border-radius: 4px;
+            }
+            .button {
+              display: inline-block;
+              padding: 14px 32px;
+              background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+              color: white;
+              text-decoration: none;
+              border-radius: 8px;
+              font-weight: bold;
+              margin: 20px 0;
+            }
+            .action-box {
+              background: rgba(255, 255, 255, 0.1);
+              padding: 15px;
+              border-radius: 8px;
+              margin-top: 20px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>📢 New Project Proposal</h1>
+            <p>Hello,</p>
+            <p>A student has submitted a new project proposal on CampusForge that requires your review.</p>
+            
+            <div class="content-box">
+              <h2 style="color: #d97706; margin-top: 0;">Proposal Details</h2>
+              
+              <div class="proposal-details">
+                <h3 style="margin: 0 0 10px 0; color: #92400e;">📌 ${projectTitle}</h3>
+                <p style="margin: 0;"><strong>Proposed by:</strong> ${studentName}</p>
+                <p style="margin: 8px 0 0 0;">${projectDescription}</p>
+              </div>
+              
+              <p style="margin-top: 20px;">Please review the proposal and provide your feedback:</p>
+              
+              <a href="${proposalLink}" class="button">
+                Review Proposal
+              </a>
+            </div>
+            
+            <div class="action-box">
+              <p><strong>✅ Your Role as Mentor:</strong></p>
+              <ul style="margin: 10px 0; padding-left: 20px;">
+                <li>Review the proposal quality and feasibility</li>
+                <li>Provide constructive feedback</li>
+                <li>Accept or reject the proposal</li>
+                <li>Guide students through the development process</li>
+              </ul>
+            </div>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">
+              <p style="font-size: 14px; opacity: 0.9;">
+                Best regards,<br>
+                CampusForge Notification System
+              </p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+      text: `
+Hello,
+
+A new project proposal has been submitted on CampusForge for your review.
+
+Proposal Details:
+Title: ${projectTitle}
+Proposed by: ${studentName}
+
+Description:
+${projectDescription}
+
+Review the proposal here:
+${proposalLink}
+
+Your responsibilities as a mentor:
+• Review proposal quality
+• Provide constructive feedback
+• Accept or reject the proposal
+• Guide students through development
+
+Best regards,
+CampusForge Team
+      `
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Proposal notification email sent to mentors:', info.messageId);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error('Error sending proposal notification to mentors:', error);
+    throw new Error('Failed to send mentor notification email');
+  }
+};

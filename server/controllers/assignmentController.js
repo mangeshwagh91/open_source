@@ -1,5 +1,8 @@
 import ProjectAssignment from '../models/ProjectAssignment.js';
+import Student from '../models/Student.js';
+import Project from '../models/Project.js';
 import { asyncHandler } from '../middleware/validationMiddleware.js';
+import { sendAssignmentNotificationEmail } from '../utils/emailService.js';
 
 // @desc    Get all project assignments with pagination, filtering
 // @route   GET /api/assignments
@@ -62,6 +65,35 @@ export const createAssignment = asyncHandler(async (req, res) => {
   const assignment = await ProjectAssignment.create(req.body);
   const populatedAssignment = await ProjectAssignment.findById(assignment._id)
     .populate('assignedTo', 'name studentId class email avatar');
+
+  // Send notification email to student
+  try {
+    const student = await Student.findById(assignment.assignedTo);
+    let projectTitle = assignment.title || 'New Project Assignment';
+    let projectDescription = assignment.description || 'You have been assigned to a new project.';
+    
+    // Try to fetch project details if projectId is available
+    if (assignment.projectId) {
+      const project = await Project.findById(assignment.projectId);
+      if (project) {
+        projectTitle = project.name;
+        projectDescription = project.description;
+      }
+    }
+
+    const projectLink = `${process.env.CLIENT_URL || 'http://localhost:8080'}/projects/${assignment.projectId || assignment._id}`;
+    
+    await sendAssignmentNotificationEmail(
+      student.email,
+      student.name,
+      projectTitle,
+      projectLink,
+      projectDescription
+    );
+  } catch (error) {
+    console.error('Failed to send assignment notification email:', error);
+    // Don't fail assignment creation if email fails
+  }
 
   res.status(201).json(populatedAssignment);
 });
