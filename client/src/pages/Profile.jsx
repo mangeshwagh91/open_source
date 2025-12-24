@@ -246,58 +246,6 @@ const Profile = () => {
                     </div>
                   </div>
 
-                  {/* Contact & Social */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Mail className="w-5 h-5 text-primary" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="text-xs text-muted-foreground mb-0.5">Email</div>
-                        <div className="text-sm font-medium truncate">{user.email}</div>
-                      </div>
-                    </div>
-
-                    {user.github && (
-                      <a 
-                        href={user.github.startsWith('http') ? user.github : `https://github.com/${user.github}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-all group cursor-pointer"
-                      >
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                          <Github className="w-5 h-5 text-primary" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs text-muted-foreground mb-0.5">GitHub</div>
-                          <div className="text-sm font-medium truncate">
-                            {user.github.replace('https://github.com/', '').replace('http://github.com/', '')}
-                          </div>
-                        </div>
-                        <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
-                      </a>
-                    )}
-
-                    {user.linkedin && (
-                      <a 
-                        href={user.linkedin.startsWith('http') ? user.linkedin : `https://linkedin.com/in/${user.linkedin}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-all group cursor-pointer"
-                      >
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                          <Linkedin className="w-5 h-5 text-primary" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs text-muted-foreground mb-0.5">LinkedIn</div>
-                          <div className="text-sm font-medium truncate">
-                            {user.linkedin.replace('https://linkedin.com/in/', '').replace('http://linkedin.com/in/', '')}
-                          </div>
-                        </div>
-                        <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
-                      </a>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
