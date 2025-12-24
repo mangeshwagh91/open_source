@@ -78,8 +78,7 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-// Add indexes for faster queries
-userSchema.index({ email: 1 });
+// Add indexes for faster queries (skip email as it's already indexed via unique: true)
 userSchema.index({ role: 1 });
 userSchema.index({ createdAt: -1 });
 

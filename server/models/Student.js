@@ -65,9 +65,7 @@ const studentSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Add indexes for faster queries
-studentSchema.index({ studentId: 1 });
-studentSchema.index({ email: 1 });
+// Add indexes for faster queries (skip studentId and email as they're already indexed via unique: true)
 studentSchema.index({ status: 1 });
 studentSchema.index({ department: 1 });
 studentSchema.index({ createdAt: -1 });

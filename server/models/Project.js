@@ -36,8 +36,7 @@ const projectSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Add indexes for faster queries
-projectSchema.index({ name: 1 });
+// Add indexes for faster queries (skip name as it's already indexed via unique: true)
 projectSchema.index({ createdAt: -1 });
 projectSchema.index({ techStack: 1 });
 
