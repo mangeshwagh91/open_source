@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
+import compression from 'compression';
 import connectDB from './config/database.js';
 import { corsOptions, rateLimitOptions } from './config/config.js';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
@@ -35,6 +36,7 @@ const app = express();
 // Middleware
 app.use(helmet()); // Security headers
 app.use(cors(corsOptions)); // Enable CORS
+app.use(compression()); // Enable gzip compression
 app.use(morgan('dev')); // Logging
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies

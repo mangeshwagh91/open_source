@@ -65,6 +65,13 @@ const studentSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Add indexes for faster queries
+studentSchema.index({ studentId: 1 });
+studentSchema.index({ email: 1 });
+studentSchema.index({ status: 1 });
+studentSchema.index({ department: 1 });
+studentSchema.index({ createdAt: -1 });
+
 // Hash password before saving
 studentSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {

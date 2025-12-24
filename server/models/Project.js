@@ -36,6 +36,11 @@ const projectSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Add indexes for faster queries
+projectSchema.index({ name: 1 });
+projectSchema.index({ createdAt: -1 });
+projectSchema.index({ techStack: 1 });
+
 const Project = mongoose.model('Project', projectSchema);
 
 export default Project;

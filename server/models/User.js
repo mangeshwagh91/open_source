@@ -78,6 +78,11 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
+// Add indexes for faster queries
+userSchema.index({ email: 1 });
+userSchema.index({ role: 1 });
+userSchema.index({ createdAt: -1 });
+
 // Method to increment login attempts
 userSchema.methods.incLoginAttempts = function() {
   if (this.lockUntil && this.lockUntil < Date.now()) {

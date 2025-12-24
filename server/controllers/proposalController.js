@@ -9,20 +9,36 @@ import { sendProposalAcceptanceEmail, sendProposalRejectionEmail, sendProposalNo
 // @route   GET /api/proposals
 // @access  Private
 export const getProposals = asyncHandler(async (req, res) => {
-  const { status, category, difficulty } = req.query;
+  const { status, category, difficulty, page = 1, limit = 10 } = req.query;
+  
+  const pageNum = parseInt(page);
+  const pageLimit = parseInt(limit);
+  const skip = (pageNum - 1) * pageLimit;
   
   const query = {};
   if (status) query.status = status;
   if (category) query.category = category;
   if (difficulty) query.difficulty = difficulty;
 
-  const proposals = await ProjectProposal.find(query)
-    .populate('proposedBy', 'name email studentId avatar')
-    .sort('-createdAt');
+  const [proposals, total] = await Promise.all([
+    ProjectProposal.find(query)
+      .populate('proposedBy', 'name email studentId avatar')
+      .sort('-createdAt')
+      .limit(pageLimit)
+      .skip(skip)
+      .lean(),
+    ProjectProposal.countDocuments(query)
+  ]);
 
   res.json({
     success: true,
     count: proposals.length,
+    pagination: {
+      currentPage: pageNum,
+      totalPages: Math.ceil(total / pageLimit),
+      total,
+      hasNext: pageNum * pageLimit < total
+    },
     proposals
   });
 });
@@ -48,12 +64,30 @@ export const getProposalById = asyncHandler(async (req, res) => {
 // @route   GET /api/proposals/my-proposals
 // @access  Private
 export const getMyProposals = asyncHandler(async (req, res) => {
-  const proposals = await ProjectProposal.find({ proposedBy: req.user._id })
-    .sort('-createdAt');
+  const { page = 1, limit = 10 } = req.query;
+  
+  const pageNum = parseInt(page);
+  const pageLimit = parseInt(limit);
+  const skip = (pageNum - 1) * pageLimit;
+
+  const [proposals, total] = await Promise.all([
+    ProjectProposal.find({ proposedBy: req.user._id })
+      .sort('-createdAt')
+      .limit(pageLimit)
+      .skip(skip)
+      .lean(),
+    ProjectProposal.countDocuments({ proposedBy: req.user._id })
+  ]);
 
   res.json({
     success: true,
     count: proposals.length,
+    pagination: {
+      currentPage: pageNum,
+      totalPages: Math.ceil(total / pageLimit),
+      total,
+      hasNext: pageNum * pageLimit < total
+    },
     proposals
   });
 });

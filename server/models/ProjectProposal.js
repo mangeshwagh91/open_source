@@ -103,6 +103,9 @@ const projectProposalSchema = new mongoose.Schema({
 // Index for efficient queries
 projectProposalSchema.index({ status: 1, createdAt: -1 });
 projectProposalSchema.index({ proposedBy: 1 });
+projectProposalSchema.index({ status: 1, proposedBy: 1 });
+projectProposalSchema.index({ category: 1, difficulty: 1 });
+projectProposalSchema.index({ createdAt: -1 });
 
 const ProjectProposal = mongoose.model('ProjectProposal', projectProposalSchema);
 
