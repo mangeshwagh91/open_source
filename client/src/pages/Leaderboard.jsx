@@ -18,7 +18,10 @@ import {
   Calendar,
   Crown,
   Flame,
-  Code2
+  Code2,
+  Github,
+  Linkedin,
+  ExternalLink
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -235,7 +238,33 @@ const Leaderboard = () => {
                             alt={contributor.name}
                             className="w-10 h-10 rounded-full"
                           />
-                          <span className="font-medium text-foreground">{contributor.name}</span>
+                          <div className="flex flex-col gap-1">
+                            <span className="font-medium text-foreground">{contributor.name}</span>
+                            <div className="flex gap-2">
+                              {contributor.github && (
+                                <a
+                                  href={contributor.github.startsWith('http') ? contributor.github : `https://github.com/${contributor.github}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-muted-foreground hover:text-primary transition-colors"
+                                  title={`GitHub: ${contributor.github}`}
+                                >
+                                  <Github className="w-4 h-4" />
+                                </a>
+                              )}
+                              {contributor.linkedin && (
+                                <a
+                                  href={contributor.linkedin.startsWith('http') ? contributor.linkedin : `https://linkedin.com/in/${contributor.linkedin}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-muted-foreground hover:text-primary transition-colors"
+                                  title={`LinkedIn: ${contributor.linkedin}`}
+                                >
+                                  <Linkedin className="w-4 h-4" />
+                                </a>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
