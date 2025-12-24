@@ -1,20 +1,37 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Github, User, Star, GitFork, Eye, Calendar, GitPullRequest, Users } from "lucide-react";
+import { Github, User, Star, GitFork, Eye, Calendar, GitPullRequest, Users, Trash2 } from "lucide-react";
 import { useGithubRepo, formatNumber, formatRelativeTime } from "@/hooks/useGithubRepo";
+import { projectsAPI } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
-const ProjectCard = ({ project, viewMode = "grid", contributionStats }) => {
+const ProjectCard = ({ project, viewMode = "grid", contributionStats, onDelete, isAdmin = false }) => {
   const name = project.name || project.title || 'Untitled Project';
   const description = project.description || 'No description available';
   const techStack = project.techStack || [];
   const adminName = project.adminName || project.proposedBy?.name || 'Unknown';
   const githubRepo = project.githubRepo || project.github || '';
+  const { toast } = useToast();
   
   const { stars, forks, watchers, updatedAt, loading } = useGithubRepo(githubRepo);
 
   const handleGithubClick = () => {
     window.open(githubRepo, "_blank", "noopener,noreferrer");
+  };
+
+  const handleDeleteProject = async (e) => {
+    e.stopPropagation();
+    if (!window.confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) {
+      return;
+    }
+    try {
+      await projectsAPI.delete(project._id);
+      toast({ title: "Success!", description: `${name} deleted successfully` });
+      if (onDelete) onDelete(project._id);
+    } catch (error) {
+      toast({ title: "Error", description: error?.message || "Failed to delete project", variant: "destructive" });
+    }
   };
 
   if (viewMode === "list") {
@@ -190,14 +207,25 @@ const ProjectCard = ({ project, viewMode = "grid", contributionStats }) => {
         </div>
       </CardContent>
 
-      <CardFooter className="pt-0">
+      <CardFooter className="pt-0 gap-2 flex">
         <Button
           onClick={handleGithubClick}
-          className="w-full btn-gradient shadow-lg group-hover:scale-105 transition-transform text-sm h-9"
+          className="flex-1 btn-gradient shadow-lg group-hover:scale-105 transition-transform text-sm h-9"
         >
           <Github className="w-4 h-4 mr-2" />
           View on GitHub
         </Button>
+        {isAdmin && (
+          <Button
+            onClick={handleDeleteProject}
+            variant="destructive"
+            size="sm"
+            className="h-9 px-3"
+            title="Delete project"
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

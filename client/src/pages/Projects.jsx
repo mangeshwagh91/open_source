@@ -412,13 +412,23 @@ const Projects = () => {
                 : null;
               const stats = repoKey ? contributionStats[repoKey] : null;
               
+              const handleProjectDelete = (projectId) => {
+                setProjectsData(prev => prev.filter(p => p._id !== projectId));
+              };
+              
               return (
                 <div
                   key={project.name || index}
                   className="animate-fade-in-up"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <ProjectCard project={project} viewMode={viewMode} contributionStats={stats} />
+                  <ProjectCard 
+                    project={project} 
+                    viewMode={viewMode} 
+                    contributionStats={stats} 
+                    isAdmin={isMentor}
+                    onDelete={handleProjectDelete}
+                  />
                 </div>
               );
             })}
