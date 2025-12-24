@@ -303,7 +303,156 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* Stats Grid */}
+          {/* Detailed Information Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {/* Personal Information */}
+            <div className="glass-card p-8 rounded-2xl">
+              <h2 className="text-2xl font-bold text-foreground mb-6">Personal Information</h2>
+              <div className="space-y-4">
+                <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/30">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <User className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground mb-0.5">Full Name</div>
+                    <div className="text-sm font-medium text-foreground">{user.fullName || user.name || 'N/A'}</div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/30">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-muted-foreground mb-0.5">Email</div>
+                    <div className="text-sm font-medium text-foreground">{user.email || 'N/A'}</div>
+                  </div>
+                </div>
+
+                {user.phone && (
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/30">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-0.5">Phone</div>
+                      <div className="text-sm font-medium text-foreground">{user.phone}</div>
+                    </div>
+                  </div>
+                )}
+
+                {!isMentor && user.department && (
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/30">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Building2 className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-0.5">Department</div>
+                      <div className="text-sm font-medium text-foreground">{user.department}</div>
+                    </div>
+                  </div>
+                )}
+
+                {!isMentor && user.studentId && (
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/30">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <GraduationCap className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-0.5">Student ID</div>
+                      <div className="text-sm font-medium text-foreground">{user.studentId}</div>
+                    </div>
+                  </div>
+                )}
+
+                {!isMentor && user.passingYear && (
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/30">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <CalendarDays className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-0.5">Class of</div>
+                      <div className="text-sm font-medium text-foreground">{user.passingYear}</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div className="glass-card p-8 rounded-2xl">
+              <h2 className="text-2xl font-bold text-foreground mb-6">Social Profiles</h2>
+              <div className="space-y-4">
+                {user.github ? (
+                  <a
+                    href={user.github.startsWith('http') ? user.github : `https://github.com/${user.github}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start gap-4 p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all group cursor-pointer"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <Github className="w-5 h-5 text-primary" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs text-muted-foreground mb-0.5">GitHub</div>
+                      <div className="text-sm font-medium text-foreground truncate">{user.github}</div>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 mt-0.5" />
+                  </a>
+                ) : (
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/30 opacity-50">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Github className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-0.5">GitHub</div>
+                      <div className="text-sm text-muted-foreground">Not added yet</div>
+                    </div>
+                  </div>
+                )}
+
+                {user.linkedin ? (
+                  <a
+                    href={user.linkedin.startsWith('http') ? user.linkedin : `https://linkedin.com/in/${user.linkedin}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start gap-4 p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all group cursor-pointer"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <Linkedin className="w-5 h-5 text-primary" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs text-muted-foreground mb-0.5">LinkedIn</div>
+                      <div className="text-sm font-medium text-foreground truncate">{user.linkedin}</div>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 mt-0.5" />
+                  </a>
+                ) : (
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/30 opacity-50">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Linkedin className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-0.5">LinkedIn</div>
+                      <div className="text-sm text-muted-foreground">Not added yet</div>
+                    </div>
+                  </div>
+                )}
+
+                {user.bio && (
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-muted/30">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <CheckCircle className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-0.5">Bio</div>
+                      <div className="text-sm text-foreground">{user.bio}</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {isMentor ? (
               <>
@@ -418,7 +567,7 @@ const Profile = () => {
                     <Button 
                       variant="outline" 
                       className="justify-start h-auto py-5 hover:border-primary/50 hover:bg-primary/5 transition-all group"
-                      onClick={() => navigate('/mentor-academics')}
+                      onClick={() => navigate('/academics')}
                     >
                       <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                         <Users className="w-6 h-6 text-white" />

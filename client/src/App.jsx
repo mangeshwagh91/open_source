@@ -17,6 +17,7 @@ const Roadmap = lazy(() => import("./pages/Roadmap"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Academics = lazy(() => import("./pages/Academics"));
 const Profile = lazy(() => import("./pages/Profile"));
+const EditProfile = lazy(() => import("./pages/EditProfile"));
 const ProposeProject = lazy(() => import("./pages/ProposeProject"));
 const MyProposals = lazy(() => import("./pages/MyProposals"));
 const ReviewProposals = lazy(() => import("./pages/ReviewProposals"));
@@ -73,6 +74,7 @@ const App = () => (
               <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
               <Route path="/academics" element={<ProtectedRoute><Academics /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
               <Route path="/guidelines" element={<ProtectedRoute><Guidelines /></ProtectedRoute>} />
               
               {/* Catch-all */}
