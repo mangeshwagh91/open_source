@@ -165,6 +165,11 @@ const ProjectCard = ({ project, viewMode = "grid", contributionStats, onDelete, 
         {/* Project Stats Grid */}
         <div className="grid grid-cols-3 gap-3 p-3 rounded-lg bg-muted/40 border border-border/30">
           <div className="flex flex-col items-center">
+            <Star className="w-4 h-4 text-yellow-500 mb-1.5" />
+            <span className="text-sm font-bold text-foreground">{loading ? '...' : formatNumber(stars)}</span>
+            <span className="text-xs text-muted-foreground">Stars</span>
+          </div>
+          <div className="flex flex-col items-center">
             <GitFork className="w-4 h-4 text-blue-500 mb-1.5" />
             <span className="text-sm font-bold text-foreground">{loading ? '...' : formatNumber(forks)}</span>
             <span className="text-xs text-muted-foreground">Forks</span>
@@ -172,12 +177,7 @@ const ProjectCard = ({ project, viewMode = "grid", contributionStats, onDelete, 
           <div className="flex flex-col items-center">
             <Eye className="w-4 h-4 text-green-500 mb-1.5" />
             <span className="text-sm font-bold text-foreground">{loading ? '...' : formatNumber(watchers)}</span>
-            <span className="text-xs text-muted-foreground">Views</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <Calendar className="w-4 h-4 text-orange-500 mb-1.5" />
-            <span className="text-xs text-muted-foreground">Updated</span>
-            <span className="text-xs font-medium text-foreground">{loading ? '...' : formatRelativeTime(updatedAt)}</span>
+            <span className="text-xs text-muted-foreground">Watchers</span>
           </div>
         </div>
 

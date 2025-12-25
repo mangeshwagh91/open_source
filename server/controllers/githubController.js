@@ -59,7 +59,7 @@ export const getRepoData = asyncHandler(async (req, res) => {
   res.json({
     stars: data.stargazers_count || 0,
     forks: data.forks_count || 0,
-    watchers: data.watchers_count || 0,
+    watchers: data.subscribers_count || data.watchers_count || 0,
     updatedAt: data.updated_at,
     full: data
   });
