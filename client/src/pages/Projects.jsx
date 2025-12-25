@@ -30,23 +30,45 @@ const Projects = () => {
   const isMentor = user.role === 'admin' || user.role === 'mentor' || user.role === 'teacher';
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const cacheKey = 'projects_cache_v1';
+    const cacheExpiry = 5 * 60 * 1000; // 5 minutes
+    const cached = localStorage.getItem(cacheKey);
+    let cacheValid = false;
+    if (cached) {
       try {
-        const [projectData, contribStats] = await Promise.all([
-          projectsAPI.getAll(),
-          contributionsAPI.getStats().catch(() => ({}))
-        ]);
-        setProjectsData(Array.isArray(projectData) ? projectData : (projectData.projects || []));
-        setContributionStats(contribStats || {});
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-        setProjectsData([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProjects();
+        const parsed = JSON.parse(cached);
+        if (parsed.timestamp && Date.now() - parsed.timestamp < cacheExpiry) {
+          setProjectsData(parsed.projectsData || []);
+          setContributionStats(parsed.contributionStats || {});
+          setLoading(false);
+          cacheValid = true;
+        }
+      } catch {}
+    }
+    if (!cacheValid) {
+      const fetchProjects = async () => {
+        try {
+          const [projectData, contribStats] = await Promise.all([
+            projectsAPI.getAll(),
+            contributionsAPI.getStats().catch(() => ({}))
+          ]);
+          const projects = Array.isArray(projectData) ? projectData : (projectData.projects || []);
+          setProjectsData(projects);
+          setContributionStats(contribStats || {});
+          localStorage.setItem(cacheKey, JSON.stringify({
+            projectsData: projects,
+            contributionStats: contribStats || {},
+            timestamp: Date.now()
+          }));
+        } catch (error) {
+          console.error("Error fetching projects:", error);
+          setProjectsData([]);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchProjects();
+    }
   }, []);
 
   // Fetch proposals based on user role
