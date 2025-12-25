@@ -108,7 +108,8 @@ app.listen(PORT, () => {
   import('./services/githubService.js').then(({ syncRepoPRs }) => {
     import('./services/leaderboardService.js').then(({ rebuildLeaderboardFromContributions }) => {
       import('./models/Project.js').then(({ default: Project }) => {
-        cron.schedule('0 * * * *', async () => {
+        // Run every 30 seconds: '*/30 * * * * *'
+        cron.schedule('*/30 * * * * *', async () => {
           try {
             console.log('[Cron] GitHub sync starting...');
             

@@ -8,7 +8,7 @@ import { rebuildLeaderboardFromContributions } from '../services/leaderboardServ
 // @access  Public
 export const getProjects = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
+  const limit = parseInt(req.query.limit) || 50;
   const sort = req.query.sort || '-createdAt';
   const search = req.query.search;
 
