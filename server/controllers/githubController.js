@@ -57,6 +57,8 @@ export const getRepoData = asyncHandler(async (req, res) => {
     return res.status(response.status).json({ message: 'GitHub API error', details: text });
   }
   const data = await response.json();
+  // Log the full GitHub API response for debugging
+  console.log(`[GitHub API Success] Repo: ${owner}/${repo} | Data:`, JSON.stringify(data));
   // Disable caching for this endpoint to always fetch fresh data
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
