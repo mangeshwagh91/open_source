@@ -53,6 +53,7 @@ export const getRepoData = asyncHandler(async (req, res) => {
   const response = await fetch(apiUrl, { headers });
   if (!response.ok) {
     const text = await response.text();
+    console.error(`[GitHub API Error] Status: ${response.status} | Repo: ${owner}/${repo} | Details: ${text}`);
     return res.status(response.status).json({ message: 'GitHub API error', details: text });
   }
   const data = await response.json();
