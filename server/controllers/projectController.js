@@ -1,6 +1,7 @@
 import Project from '../models/Project.js';
 import { asyncHandler } from '../middleware/validationMiddleware.js';
 import { syncRepoPRs } from '../services/githubService.js';
+import { fetchRepoStats } from '../services/githubService.js';
 import { rebuildLeaderboardFromContributions } from '../services/leaderboardService.js';
 
 // @desc    Get all projects with pagination, filtering, sorting
@@ -30,10 +31,24 @@ export const getProjects = asyncHandler(async (req, res) => {
     .skip((page - 1) * limit)
     .exec();
 
+  // Fetch GitHub stats for each project (in parallel, but limit concurrency)
+  const statsPromises = projects.map(async (project) => {
+    if (project.githubRepo) {
+      try {
+        const stats = await fetchRepoStats(project.githubRepo);
+        return { ...project.toObject(), githubStats: stats };
+      } catch {
+        return { ...project.toObject(), githubStats: null };
+      }
+    }
+    return { ...project.toObject(), githubStats: null };
+  });
+  const projectsWithStats = await Promise.all(statsPromises);
+
   const count = await Project.countDocuments(query);
 
   res.json({
-    projects,
+    projects: projectsWithStats,
     pagination: {
       currentPage: page,
       totalPages: Math.ceil(count / limit),

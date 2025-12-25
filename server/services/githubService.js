@@ -1,3 +1,29 @@
+// Fetch GitHub repository stats (stars, forks, views)
+export const fetchRepoStats = async (repoUrlOrSlug) => {
+  const { owner, repo } = parseRepoUrl(repoUrlOrSlug);
+  const url = `${GITHUB_API_BASE}/repos/${owner}/${repo}`;
+  const res = await fetch(url, { headers: getGitHubHeaders() });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`GitHub API error (${res.status}): ${body}`);
+  }
+  const data = await res.json();
+  // Views require a separate API call (traffic/views), which needs repo admin token
+  let views = null;
+  try {
+    const viewsRes = await fetch(`${url}/traffic/views`, { headers: getGitHubHeaders() });
+    if (viewsRes.ok) {
+      const viewsData = await viewsRes.json();
+      views = viewsData.count || 0;
+    }
+  } catch {}
+  return {
+    stars: data.stargazers_count || 0,
+    forks: data.forks_count || 0,
+    views,
+    updatedAt: data.updated_at || null,
+  };
+};
 import crypto from 'crypto';
 import Contribution from '../models/Contribution.js';
 import Student from '../models/Student.js';
