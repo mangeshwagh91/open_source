@@ -9,7 +9,7 @@ import { sendProposalAcceptanceEmail, sendProposalRejectionEmail, sendProposalNo
 // @route   GET /api/proposals
 // @access  Private
 export const getProposals = asyncHandler(async (req, res) => {
-  const { status, category, difficulty, page = 1, limit = 50 } = req.query;
+  const { status, category, difficulty, page = 1, limit = 100 } = req.query;
   
   const pageNum = parseInt(page);
   const pageLimit = parseInt(limit);
