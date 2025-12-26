@@ -141,10 +141,15 @@ const MentorAcademics = ({ currentUser }) => {
     }
     try {
       await projectsAPI.delete(projectId);
+      setAcademicProjects(prev => prev.filter(p => p._id !== projectId));
       toast({ title: "Success!", description: `Project deleted` });
-      fetchMentorData();
     } catch (error) {
-      toast({ title: "Error", description: error?.message || "Failed to delete project", variant: "destructive" });
+      if (error.message && error.message.toLowerCase().includes('not found')) {
+        setAcademicProjects(prev => prev.filter(p => p._id !== projectId));
+        toast({ title: "Already Deleted", description: "This project was already deleted.", variant: "destructive" });
+      } else {
+        toast({ title: "Error", description: error?.message || "Failed to delete project", variant: "destructive" });
+      }
     }
   };
 
