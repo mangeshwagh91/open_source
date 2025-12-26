@@ -212,8 +212,10 @@ const Leaderboard = () => {
                   <tr className="border-b border-border/30">
                     <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">Rank</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">Name</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">GitHub</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">LinkedIn</th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">Contributions</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">Badge</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">Points</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -221,12 +223,7 @@ const Leaderboard = () => {
                     <tr key={index} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                            contributor.badge === 'gold' ? 'bg-yellow-500/20 text-yellow-600' :
-                            contributor.badge === 'silver' ? 'bg-slate-300/20 text-slate-600' :
-                            contributor.badge === 'bronze' ? 'bg-amber-600/20 text-amber-700' :
-                            'bg-primary/10 text-primary'
-                          }`}>
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-primary/10 text-primary">
                             {contributor.rank}
                           </div>
                         </div>
@@ -238,46 +235,40 @@ const Leaderboard = () => {
                             alt={contributor.name}
                             className="w-10 h-10 rounded-full"
                           />
-                          <div className="flex flex-col gap-1">
-                            <span className="font-medium text-foreground">{contributor.name}</span>
-                            <div className="flex gap-2">
-                              {contributor.github && (
-                                <a
-                                  href={contributor.github.startsWith('http') ? contributor.github : `https://github.com/${contributor.github}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-muted-foreground hover:text-primary transition-colors"
-                                  title={`GitHub: ${contributor.github}`}
-                                >
-                                  <Github className="w-4 h-4" />
-                                </a>
-                              )}
-                              {contributor.linkedin && (
-                                <a
-                                  href={contributor.linkedin.startsWith('http') ? contributor.linkedin : `https://linkedin.com/in/${contributor.linkedin}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-muted-foreground hover:text-primary transition-colors"
-                                  title={`LinkedIn: ${contributor.linkedin}`}
-                                >
-                                  <Linkedin className="w-4 h-4" />
-                                </a>
-                              )}
-                            </div>
-                          </div>
+                          <span className="font-medium text-foreground">{contributor.name}</span>
                         </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        {contributor.github && (
+                          <a
+                            href={contributor.github.startsWith('http') ? contributor.github : `https://github.com/${contributor.github}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-muted-foreground hover:text-primary transition-colors"
+                            title={`GitHub: ${contributor.github}`}
+                          >
+                            <Github className="w-5 h-5" />
+                          </a>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        {contributor.linkedin && (
+                          <a
+                            href={contributor.linkedin.startsWith('http') ? contributor.linkedin : `https://linkedin.com/in/${contributor.linkedin}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-muted-foreground hover:text-primary transition-colors"
+                            title={`LinkedIn: ${contributor.linkedin}`}
+                          >
+                            <Linkedin className="w-5 h-5" />
+                          </a>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <span className="font-semibold text-foreground">{contributor.contributions}</span>
                       </td>
                       <td className="px-6 py-4">
-                        {contributor.badge && (
-                          <Badge variant="secondary" className="text-xs">
-                            {contributor.badge === 'gold' ? '🥇 Gold' :
-                             contributor.badge === 'silver' ? '🥈 Silver' :
-                             '🥉 Bronze'}
-                          </Badge>
-                        )}
+                        <span className="font-semibold text-foreground">{contributor.points}</span>
                       </td>
                     </tr>
                   ))}
