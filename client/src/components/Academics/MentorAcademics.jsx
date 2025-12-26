@@ -145,7 +145,7 @@ const MentorAcademics = ({ currentUser }) => {
       toast({ title: "Success!", description: `Project deleted` });
       fetchMentorData();
     } catch (error) {
-      setAcademicProjects(prev => setUniqueProjects(prev.filter(p => p._id !== projectId)));
+      toast({ title: "Error", description: error?.message || "Failed to delete project", variant: "destructive" });
     }
   };
 

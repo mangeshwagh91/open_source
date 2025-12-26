@@ -19,6 +19,6 @@ router.route('/')
 router.route('/:id')
   .get(validate(projectSchema), getProjectById)
   .put(protect, authorize('admin', 'mentor'), validate(projectSchema), updateProject)
-  .delete(protect, authorize('admin', 'mentor'),validate(projectSchema), deleteProject);
+  .delete(protect, authorize('admin', 'mentor'), validate(projectSchema), deleteProject);
 
 export default router;
