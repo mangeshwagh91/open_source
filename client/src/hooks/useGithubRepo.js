@@ -18,8 +18,10 @@ export const useGithubRepo = (githubUrl) => {
       }
 
       try {
-        // Call backend proxy endpoint
-        const response = await fetch(`/api/github/repo?repoUrl=${encodeURIComponent(githubUrl)}`);
+        // Use VITE_API_URL from environment
+        const apiBase = import.meta.env.VITE_API_URL || '';
+        const apiUrl = `${apiBase}/github/repo?repoUrl=${encodeURIComponent(githubUrl)}`;
+        const response = await fetch(apiUrl);
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(errorData.message || 'Failed to fetch repository data');
