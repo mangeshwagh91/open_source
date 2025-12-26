@@ -14,7 +14,10 @@ const ProjectCard = ({ project, viewMode = "grid", contributionStats, onDelete, 
   const githubRepo = project.githubRepo || project.github || '';
   const { toast } = useToast();
   
-  const { stars, forks, watchers, updatedAt, loading } = useGithubRepo(githubRepo);
+  const repoStats = useGithubRepo(githubRepo);
+  const { stars, forks, watchers, updatedAt, loading } = repoStats;
+  // Debug: log repo stats to console
+  console.log('ProjectCard repoStats:', repoStats);
 
   const handleGithubClick = () => {
     window.open(githubRepo, "_blank", "noopener,noreferrer");
