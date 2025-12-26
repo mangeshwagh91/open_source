@@ -27,6 +27,7 @@ export const getContributionStats = asyncHandler(async (req, res) => {
         totalContributions: 1,
         totalPoints: 1,
         contributorCount: { $size: '$uniqueContributors' },
+        uniqueContributors: 1,
         openPRs: 1,
         mergedPRs: 1
       }
@@ -35,11 +36,18 @@ export const getContributionStats = asyncHandler(async (req, res) => {
 
   // Convert to map for easy lookup
   const statsMap = {};
+  let allContributors = new Set();
   stats.forEach(stat => {
     statsMap[stat.repo] = stat;
+    if (Array.isArray(stat.uniqueContributors)) {
+      stat.uniqueContributors.forEach(c => allContributors.add(c));
+    }
   });
 
-  res.json(statsMap);
+  res.json({
+    ...statsMap,
+    totalContributors: allContributors.size
+  });
 });
 
 // @desc    Get contributions for a specific repository
