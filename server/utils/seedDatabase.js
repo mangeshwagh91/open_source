@@ -47,6 +47,8 @@ const leaderboard = [
   {
     rank: 1,
     name: "Sarah Chen",
+    github: "https://github.com/sarahchen",
+    linkedin: "https://linkedin.com/in/sarahchen",
     points: 2450,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
     contributions: 48,
@@ -55,6 +57,8 @@ const leaderboard = [
   {
     rank: 2,
     name: "Alex Kumar",
+    github: "https://github.com/alexkumar",
+    linkedin: "https://linkedin.com/in/alexkumar",
     points: 2180,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
     contributions: 42,
@@ -63,6 +67,8 @@ const leaderboard = [
   {
     rank: 3,
     name: "Maria Garcia",
+    github: "https://github.com/mariagarcia",
+    linkedin: "https://linkedin.com/in/mariagarcia",
     points: 1950,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria",
     contributions: 38,
@@ -71,6 +77,8 @@ const leaderboard = [
   {
     rank: 4,
     name: "James Wilson",
+    github: "https://github.com/jameswilson",
+    linkedin: "https://linkedin.com/in/jameswilson",
     points: 1720,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
     contributions: 35,
@@ -78,6 +86,8 @@ const leaderboard = [
   {
     rank: 5,
     name: "Priya Patel",
+    github: "https://github.com/priyapatel",
+    linkedin: "https://linkedin.com/in/priyapatel",
     points: 1580,
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya",
     contributions: 31,

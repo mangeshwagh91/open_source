@@ -126,6 +126,10 @@ export const leaderboardSchema = z.object({
     name: z.string()
       .min(1, 'Name is required')
       .trim(),
+    github: z.string()
+      .min(1, 'GitHub profile is required')
+      .trim(),
+    linkedin: z.string().optional(),
     points: z.number()
       .int('Points must be an integer')
       .min(0, 'Points must be non-negative'),

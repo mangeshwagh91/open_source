@@ -11,7 +11,7 @@ export const rebuildLeaderboardFromContributions = async () => {
   ];
 
   const agg = await Contribution.aggregate(pipeline);
-  const students = await Student.find({ _id: { $in: agg.map(a => a._id) } }).select('name avatar');
+  const students = await Student.find({ _id: { $in: agg.map(a => a._id) } }).select('name avatar github linkedin');
   const studentMap = new Map(students.map(s => [s._id.toString(), s]));
 
   // Wipe and rebuild to guarantee rank uniqueness
@@ -24,6 +24,8 @@ export const rebuildLeaderboardFromContributions = async () => {
     await Leaderboard.create({
       rank,
       name: s.name,
+      github: s.github,
+      linkedin: s.linkedin,
       points: a.points,
       avatar: s.avatar,
       contributions: a.contributions,

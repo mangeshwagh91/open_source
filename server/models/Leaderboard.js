@@ -11,6 +11,15 @@ const leaderboardSchema = new mongoose.Schema({
     required: [true, 'Name is required'],
     trim: true
   },
+  github: {
+    type: String,
+    required: [true, 'GitHub profile is required'],
+    trim: true
+  },
+  linkedin: {
+    type: String,
+    trim: true
+  },
   points: {
     type: Number,
     required: [true, 'Points are required'],
