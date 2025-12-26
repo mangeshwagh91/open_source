@@ -1,12 +1,3 @@
-// Helper to filter unique projects by _id
-const setUniqueProjects = (projects) => {
-  const seen = new Set();
-  return projects.filter(p => {
-    if (seen.has(p._id)) return false;
-    seen.add(p._id);
-    return true;
-  });
-};
 import { useState, useEffect } from "react";
 import { studentsAPI, assignmentsAPI, academicProposalsAPI, projectsAPI } from "@/lib/api";
 import { GraduationCap, Users, Search, Filter, Plus, Calendar, CheckCircle, XCircle, Clock, BookMarked, User, Mail, IdCard, BookOpen, MessageSquare, Send, Trash2 } from "lucide-react";
@@ -150,15 +141,11 @@ const MentorAcademics = ({ currentUser }) => {
     }
     try {
       await projectsAPI.delete(projectId);
-      setAcademicProjects(prev => setUniqueProjects(prev.filter(p => p._id !== projectId)));
+
       toast({ title: "Success!", description: `Project deleted` });
+      fetchMentorData();
     } catch (error) {
       setAcademicProjects(prev => setUniqueProjects(prev.filter(p => p._id !== projectId)));
-      if (error.message && error.message.toLowerCase().includes('not found')) {
-        toast({ title: "Already Deleted", description: "This project was already deleted.", variant: "destructive" });
-      } else {
-        toast({ title: "Error", description: error?.message || "Failed to delete project", variant: "destructive" });
-      }
     }
   };
 
