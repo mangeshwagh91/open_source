@@ -205,7 +205,7 @@ export const assignmentSchema = z.object({
     description: z.string()
       .min(1, 'Description is required')
       .trim(),
-    assignedTo: z.array(objectIdSchema),
+    studentId: objectIdSchema,
     subject: z.string()
       .min(1, 'Subject is required')
       .trim(),
