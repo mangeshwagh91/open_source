@@ -127,11 +127,12 @@ const Projects = () => {
   // Project statistics
   const stats = useMemo(() => {
     const totalProjects = projectsData.length;
-    const totalContributors = projectsData.length * 15; // Approximate
+    // Use actual contributor count from contributionStats if available
+    const totalContributors = contributionStats.contributorCount || 0;
     const totalTechStacks = allTechnologies.length - 1; // Exclude "All"
 
     return { totalProjects, totalContributors, totalTechStacks };
-  }, [projectsData.length, allTechnologies.length]);
+  }, [projectsData.length, allTechnologies.length, contributionStats.contributorCount]);
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -195,7 +196,7 @@ const Projects = () => {
               <div className="text-sm text-muted-foreground">Active Projects</div>
             </div>
             <div className="glass-card p-4 text-center">
-              <div className="text-2xl font-bold gradient-text">{stats.totalContributors}+</div>
+              <div className="text-2xl font-bold gradient-text">{stats.totalContributors}</div>
               <div className="text-sm text-muted-foreground">Contributors</div>
             </div>
             <div className="glass-card p-4 text-center">
