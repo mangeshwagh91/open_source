@@ -127,12 +127,12 @@ const Projects = () => {
   // Project statistics
   const stats = useMemo(() => {
     const totalProjects = projectsData.length;
-    // Use actual contributor count from contributionStats if available
-    const totalContributors = contributionStats.contributorCount || 0;
+    // Use totalContributors from contributionStats if available
+    const totalContributors = contributionStats.totalContributors || 0;
     const totalTechStacks = allTechnologies.length - 1; // Exclude "All"
 
     return { totalProjects, totalContributors, totalTechStacks };
-  }, [projectsData.length, allTechnologies.length, contributionStats.contributorCount]);
+  }, [projectsData.length, allTechnologies.length, contributionStats.totalContributors]);
 
   const getStatusBadge = (status) => {
     switch (status) {
