@@ -44,10 +44,15 @@ export const getContributionStats = asyncHandler(async (req, res) => {
     }
   });
 
-  res.json({
-    ...statsMap,
-    totalContributors: allContributors.size
-  });
+  // Always include totalContributors at the top level, even if only one repo
+  if (Object.keys(statsMap).length > 0) {
+    res.json({
+      ...statsMap,
+      totalContributors: allContributors.size
+    });
+  } else {
+    res.json({ totalContributors: 0 });
+  }
 });
 
 // @desc    Get contributions for a specific repository
